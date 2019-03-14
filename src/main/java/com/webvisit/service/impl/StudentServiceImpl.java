@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * @author zening.zhu@ucarinc.com
+ * @author zening.zhu
  * @version 1.0
  * @date 2019/3/13
  */

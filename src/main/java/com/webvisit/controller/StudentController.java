@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author zening.zhu@ucarinc.com
+ * @author zening.zhu
  * @version 1.0
  * @date 2019/3/13
  */
