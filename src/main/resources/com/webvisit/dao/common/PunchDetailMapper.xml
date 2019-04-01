@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.common.PunchDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.PunchDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="emp_id" property="empId" jdbcType="BIGINT" />
+    <result column="punch_time" property="punchTime" jdbcType="DATE" />
+    <result column="punch_in_time" property="punchInTime" jdbcType="TIMESTAMP" />
+    <result column="punch_out_time" property="punchOutTime" jdbcType="TIMESTAMP" />
+    <result column="punch_in_status" property="punchInStatus" jdbcType="TINYINT" />
+    <result column="punch_out_status" property="punchOutStatus" jdbcType="TINYINT" />
+    <result column="punch_in_location_lon" property="punchInLocationLon" jdbcType="DECIMAL" />
+    <result column="punch_in_location_lat" property="punchInLocationLat" jdbcType="DECIMAL" />
+    <result column="punch_out_location_lon" property="punchOutLocationLon" jdbcType="DECIMAL" />
+    <result column="punch_out_location_lat" property="punchOutLocationLat" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, emp_id, punch_time, punch_in_time, punch_out_time, punch_in_status, punch_out_status, 
+    punch_in_location_lon, punch_in_location_lat, punch_out_location_lon, punch_out_location_lat
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_attence_punch_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_attence_punch_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.po.PunchDetail" >
+    insert into t_attence_punch_detail (id, emp_id, punch_time, 
+      punch_in_time, punch_out_time, punch_in_status, 
+      punch_out_status, punch_in_location_lon, punch_in_location_lat, 
+      punch_out_location_lon, punch_out_location_lat
+      )
+    values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{punchTime,jdbcType=DATE}, 
+      #{punchInTime,jdbcType=TIMESTAMP}, #{punchOutTime,jdbcType=TIMESTAMP}, #{punchInStatus,jdbcType=TINYINT}, 
+      #{punchOutStatus,jdbcType=TINYINT}, #{punchInLocationLon,jdbcType=DECIMAL}, #{punchInLocationLat,jdbcType=DECIMAL}, 
+      #{punchOutLocationLon,jdbcType=DECIMAL}, #{punchOutLocationLat,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.po.PunchDetail" >
+    insert into t_attence_punch_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="punchTime != null" >
+        punch_time,
+      </if>
+      <if test="punchInTime != null" >
+        punch_in_time,
+      </if>
+      <if test="punchOutTime != null" >
+        punch_out_time,
+      </if>
+      <if test="punchInStatus != null" >
+        punch_in_status,
+      </if>
+      <if test="punchOutStatus != null" >
+        punch_out_status,
+      </if>
+      <if test="punchInLocationLon != null" >
+        punch_in_location_lon,
+      </if>
+      <if test="punchInLocationLat != null" >
+        punch_in_location_lat,
+      </if>
+      <if test="punchOutLocationLon != null" >
+        punch_out_location_lon,
+      </if>
+      <if test="punchOutLocationLat != null" >
+        punch_out_location_lat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="empId != null" >
+        #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="punchTime != null" >
+        #{punchTime,jdbcType=DATE},
+      </if>
+      <if test="punchInTime != null" >
+        #{punchInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchOutTime != null" >
+        #{punchOutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchInStatus != null" >
+        #{punchInStatus,jdbcType=TINYINT},
+      </if>
+      <if test="punchOutStatus != null" >
+        #{punchOutStatus,jdbcType=TINYINT},
+      </if>
+      <if test="punchInLocationLon != null" >
+        #{punchInLocationLon,jdbcType=DECIMAL},
+      </if>
+      <if test="punchInLocationLat != null" >
+        #{punchInLocationLat,jdbcType=DECIMAL},
+      </if>
+      <if test="punchOutLocationLon != null" >
+        #{punchOutLocationLon,jdbcType=DECIMAL},
+      </if>
+      <if test="punchOutLocationLat != null" >
+        #{punchOutLocationLat,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.PunchDetail" >
+    update t_attence_punch_detail
+    <set >
+      <if test="empId != null" >
+        emp_id = #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="punchTime != null" >
+        punch_time = #{punchTime,jdbcType=DATE},
+      </if>
+      <if test="punchInTime != null" >
+        punch_in_time = #{punchInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchOutTime != null" >
+        punch_out_time = #{punchOutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchInStatus != null" >
+        punch_in_status = #{punchInStatus,jdbcType=TINYINT},
+      </if>
+      <if test="punchOutStatus != null" >
+        punch_out_status = #{punchOutStatus,jdbcType=TINYINT},
+      </if>
+      <if test="punchInLocationLon != null" >
+        punch_in_location_lon = #{punchInLocationLon,jdbcType=DECIMAL},
+      </if>
+      <if test="punchInLocationLat != null" >
+        punch_in_location_lat = #{punchInLocationLat,jdbcType=DECIMAL},
+      </if>
+      <if test="punchOutLocationLon != null" >
+        punch_out_location_lon = #{punchOutLocationLon,jdbcType=DECIMAL},
+      </if>
+      <if test="punchOutLocationLat != null" >
+        punch_out_location_lat = #{punchOutLocationLat,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.PunchDetail" >
+    update t_attence_punch_detail
+    set emp_id = #{empId,jdbcType=BIGINT},
+      punch_time = #{punchTime,jdbcType=DATE},
+      punch_in_time = #{punchInTime,jdbcType=TIMESTAMP},
+      punch_out_time = #{punchOutTime,jdbcType=TIMESTAMP},
+      punch_in_status = #{punchInStatus,jdbcType=TINYINT},
+      punch_out_status = #{punchOutStatus,jdbcType=TINYINT},
+      punch_in_location_lon = #{punchInLocationLon,jdbcType=DECIMAL},
+      punch_in_location_lat = #{punchInLocationLat,jdbcType=DECIMAL},
+      punch_out_location_lon = #{punchOutLocationLon,jdbcType=DECIMAL},
+      punch_out_location_lat = #{punchOutLocationLat,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

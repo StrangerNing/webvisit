@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceRegulationExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceRegulation" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="punch_in_start" property="punchInStart" jdbcType="TIME" />
+    <result column="punch_in_end" property="punchInEnd" jdbcType="TIME" />
+    <result column="punch_out_start" property="punchOutStart" jdbcType="TIME" />
+    <result column="punch_out_end" property="punchOutEnd" jdbcType="TIME" />
+    <result column="allow_late" property="allowLate" jdbcType="TIME" />
+    <result column="allow_leave_early" property="allowLeaveEarly" jdbcType="TIME" />
+    <result column="allow_location_offset" property="allowLocationOffset" jdbcType="INTEGER" />
+    <result column="check_location_lon" property="checkLocationLon" jdbcType="DECIMAL" />
+    <result column="check_location_lat" property="checkLocationLat" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_account_id" property="modifyAccountId" jdbcType="BIGINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, name, punch_in_start, punch_in_end, punch_out_start, punch_out_end,
+    allow_late, allow_leave_early, allow_location_offset, check_location_lon, check_location_lat,
+    create_time, create_account_id, modify_time, modify_account_id, remark
+  </sql>
+  <select id="queryRegulationListByCompanyId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from t_attence_regulation
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </select>
+
+</mapper>

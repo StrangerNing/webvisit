@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.common.AttenceAnnulMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceAnnul" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="expire_date" property="expireDate" jdbcType="DATE" />
+    <result column="accumulate_to_next_year" property="accumulateToNextYear" jdbcType="TINYINT" />
+    <result column="probation_has" property="probationHas" jdbcType="TINYINT" />
+    <result column="graduation_one_year_has" property="graduationOneYearHas" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_account_id" property="modifyAccountId" jdbcType="BIGINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, expire_date, accumulate_to_next_year, probation_has, graduation_one_year_has, 
+    create_time, create_account_id, modify_time, modify_account_id, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_attence_annual
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_attence_annual
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.po.AttenceAnnul" >
+    insert into t_attence_annual (id, company_id, expire_date, 
+      accumulate_to_next_year, probation_has, graduation_one_year_has, 
+      create_time, create_account_id, modify_time, 
+      modify_account_id, remark)
+    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{expireDate,jdbcType=DATE}, 
+      #{accumulateToNextYear,jdbcType=TINYINT}, #{probationHas,jdbcType=TINYINT}, #{graduationOneYearHas,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{modifyAccountId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceAnnul" >
+    insert into t_attence_annual
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="expireDate != null" >
+        expire_date,
+      </if>
+      <if test="accumulateToNextYear != null" >
+        accumulate_to_next_year,
+      </if>
+      <if test="probationHas != null" >
+        probation_has,
+      </if>
+      <if test="graduationOneYearHas != null" >
+        graduation_one_year_has,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createAccountId != null" >
+        create_account_id,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyAccountId != null" >
+        modify_account_id,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="expireDate != null" >
+        #{expireDate,jdbcType=DATE},
+      </if>
+      <if test="accumulateToNextYear != null" >
+        #{accumulateToNextYear,jdbcType=TINYINT},
+      </if>
+      <if test="probationHas != null" >
+        #{probationHas,jdbcType=TINYINT},
+      </if>
+      <if test="graduationOneYearHas != null" >
+        #{graduationOneYearHas,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAccountId != null" >
+        #{createAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccountId != null" >
+        #{modifyAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.AttenceAnnul" >
+    update t_attence_annual
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="expireDate != null" >
+        expire_date = #{expireDate,jdbcType=DATE},
+      </if>
+      <if test="accumulateToNextYear != null" >
+        accumulate_to_next_year = #{accumulateToNextYear,jdbcType=TINYINT},
+      </if>
+      <if test="probationHas != null" >
+        probation_has = #{probationHas,jdbcType=TINYINT},
+      </if>
+      <if test="graduationOneYearHas != null" >
+        graduation_one_year_has = #{graduationOneYearHas,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAccountId != null" >
+        create_account_id = #{createAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccountId != null" >
+        modify_account_id = #{modifyAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceAnnul" >
+    update t_attence_annual
+    set company_id = #{companyId,jdbcType=BIGINT},
+      expire_date = #{expireDate,jdbcType=DATE},
+      accumulate_to_next_year = #{accumulateToNextYear,jdbcType=TINYINT},
+      probation_has = #{probationHas,jdbcType=TINYINT},
+      graduation_one_year_has = #{graduationOneYearHas,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_account_id = #{createAccountId,jdbcType=BIGINT},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_account_id = #{modifyAccountId,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

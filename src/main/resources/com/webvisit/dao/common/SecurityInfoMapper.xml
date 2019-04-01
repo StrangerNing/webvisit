@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.common.SecurityInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.SecurityInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="operate_module" property="operateModule" jdbcType="VARCHAR" />
+    <result column="operate_event" property="operateEvent" jdbcType="VARCHAR" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="operate_name" property="operateName" jdbcType="VARCHAR" />
+    <result column="operate_detail" property="operateDetail" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, operate_module, operate_event, operate_id, operate_name, operate_detail, operate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_security_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_security_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.po.SecurityInfo" >
+    insert into t_security_info (id, operate_module, operate_event, 
+      operate_id, operate_name, operate_detail, 
+      operate_time)
+    values (#{id,jdbcType=BIGINT}, #{operateModule,jdbcType=VARCHAR}, #{operateEvent,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{operateName,jdbcType=VARCHAR}, #{operateDetail,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.po.SecurityInfo" >
+    insert into t_security_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="operateModule != null" >
+        operate_module,
+      </if>
+      <if test="operateEvent != null" >
+        operate_event,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="operateName != null" >
+        operate_name,
+      </if>
+      <if test="operateDetail != null" >
+        operate_detail,
+      </if>
+      <if test="operateTime != null" >
+        operate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="operateModule != null" >
+        #{operateModule,jdbcType=VARCHAR},
+      </if>
+      <if test="operateEvent != null" >
+        #{operateEvent,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="operateName != null" >
+        #{operateName,jdbcType=VARCHAR},
+      </if>
+      <if test="operateDetail != null" >
+        #{operateDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.SecurityInfo" >
+    update t_security_info
+    <set >
+      <if test="operateModule != null" >
+        operate_module = #{operateModule,jdbcType=VARCHAR},
+      </if>
+      <if test="operateEvent != null" >
+        operate_event = #{operateEvent,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="operateName != null" >
+        operate_name = #{operateName,jdbcType=VARCHAR},
+      </if>
+      <if test="operateDetail != null" >
+        operate_detail = #{operateDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.SecurityInfo" >
+    update t_security_info
+    set operate_module = #{operateModule,jdbcType=VARCHAR},
+      operate_event = #{operateEvent,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      operate_name = #{operateName,jdbcType=VARCHAR},
+      operate_detail = #{operateDetail,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

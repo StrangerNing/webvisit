@@ -16,9 +16,12 @@ spring:
   profiles: dev
 
   datasource:
-    url: jdbc:mysql://34.73.120.207:3306/test
+    url: jdbc:log4jdbc:mysql://www.znzn.me:3306/webvisit?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    #不输出日志
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #输出日志
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
