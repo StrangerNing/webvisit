@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceHolidayDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.AttenceHolidayDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="emp_id" property="empId" jdbcType="BIGINT" />
+    <result column="leave_type" property="leaveType" jdbcType="BIGINT" />
+    <result column="this_year_leave_left" property="thisYearLeaveLeft" jdbcType="TINYINT" />
+    <result column="last_year_leave_left" property="lastYearLeaveLeft" jdbcType="TINYINT" />
+    <result column="vacation_number" property="vacationNumber" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, emp_id, leave_type, this_year_leave_left, last_year_leave_left, vacation_number
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_attence_holiday_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_attence_holiday_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.AttenceHolidayDetail" >
+    insert into t_attence_holiday_detail (id, emp_id, leave_type, 
+      this_year_leave_left, last_year_leave_left, vacation_number
+      )
+    values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{leaveType,jdbcType=BIGINT}, 
+      #{thisYearLeaveLeft,jdbcType=TINYINT}, #{lastYearLeaveLeft,jdbcType=TINYINT}, #{vacationNumber,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.AttenceHolidayDetail" >
+    insert into t_attence_holiday_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="leaveType != null" >
+        leave_type,
+      </if>
+      <if test="thisYearLeaveLeft != null" >
+        this_year_leave_left,
+      </if>
+      <if test="lastYearLeaveLeft != null" >
+        last_year_leave_left,
+      </if>
+      <if test="vacationNumber != null" >
+        vacation_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="empId != null" >
+        #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="leaveType != null" >
+        #{leaveType,jdbcType=BIGINT},
+      </if>
+      <if test="thisYearLeaveLeft != null" >
+        #{thisYearLeaveLeft,jdbcType=TINYINT},
+      </if>
+      <if test="lastYearLeaveLeft != null" >
+        #{lastYearLeaveLeft,jdbcType=TINYINT},
+      </if>
+      <if test="vacationNumber != null" >
+        #{vacationNumber,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.AttenceHolidayDetail" >
+    update t_attence_holiday_detail
+    <set >
+      <if test="empId != null" >
+        emp_id = #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="leaveType != null" >
+        leave_type = #{leaveType,jdbcType=BIGINT},
+      </if>
+      <if test="thisYearLeaveLeft != null" >
+        this_year_leave_left = #{thisYearLeaveLeft,jdbcType=TINYINT},
+      </if>
+      <if test="lastYearLeaveLeft != null" >
+        last_year_leave_left = #{lastYearLeaveLeft,jdbcType=TINYINT},
+      </if>
+      <if test="vacationNumber != null" >
+        vacation_number = #{vacationNumber,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.AttenceHolidayDetail" >
+    update t_attence_holiday_detail
+    set emp_id = #{empId,jdbcType=BIGINT},
+      leave_type = #{leaveType,jdbcType=BIGINT},
+      this_year_leave_left = #{thisYearLeaveLeft,jdbcType=TINYINT},
+      last_year_leave_left = #{lastYearLeaveLeft,jdbcType=TINYINT},
+      vacation_number = #{vacationNumber,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,26 +1,26 @@
 package com.webvisit.model;
 
-public class Student {
-    private Integer id;
+public class CompanyDept {
+    private Long id;
 
-    private String clas;
+    private Long companyId;
 
     private String name;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getClas() {
-        return clas;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setClas(String clas) {
-        this.clas = clas == null ? null : clas.trim();
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getName() {

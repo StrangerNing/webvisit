@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceWorkdayMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.AttenceWorkday" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="regulation_id" property="regulationId" jdbcType="BIGINT" />
+    <result column="week_day" property="weekDay" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, regulation_id, week_day
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_attence_workday
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_attence_workday
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.AttenceWorkday" >
+    insert into t_attence_workday (id, regulation_id, week_day
+      )
+    values (#{id,jdbcType=BIGINT}, #{regulationId,jdbcType=BIGINT}, #{weekDay,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.AttenceWorkday" >
+    insert into t_attence_workday
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="regulationId != null" >
+        regulation_id,
+      </if>
+      <if test="weekDay != null" >
+        week_day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="regulationId != null" >
+        #{regulationId,jdbcType=BIGINT},
+      </if>
+      <if test="weekDay != null" >
+        #{weekDay,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.AttenceWorkday" >
+    update t_attence_workday
+    <set >
+      <if test="regulationId != null" >
+        regulation_id = #{regulationId,jdbcType=BIGINT},
+      </if>
+      <if test="weekDay != null" >
+        week_day = #{weekDay,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.AttenceWorkday" >
+    update t_attence_workday
+    set regulation_id = #{regulationId,jdbcType=BIGINT},
+      week_day = #{weekDay,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

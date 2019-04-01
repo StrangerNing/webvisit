@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceAnnulStepMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.AttenceAnnulStep" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="annual_id" property="annualId" jdbcType="BIGINT" />
+    <result column="more_than" property="moreThan" jdbcType="TINYINT" />
+    <result column="less_than" property="lessThan" jdbcType="TINYINT" />
+    <result column="vacation_days" property="vacationDays" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, annual_id, more_than, less_than, vacation_days
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_attence_annual_step
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_attence_annual_step
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.AttenceAnnulStep" >
+    insert into t_attence_annual_step (id, annual_id, more_than, 
+      less_than, vacation_days)
+    values (#{id,jdbcType=BIGINT}, #{annualId,jdbcType=BIGINT}, #{moreThan,jdbcType=TINYINT}, 
+      #{lessThan,jdbcType=TINYINT}, #{vacationDays,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.AttenceAnnulStep" >
+    insert into t_attence_annual_step
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="annualId != null" >
+        annual_id,
+      </if>
+      <if test="moreThan != null" >
+        more_than,
+      </if>
+      <if test="lessThan != null" >
+        less_than,
+      </if>
+      <if test="vacationDays != null" >
+        vacation_days,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="annualId != null" >
+        #{annualId,jdbcType=BIGINT},
+      </if>
+      <if test="moreThan != null" >
+        #{moreThan,jdbcType=TINYINT},
+      </if>
+      <if test="lessThan != null" >
+        #{lessThan,jdbcType=TINYINT},
+      </if>
+      <if test="vacationDays != null" >
+        #{vacationDays,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.AttenceAnnulStep" >
+    update t_attence_annual_step
+    <set >
+      <if test="annualId != null" >
+        annual_id = #{annualId,jdbcType=BIGINT},
+      </if>
+      <if test="moreThan != null" >
+        more_than = #{moreThan,jdbcType=TINYINT},
+      </if>
+      <if test="lessThan != null" >
+        less_than = #{lessThan,jdbcType=TINYINT},
+      </if>
+      <if test="vacationDays != null" >
+        vacation_days = #{vacationDays,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.AttenceAnnulStep" >
+    update t_attence_annual_step
+    set annual_id = #{annualId,jdbcType=BIGINT},
+      more_than = #{moreThan,jdbcType=TINYINT},
+      less_than = #{lessThan,jdbcType=TINYINT},
+      vacation_days = #{vacationDays,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.CompanyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.CompanyInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="scope_of_business" property="scopeOfBusiness" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="login_logo" property="loginLogo" jdbcType="VARCHAR" />
+    <result column="page_logo" property="pageLogo" jdbcType="VARCHAR" />
+    <result column="web_logo" property="webLogo" jdbcType="VARCHAR" />
+    <result column="regist_time" property="registTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, scope_of_business, type, address, url, login_logo, page_logo, web_logo, 
+    regist_time, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_company_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_company_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.CompanyInfo" >
+    insert into t_company_info (id, name, scope_of_business, 
+      type, address, url, 
+      login_logo, page_logo, web_logo, 
+      regist_time, create_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{scopeOfBusiness,jdbcType=VARCHAR}, 
+      #{type,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{loginLogo,jdbcType=VARCHAR}, #{pageLogo,jdbcType=VARCHAR}, #{webLogo,jdbcType=VARCHAR}, 
+      #{registTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.CompanyInfo" >
+    insert into t_company_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="scopeOfBusiness != null" >
+        scope_of_business,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="loginLogo != null" >
+        login_logo,
+      </if>
+      <if test="pageLogo != null" >
+        page_logo,
+      </if>
+      <if test="webLogo != null" >
+        web_logo,
+      </if>
+      <if test="registTime != null" >
+        regist_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeOfBusiness != null" >
+        #{scopeOfBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="loginLogo != null" >
+        #{loginLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="pageLogo != null" >
+        #{pageLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="webLogo != null" >
+        #{webLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.CompanyInfo" >
+    update t_company_info
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeOfBusiness != null" >
+        scope_of_business = #{scopeOfBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="loginLogo != null" >
+        login_logo = #{loginLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="pageLogo != null" >
+        page_logo = #{pageLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="webLogo != null" >
+        web_logo = #{webLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        regist_time = #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.CompanyInfo" >
+    update t_company_info
+    set name = #{name,jdbcType=VARCHAR},
+      scope_of_business = #{scopeOfBusiness,jdbcType=VARCHAR},
+      type = #{type,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      login_logo = #{loginLogo,jdbcType=VARCHAR},
+      page_logo = #{pageLogo,jdbcType=VARCHAR},
+      web_logo = #{webLogo,jdbcType=VARCHAR},
+      regist_time = #{registTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
