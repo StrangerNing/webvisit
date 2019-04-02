@@ -1,6 +1,5 @@
 package com.webvisit.controller;
 
-import com.webvisit.common.exception.BusinessException;
 import com.webvisit.common.re.Result;
 import com.webvisit.model.po.AttenceRegulation;
 import com.webvisit.service.AttenceService;
@@ -27,14 +26,14 @@ public class AttenceController {
 
     @RequestMapping("/new")
     @ResponseBody
-    Boolean addRegulation(AttenceRegulation attenceRegulation){
-        return attenceService.addRegulation(attenceRegulation);
+    Result addRegulation(AttenceRegulation attenceRegulation){
+        return Result.success(attenceService.addRegulation(attenceRegulation));
     }
 
     @RequestMapping("/query")
     @ResponseBody
-    List<AttenceRegulation> queryRegulations(Long companyId){
-        return attenceService.queryRequlations(companyId);
+    Result<List<AttenceRegulation>> queryRegulations(Long companyId){
+        return Result.success(attenceService.queryRequlations(companyId));
     }
 
 }
