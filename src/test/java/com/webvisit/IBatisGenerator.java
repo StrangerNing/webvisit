@@ -14,7 +14,7 @@ import java.util.Map;
  * Create date 2018/8/29
  * <p>IBatis代码自动生成</p>
  *
- * @author 李志恒(zhiheng.li@ucarinc.com)
+ * @author 李志恒(zhiheng.li)
  * @since 1.0.
  */
 public class IBatisGenerator {
