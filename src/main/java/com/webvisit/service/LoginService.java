@@ -1,6 +1,8 @@
 package com.webvisit.service;
 
+import com.webvisit.model.po.User;
 import com.webvisit.model.vo.LoginVO;
+import com.webvisit.model.vo.RegisterVO;
 import com.webvisit.model.vo.UserInfoVO;
 
 /**
@@ -17,4 +19,11 @@ public interface LoginService {
      * @return 用户信息
      */
     UserInfoVO login(LoginVO loginVO);
+
+    /**
+     * 用户注册
+     * @param registerVO 注册信息
+     * @return 注册结果
+     */
+    Boolean register(RegisterVO registerVO);
 }
