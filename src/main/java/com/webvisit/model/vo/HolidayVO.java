@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,8 +22,10 @@ import java.util.List;
 @NoArgsConstructor
 public class HolidayVO {
 
-    private List<AttenceHolidayDefault> attenceHolidaysDefault;
+    private Date holidayDate;
 
-    private List<AttenceHolidayCustom> attenceHolidaysCustom;
+    private Integer defaultType;
+
+    private Integer customType;
 
 }

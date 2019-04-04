@@ -89,9 +89,7 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public HolidayVO queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate) {
-        List<AttenceHolidayDefault> defaultHolidays = attenceHolidayDefaultExtMapper.selectByDate(beginDate,endDate);
-        List<AttenceHolidayCustom> customHolidays = attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(),beginDate,endDate);
-        return new HolidayVO(defaultHolidays,customHolidays);
+    public List<HolidayVO> queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate) {
+        return attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(),beginDate,endDate);
     }
 }

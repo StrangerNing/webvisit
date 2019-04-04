@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
@@ -61,8 +62,10 @@ public class WebvisitApplicationTests {
     @Test
     public void testQueryHolidays(){
         UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
-        HolidayVO holidayVO = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019,4,5),TimeUtil.createTime(2019,5,30));
-        System.out.println(holidayVO);
+        List<HolidayVO> holidays = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019,0,1),TimeUtil.createTime(2019,7,30));
+        for (HolidayVO holiday : holidays){
+            System.out.println(holiday);
+        }
     }
 
 }

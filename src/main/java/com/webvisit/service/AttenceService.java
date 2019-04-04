@@ -56,5 +56,5 @@ public interface AttenceService {
      * @param endDate 结束时间
      * @return 节假日列表
      */
-    HolidayVO queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate);
+    List<HolidayVO> queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate);
 }

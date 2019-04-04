@@ -17,19 +17,30 @@
     modify_account_id, remark
   </sql>
 
-    <select id="selectByDate" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_attence_holiday_custom
-        where 1=1
+    <select id="selectByDate" resultType="com.webvisit.model.vo.HolidayVO">
+        SELECT c.holiday_date AS holidayDate,c.type As customType,d.type AS defaultType
+        FROM t_attence_holiday_custom c
+        LEFT JOIN t_attence_holiday_default d ON c.holiday_date = d.holiday_date
+        WHERE 1=1
         <if test="beginDate!=null">
-            <![CDATA[  and DATE_FORMAT(holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+            <![CDATA[  and DATE_FORMAT(c.holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
         </if>
         <if test="endDate!=null">
-            <![CDATA[  and DATE_FORMAT(holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+            <![CDATA[  and DATE_FORMAT(c.holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
         </if>
         <if test="companyId!=null">
-            and company_id = #{companyId}
+            and c.company_id = #{companyId}
+        </if>
+        UNION ALL
+        select d.holiday_date AS holidayDate,c.type AS customType,d.type AS defaultType
+        FROM t_attence_holiday_default d
+        LEFT JOIN t_attence_holiday_custom c ON d.holiday_date = c.holiday_date AND c.company_id = #{companyId}
+        WHERE c.holiday_date IS NULL
+        <if test="beginDate!=null">
+        <![CDATA[  and DATE_FORMAT(d.holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        </if>
+        <if test="endDate!=null">
+            <![CDATA[  and DATE_FORMAT(d.holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
         </if>
     </select>
 </mapper>

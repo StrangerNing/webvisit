@@ -1,6 +1,7 @@
 package com.webvisit.dao;
 
 import com.webvisit.model.po.AttenceHolidayCustom;
+import com.webvisit.model.vo.HolidayVO;
 
 import java.util.Date;
 import java.util.List;
@@ -19,5 +20,5 @@ public interface AttenceHolidayCustomExtMapper {
      * @param endDate 结束时间
      * @return 自定义节假日
      */
-    List<AttenceHolidayCustom> selectByDate(Long companyId, Date beginDate, Date endDate);
+    List<HolidayVO> selectByDate(Long companyId, Date beginDate, Date endDate);
 }
