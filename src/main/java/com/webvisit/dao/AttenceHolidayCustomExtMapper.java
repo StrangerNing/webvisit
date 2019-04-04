@@ -21,4 +21,18 @@ public interface AttenceHolidayCustomExtMapper {
      * @return 自定义节假日
      */
     List<HolidayVO> selectByDate(Long companyId, Date beginDate, Date endDate);
+
+    /**
+     * 根据公司id和节假日日期更新自定义节假日
+     * @param attenceHolidayCustom 节假日信息
+     * @return 影响条数
+     */
+    int updateByDate(AttenceHolidayCustom attenceHolidayCustom);
+
+    /**
+     * 根据公司id和节假日日期删除自定义节假日
+     * @param attenceHolidayCustom 节假日信息
+     * @return 影响条数
+     */
+    int deleteByDate(AttenceHolidayCustom attenceHolidayCustom);
 }

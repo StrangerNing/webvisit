@@ -62,10 +62,11 @@ public class WebvisitApplicationTests {
     @Test
     public void testQueryHolidays(){
         UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
-        List<HolidayVO> holidays = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019,0,1),TimeUtil.createTime(2019,7,30));
+        List<HolidayVO> holidays = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019,6,11),TimeUtil.createTime(2019,6,11));
         for (HolidayVO holiday : holidays){
             System.out.println(holiday);
         }
+        System.out.println(holidays == null);
     }
 
 }

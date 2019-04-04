@@ -1,16 +1,19 @@
 package com.webvisit.service.impl;
 
+import com.webvisit.common.enums.CustomHolidayTypeEnum;
+import com.webvisit.common.enums.DefaultHolidayTypeEnum;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.AttenceHolidayCustomExtMapper;
 import com.webvisit.dao.AttenceHolidayDefaultExtMapper;
 import com.webvisit.dao.AttenceRegulationExtMapper;
+import com.webvisit.dao.common.AttenceHolidayCustomMapper;
 import com.webvisit.dao.common.AttenceRegulationMapper;
 import com.webvisit.model.po.AttenceHolidayCustom;
-import com.webvisit.model.po.AttenceHolidayDefault;
 import com.webvisit.model.po.AttenceRegulation;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.AttenceService;
+import com.webvisit.utils.TimeUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +34,8 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceRegulationExtMapper attenceRegulationExtMapper;
     @Resource
     private AttenceHolidayDefaultExtMapper attenceHolidayDefaultExtMapper;
+    @Resource
+    private AttenceHolidayCustomMapper attenceHolidayCustomMapper;
     @Resource
     private AttenceHolidayCustomExtMapper attenceHolidayCustomExtMapper;
 
@@ -90,6 +95,69 @@ public class AttenceServiceImpl implements AttenceService {
 
     @Override
     public List<HolidayVO> queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate) {
-        return attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(),beginDate,endDate);
+        return attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(), beginDate, endDate);
+    }
+
+    @Override
+    public Boolean setHoliday(UserInfoVO userInfoVO, Date date) {
+        List<HolidayVO> holidays = attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(), date, date);
+        if (holidays.isEmpty()) {
+            AttenceHolidayCustom custom = generateCustomHoliday(userInfoVO, date, CustomHolidayTypeEnum.NEW.getCode());
+            return attenceHolidayCustomMapper.insert(custom) == 1;
+        } else if (holidays.size() == 1) {
+            HolidayVO holiday = holidays.get(0);
+            if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.DUTY_DAY.getCode())) {
+                if (null == holiday.getCustomType()) {
+                    AttenceHolidayCustom custom = generateCustomHoliday(userInfoVO, date, CustomHolidayTypeEnum.NEW.getCode());
+                    return attenceHolidayCustomMapper.insert(custom) == 1;
+                }
+            } else if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.LEGAL_HOLIDAY.getCode())) {
+                if (null != holiday.getCustomType()) {
+                    if (holiday.getCustomType().equals(CustomHolidayTypeEnum.CANCEL.getCode())) {
+                        AttenceHolidayCustom custom = new AttenceHolidayCustom();
+                        custom.setCompanyId(userInfoVO.getCompanyId());
+                        custom.setHolidayDate(date);
+                        return attenceHolidayCustomExtMapper.deleteByDate(custom) == 1;
+                    }
+                }
+            }
+        }
+        throw new BusinessException("设置节假日失败，请确认状态后重试");
+    }
+
+    private AttenceHolidayCustom generateCustomHoliday(UserInfoVO userInfoVO, Date date, Byte customHolidayType) {
+        AttenceHolidayCustom custom = new AttenceHolidayCustom();
+        custom.setHolidayDate(date);
+        custom.setCompanyId(userInfoVO.getCompanyId());
+        custom.setType(CustomHolidayTypeEnum.NEW.getCode());
+        custom.setCreateTime(TimeUtil.createNowTime());
+        custom.setCreateAccountId(userInfoVO.getId());
+        return custom;
+    }
+
+    @Override
+    public Boolean cancelHoliday(UserInfoVO userInfoVO, Date date) {
+        List<HolidayVO> holidays = attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(), date, date);
+        if (!holidays.isEmpty()) {
+            if (holidays.size() == 1) {
+                HolidayVO holiday = holidays.get(0);
+                if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.LEGAL_HOLIDAY.getCode())) {
+                    if (null == holiday.getCustomType()) {
+                        AttenceHolidayCustom custom = generateCustomHoliday(userInfoVO, date, CustomHolidayTypeEnum.CANCEL.getCode());
+                        return attenceHolidayCustomMapper.insert(custom) == 1;
+                    }
+                } else if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.DUTY_DAY.getCode())) {
+                    if (null != holiday.getCustomType()) {
+                        if (holiday.getCustomType().equals(CustomHolidayTypeEnum.NEW.getCode())) {
+                            AttenceHolidayCustom custom = new AttenceHolidayCustom();
+                            custom.setCompanyId(userInfoVO.getCompanyId());
+                            custom.setHolidayDate(date);
+                            return attenceHolidayCustomExtMapper.deleteByDate(custom) == 1;
+                        }
+                    }
+                }
+            }
+        }
+        throw new BusinessException("取消节假日失败，请确认状态后重试");
     }
 }

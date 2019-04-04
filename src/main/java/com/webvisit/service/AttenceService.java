@@ -52,9 +52,26 @@ public interface AttenceService {
      * 根据公司id查询节假日
      *
      * @param userInfoVO 当前用户信息
-     * @param beginDate 开始时间
-     * @param endDate 结束时间
+     * @param beginDate  开始时间
+     * @param endDate    结束时间
      * @return 节假日列表
      */
     List<HolidayVO> queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate);
+
+    /**
+     * 根据日期设置节假日
+     *
+     * @param date       日期
+     * @param userInfoVO 当前用户信息
+     * @return 设置结果
+     */
+    Boolean setHoliday(UserInfoVO userInfoVO, Date date);
+
+    /**
+     * 根据日期取消节假日
+     * @param userInfoVO 当前用户信息
+     * @param date 日期
+     * @return 设置结果
+     */
+    Boolean cancelHoliday(UserInfoVO userInfoVO, Date date);
 }

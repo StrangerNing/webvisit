@@ -65,7 +65,19 @@ public class AttenceController {
     @RequestMapping("/holiday/query")
     @ResponseBody
     Result queryHolidays(@LoginUser UserInfoVO userInfoVO, Date beginDate, Date endDate) {
-        return Result.success(attenceService.queryHolidays(userInfoVO,beginDate,endDate));
+        return Result.success(attenceService.queryHolidays(userInfoVO, beginDate, endDate));
+    }
+
+    @RequestMapping("/holiday/new")
+    @ResponseBody
+    Result addHoliday(@LoginUser UserInfoVO userInfoVO, Date date) {
+        return Result.success(attenceService.setHoliday(userInfoVO, date));
+    }
+
+    @RequestMapping("/holiday/cancel")
+    @ResponseBody
+    Result cancelHoliday(@LoginUser UserInfoVO userInfoVO, Date date) {
+        return Result.success(attenceService.cancelHoliday(userInfoVO, date));
     }
 
 }

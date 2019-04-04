@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.webvisit.dao.AttenceHolidayCustomExtMapper" >
-  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayCustom" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="company_id" property="companyId" jdbcType="BIGINT" />
-    <result column="holiday_date" property="holidayDate" jdbcType="DATE" />
-    <result column="type" property="type" jdbcType="TINYINT" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
-    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-    <result column="modify_account_id" property="modifyAccountId" jdbcType="BIGINT" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.webvisit.dao.AttenceHolidayCustomExtMapper">
+    <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayCustom">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="company_id" property="companyId" jdbcType="BIGINT"/>
+        <result column="holiday_date" property="holidayDate" jdbcType="DATE"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_account_id" property="createAccountId" jdbcType="BIGINT"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_account_id" property="modifyAccountId" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, company_id, holiday_date, type, create_time, create_account_id, modify_time,
     modify_account_id, remark
   </sql>
@@ -37,11 +37,47 @@
         LEFT JOIN t_attence_holiday_custom c ON d.holiday_date = c.holiday_date AND c.company_id = #{companyId}
         WHERE c.holiday_date IS NULL
         <if test="beginDate!=null">
-        <![CDATA[  and DATE_FORMAT(d.holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+            <![CDATA[  and DATE_FORMAT(d.holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
         </if>
         <if test="endDate!=null">
             <![CDATA[  and DATE_FORMAT(d.holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
         </if>
         ORDER BY holidayDate ASC
     </select>
+
+    <update id="updateByDate" parameterType="com.webvisit.model.po.AttenceHolidayCustom">
+        update t_attence_holiday_custom
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=BIGINT},
+            </if>
+            <if test="holidayDate != null">
+                holiday_date = #{holidayDate,jdbcType=DATE},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAccountId != null">
+                create_account_id = #{createAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyAccountId != null">
+                modify_account_id = #{modifyAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where company_id = #{companyId} and holiday_date = #{holidayDate}
+    </update>
+
+    <delete id="deleteByDate" parameterType="com.webvisit.model.po.AttenceHolidayCustom">
+        delete from t_attence_holiday_custom
+        where holiday_date = #{holidayDate} and company_id = #{companyId}
+    </delete>
 </mapper>
