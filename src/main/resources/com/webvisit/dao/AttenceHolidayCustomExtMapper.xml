@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceHolidayCustomExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayCustom" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="holiday_date" property="holidayDate" jdbcType="DATE" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_account_id" property="modifyAccountId" jdbcType="BIGINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, holiday_date, type, create_time, create_account_id, modify_time,
+    modify_account_id, remark
+  </sql>
+
+    <select id="selectByDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_attence_holiday_custom
+        where 1=1
+        <if test="beginDate!=null">
+            <![CDATA[  and DATE_FORMAT(holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        </if>
+        <if test="endDate!=null">
+            <![CDATA[  and DATE_FORMAT(holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+        </if>
+        <if test="companyId!=null">
+            and company_id = #{companyId}
+        </if>
+    </select>
+</mapper>

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayCustom" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
-    <result column="holiday_date" property="holidayDate" jdbcType="TIMESTAMP" />
+    <result column="holiday_date" property="holidayDate" jdbcType="DATE" />
     <result column="type" property="type" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
@@ -13,11 +13,11 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, company_id, holiday_date, type, create_time, create_account_id, modify_time, 
+    id, company_id, holiday_date, type, create_time, create_account_id, modify_time,
     modify_account_id, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_attence_holiday_custom
     where id = #{id,jdbcType=BIGINT}
@@ -27,12 +27,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.webvisit.model.po.AttenceHolidayCustom" >
-    insert into t_attence_holiday_custom (id, company_id, holiday_date, 
-      type, create_time, create_account_id, 
+    insert into t_attence_holiday_custom (id, company_id, holiday_date,
+      type, create_time, create_account_id,
       modify_time, modify_account_id, remark
       )
-    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{holidayDate,jdbcType=TIMESTAMP}, 
-      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{holidayDate,jdbcType=DATE},
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=BIGINT},
       #{modifyTime,jdbcType=TIMESTAMP}, #{modifyAccountId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
@@ -75,7 +75,7 @@
         #{companyId,jdbcType=BIGINT},
       </if>
       <if test="holidayDate != null" >
-        #{holidayDate,jdbcType=TIMESTAMP},
+        #{holidayDate,jdbcType=DATE},
       </if>
       <if test="type != null" >
         #{type,jdbcType=TINYINT},
@@ -104,7 +104,7 @@
         company_id = #{companyId,jdbcType=BIGINT},
       </if>
       <if test="holidayDate != null" >
-        holiday_date = #{holidayDate,jdbcType=TIMESTAMP},
+        holiday_date = #{holidayDate,jdbcType=DATE},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},
@@ -130,7 +130,7 @@
   <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceHolidayCustom" >
     update t_attence_holiday_custom
     set company_id = #{companyId,jdbcType=BIGINT},
-      holiday_date = #{holidayDate,jdbcType=TIMESTAMP},
+      holiday_date = #{holidayDate,jdbcType=DATE},
       type = #{type,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_account_id = #{createAccountId,jdbcType=BIGINT},

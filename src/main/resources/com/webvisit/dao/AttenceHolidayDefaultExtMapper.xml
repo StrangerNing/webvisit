@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceHolidayDefaultExtMapper">
+    <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayDefault">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="holiday_date" property="holidayDate" jdbcType="DATE"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, holiday_date, type
+  </sql>
+
+    <select id="selectByDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_attence_holiday_default
+        where 1=1
+        <if test="beginDate!=null">
+            <![CDATA[  and DATE_FORMAT(holiday_date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        </if>
+        <if test="endDate!=null">
+            <![CDATA[  and DATE_FORMAT(holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+        </if>
+    </select>
+</mapper>

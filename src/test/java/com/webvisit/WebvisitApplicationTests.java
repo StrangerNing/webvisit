@@ -1,9 +1,12 @@
 package com.webvisit;
 
+import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
 import com.webvisit.model.vo.UserInfoVO;
+import com.webvisit.service.AttenceService;
 import com.webvisit.service.LoginService;
+import com.webvisit.utils.TimeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +24,8 @@ public class WebvisitApplicationTests {
     private RedisTemplate redisTemplate;
     @Resource
     private LoginService loginService;
+    @Resource
+    private AttenceService attenceService;
 
     @Test
     public void contextLoads() {
@@ -51,6 +56,13 @@ public class WebvisitApplicationTests {
     public void testRegisterUser() {
         RegisterVO registerVO = new RegisterVO("zhuzening","zhuzening8","zhuzening8");
         System.out.println(loginService.register(registerVO));
+    }
+
+    @Test
+    public void testQueryHolidays(){
+        UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
+        HolidayVO holidayVO = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019,4,5),TimeUtil.createTime(2019,5,30));
+        System.out.println(holidayVO);
     }
 
 }

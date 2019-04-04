@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,19 +46,26 @@ public class AttenceController {
     @ResponseBody
     Result<List<AttenceRegulation>> queryRegulations(@LoginUser UserInfoVO userInfoVO) {
         Long companyId = userInfoVO.getCompanyId();
-        return Result.success(attenceService.queryRequlations(companyId));
+        return Result.success(attenceService.queryRegulations(companyId));
     }
 
     @RequestMapping("/regulation/delete")
     @ResponseBody
     Result deleteRegulation(@LoginUser UserInfoVO userInfoVO, Long regulationId) {
-        return Result.success(attenceService.delRegulation(userInfoVO,regulationId));
+        return Result.success(attenceService.delRegulation(userInfoVO, regulationId));
     }
 
     @RequestMapping("/regulation/update")
     @ResponseBody
-    Result updateRegulation(@LoginUser UserInfoVO userInfoVO, AttenceRegulation attenceRegulation){
-        return Result.success(attenceService.editRegulation(userInfoVO,attenceRegulation));
+    Result updateRegulation(@LoginUser UserInfoVO userInfoVO, AttenceRegulation attenceRegulation) {
+        return Result.success(attenceService.editRegulation(userInfoVO, attenceRegulation));
+    }
+
+
+    @RequestMapping("/holiday/query")
+    @ResponseBody
+    Result queryHolidays(@LoginUser UserInfoVO userInfoVO, Date beginDate, Date endDate) {
+        return Result.success(attenceService.queryHolidays(userInfoVO,beginDate,endDate));
     }
 
 }

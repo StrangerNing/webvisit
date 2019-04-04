@@ -1,15 +1,20 @@
 package com.webvisit.service.impl;
 
-import com.webvisit.common.constant.LocalConstant;
 import com.webvisit.common.exception.BusinessException;
+import com.webvisit.dao.AttenceHolidayCustomExtMapper;
+import com.webvisit.dao.AttenceHolidayDefaultExtMapper;
 import com.webvisit.dao.AttenceRegulationExtMapper;
 import com.webvisit.dao.common.AttenceRegulationMapper;
+import com.webvisit.model.po.AttenceHolidayCustom;
+import com.webvisit.model.po.AttenceHolidayDefault;
 import com.webvisit.model.po.AttenceRegulation;
+import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.AttenceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +29,10 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceRegulationMapper attenceRegulationMapper;
     @Resource
     private AttenceRegulationExtMapper attenceRegulationExtMapper;
+    @Resource
+    private AttenceHolidayDefaultExtMapper attenceHolidayDefaultExtMapper;
+    @Resource
+    private AttenceHolidayCustomExtMapper attenceHolidayCustomExtMapper;
 
     @Override
     public Boolean addRegulation(AttenceRegulation attenceRegulation) {
@@ -39,11 +48,7 @@ public class AttenceServiceImpl implements AttenceService {
                 Long regulationCompanyId = attenceRegulation.getCompanyId();
                 if (null != loginCompanyId && null != regulationCompanyId) {
                     if (loginCompanyId.equals(regulationCompanyId)) {
-                        if (!regulationCompanyId.equals(LocalConstant.DEFAULT_REGULATION_COMPANY_ID)) {
-                            return attenceRegulationMapper.deleteByPrimaryKey(regulationId) == 1;
-                        } else {
-                            throw new BusinessException("默认考勤规则无法删除！");
-                        }
+                        return attenceRegulationMapper.deleteByPrimaryKey(regulationId) == 1;
                     } else {
                         throw new BusinessException("你没有权限删除这个考勤规则！");
                     }
@@ -79,7 +84,14 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public List<AttenceRegulation> queryRequlations(Long companyId) {
+    public List<AttenceRegulation> queryRegulations(Long companyId) {
         return attenceRegulationExtMapper.queryRegulationListByCompanyId(companyId);
+    }
+
+    @Override
+    public HolidayVO queryHolidays(UserInfoVO userInfoVO, Date beginDate, Date endDate) {
+        List<AttenceHolidayDefault> defaultHolidays = attenceHolidayDefaultExtMapper.selectByDate(beginDate,endDate);
+        List<AttenceHolidayCustom> customHolidays = attenceHolidayCustomExtMapper.selectByDate(userInfoVO.getCompanyId(),beginDate,endDate);
+        return new HolidayVO(defaultHolidays,customHolidays);
     }
 }
