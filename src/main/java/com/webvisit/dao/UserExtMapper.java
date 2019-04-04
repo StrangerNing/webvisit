@@ -1,9 +1,7 @@
 package com.webvisit.dao;
 
 import com.webvisit.model.dto.UserInfoDTO;
-import com.webvisit.model.po.User;
 import com.webvisit.model.vo.LoginVO;
-import com.webvisit.model.vo.UserInfoVO;
 
 /**
  * @author zening.zhu

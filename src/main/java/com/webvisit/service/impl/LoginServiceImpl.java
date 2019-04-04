@@ -12,16 +12,12 @@ import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.LoginService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author zening.zhu

@@ -1,6 +1,7 @@
 package com.webvisit.service;
 
 import com.webvisit.model.po.AttenceRegulation;
+import com.webvisit.model.vo.UserInfoVO;
 
 import java.util.List;
 
@@ -20,17 +21,19 @@ public interface AttenceService {
 
     /**
      * 删除考勤规则
-     * @param id 规则id
+     * @param userInfoVO 当前用户信息
+     * @param regulationId 规则id
      * @return 操作结果
      */
-    Boolean delRegulation(Long id);
+    Boolean delRegulation(UserInfoVO userInfoVO, Long regulationId);
 
     /**
      * 修改考勤规则
+     * @param userInfoVO 当前用户信息
      * @param attenceRegulation 考勤规则
      * @return 操作结果
      */
-    Boolean editRegulation(AttenceRegulation attenceRegulation);
+    Boolean editRegulation(UserInfoVO userInfoVO,AttenceRegulation attenceRegulation);
 
     /**
      * 根据公司id查询考勤规则

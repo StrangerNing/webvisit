@@ -35,6 +35,10 @@ public class WebvisitApplicationTests {
 
     @Test
     public void testRedisUtil() {
+        UserInfoVO userInfoVO = UserInfoVO.builder().nickname("朱泽宁").username("zhuzening").email("zhuzening@foxmail.com").build();
+        redisTemplate.opsForValue().set("user",userInfoVO,10,TimeUnit.MINUTES);
+        Object test = redisTemplate.opsForValue().get("user");
+        System.out.println(test);
     }
 
     @Test

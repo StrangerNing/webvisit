@@ -1,6 +1,5 @@
 package com.webvisit.service;
 
-import com.webvisit.model.po.User;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
 import com.webvisit.model.vo.UserInfoVO;
