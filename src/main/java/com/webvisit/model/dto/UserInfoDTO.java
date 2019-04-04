@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserInfoDTO extends User {
 
-    private String CompanyName;
+    private String companyName;
 
-    private String DeptName;
+    private String deptName;
 }

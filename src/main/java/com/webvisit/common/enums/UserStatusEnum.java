@@ -8,8 +8,14 @@ package com.webvisit.common.enums;
 
 public enum UserStatusEnum {
 
+    /**
+     * 账号冻结
+     */
     FREEZE(false,"冻结"),
 
+    /**
+     * 账号有效
+     */
     NORMAL(true,"有效");
 
     private Boolean code;

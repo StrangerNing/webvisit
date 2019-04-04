@@ -6,8 +6,14 @@ package com.webvisit.common.enums;
  * @date 2019/4/5
  */
 public enum DefaultHolidayTypeEnum {
+    /**
+     * 法定节假日
+     */
     LEGAL_HOLIDAY(new Byte("0"), "法定节假日"),
 
+    /**
+     * 调休补班
+     */
     DUTY_DAY(new Byte("1"), "补班");
 
     private Byte code;

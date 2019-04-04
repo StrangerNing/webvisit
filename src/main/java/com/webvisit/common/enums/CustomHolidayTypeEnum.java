@@ -7,8 +7,14 @@ package com.webvisit.common.enums;
  */
 public enum CustomHolidayTypeEnum {
 
+    /**
+     * 新增节假日
+     */
     NEW(new Byte("0"), "新增"),
 
+    /**
+     * 取消节假日
+     */
     CANCEL(new Byte("1"), "取消");
 
     private Byte code;
