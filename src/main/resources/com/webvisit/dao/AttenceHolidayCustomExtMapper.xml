@@ -42,5 +42,6 @@
         <if test="endDate!=null">
             <![CDATA[  and DATE_FORMAT(d.holiday_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
         </if>
+        ORDER BY holidayDate ASC
     </select>
 </mapper>
