@@ -18,11 +18,11 @@ public class AttenceLeave {
 
     private Date createTime;
 
-    private Integer createAccountId;
+    private Long createAccountId;
 
     private Date modifyTime;
 
-    private Date modifyAccountId;
+    private Long modifyAccountId;
 
     private String remark;
 
@@ -82,11 +82,11 @@ public class AttenceLeave {
         this.createTime = createTime;
     }
 
-    public Integer getCreateAccountId() {
+    public Long getCreateAccountId() {
         return createAccountId;
     }
 
-    public void setCreateAccountId(Integer createAccountId) {
+    public void setCreateAccountId(Long createAccountId) {
         this.createAccountId = createAccountId;
     }
 
@@ -98,11 +98,11 @@ public class AttenceLeave {
         this.modifyTime = modifyTime;
     }
 
-    public Date getModifyAccountId() {
+    public Long getModifyAccountId() {
         return modifyAccountId;
     }
 
-    public void setModifyAccountId(Date modifyAccountId) {
+    public void setModifyAccountId(Long modifyAccountId) {
         this.modifyAccountId = modifyAccountId;
     }
 

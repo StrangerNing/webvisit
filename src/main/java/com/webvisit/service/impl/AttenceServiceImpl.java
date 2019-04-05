@@ -2,21 +2,27 @@ package com.webvisit.service.impl;
 
 import com.webvisit.common.enums.CustomHolidayTypeEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
+import com.webvisit.common.enums.LeaveTypeEnum;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.AttenceHolidayCustomExtMapper;
 import com.webvisit.dao.AttenceHolidayDefaultExtMapper;
+import com.webvisit.dao.AttenceLeaveExtMapper;
 import com.webvisit.dao.AttenceRegulationExtMapper;
 import com.webvisit.dao.common.AttenceHolidayCustomMapper;
+import com.webvisit.dao.common.AttenceLeaveMapper;
 import com.webvisit.dao.common.AttenceRegulationMapper;
 import com.webvisit.model.po.AttenceHolidayCustom;
+import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.po.AttenceRegulation;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +44,10 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceHolidayCustomMapper attenceHolidayCustomMapper;
     @Resource
     private AttenceHolidayCustomExtMapper attenceHolidayCustomExtMapper;
+    @Resource
+    private AttenceLeaveExtMapper attenceLeaveExtMapper;
+    @Resource
+    private AttenceLeaveMapper attenceLeaveMapper;
 
     @Override
     public Boolean addRegulation(AttenceRegulation attenceRegulation) {
@@ -129,7 +139,7 @@ public class AttenceServiceImpl implements AttenceService {
         AttenceHolidayCustom custom = new AttenceHolidayCustom();
         custom.setHolidayDate(date);
         custom.setCompanyId(userInfoVO.getCompanyId());
-        custom.setType(CustomHolidayTypeEnum.NEW.getCode());
+        custom.setType(customHolidayType);
         custom.setCreateTime(TimeUtil.createNowTime());
         custom.setCreateAccountId(userInfoVO.getId());
         return custom;
@@ -159,5 +169,54 @@ public class AttenceServiceImpl implements AttenceService {
             }
         }
         throw new BusinessException("取消节假日失败，请确认状态后重试");
+    }
+
+    @Override
+    public List<AttenceLeave> queryLeave(UserInfoVO userInfoVO) {
+        AttenceLeave attenceLeave = new AttenceLeave();
+        attenceLeave.setCompanyId(userInfoVO.getCompanyId());
+        return attenceLeaveExtMapper.selectByCondition(attenceLeave);
+    }
+
+    @Override
+    public Boolean addLeave(UserInfoVO userInfoVO, AttenceLeave attenceLeave) {
+        AttenceLeave queryLeave = new AttenceLeave();
+        if (StringUtils.isEmpty(attenceLeave.getName())){
+            throw new BusinessException("请假类型名必填！");
+        }
+        if (null == attenceLeave.getAvailableDays()){
+            throw new BusinessException("可请假天数不能为空！");
+        }
+        if (null == attenceLeave.getSalaryPercent()){
+            throw new BusinessException("薪资比例不能为空！");
+        }
+        queryLeave.setName(attenceLeave.getName());
+        queryLeave.setCompanyId(userInfoVO.getCompanyId());
+        queryLeave.setType(LeaveTypeEnum.COMPANY_ADD.getCode());
+        List<AttenceLeave> attenceLeaveList = attenceLeaveExtMapper.selectByCondition(queryLeave);
+        if (!attenceLeaveList.isEmpty()){
+            throw new BusinessException("请假类型名不能重复！");
+        }
+        attenceLeave.setCompanyId(userInfoVO.getCompanyId());
+        attenceLeave.setType(LeaveTypeEnum.COMPANY_ADD.getCode());
+        attenceLeave.setCreateAccountId(userInfoVO.getId());
+        attenceLeave.setCreateTime(TimeUtil.createNowTime());
+        return attenceLeaveMapper.insert(attenceLeave) == 1;
+    }
+
+    @Override
+    public Boolean deleteLeave(UserInfoVO userInfoVO, Long leaveId) {
+        AttenceLeave attenceLeave = attenceLeaveMapper.selectByPrimaryKey(leaveId);
+        if (null == attenceLeave) {
+            throw new BusinessException("没有查询到此请假类型");
+        }
+        Long leaveCompanyId = attenceLeave.getCompanyId();
+        if (null == leaveCompanyId){
+            throw new BusinessException("此请假类型无效");
+        }
+        if (!leaveCompanyId.equals(userInfoVO.getCompanyId())){
+            throw new BusinessException("您没有权限删除此请假类型！");
+        }
+        return attenceLeaveMapper.deleteByPrimaryKey(leaveId) == 1;
     }
 }

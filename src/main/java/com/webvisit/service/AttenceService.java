@@ -1,5 +1,6 @@
 package com.webvisit.service;
 
+import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.po.AttenceRegulation;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
@@ -69,11 +70,35 @@ public interface AttenceService {
 
     /**
      * 根据日期取消节假日
+     *
      * @param userInfoVO 当前用户信息
-     * @param date 日期
+     * @param date       日期
      * @return 设置结果
      */
     Boolean cancelHoliday(UserInfoVO userInfoVO, Date date);
 
+    /**
+     * 查询请假类型
+     *
+     * @param userInfoVO 当前用户信息
+     * @return 请假类型列表
+     */
+    List<AttenceLeave> queryLeave(UserInfoVO userInfoVO);
 
+    /**
+     * 添加请假类型
+     * @param userInfoVO 当前用户信息
+     * @param attenceLeave 请假类型
+     * @return 添加结果
+     */
+    Boolean addLeave(UserInfoVO userInfoVO,AttenceLeave attenceLeave);
+
+    /**
+     * 删除请假类型
+     *
+     * @param userInfoVO 当前用户信息
+     * @param leaveId 请假类型id
+     * @return 操作结果
+     */
+    Boolean deleteLeave(UserInfoVO userInfoVO, Long leaveId);
 }

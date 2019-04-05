@@ -1,5 +1,7 @@
 package com.webvisit;
 
+import com.webvisit.dao.AttenceLeaveExtMapper;
+import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
@@ -14,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +30,8 @@ public class WebvisitApplicationTests {
     private LoginService loginService;
     @Resource
     private AttenceService attenceService;
+    @Resource
+    private AttenceLeaveExtMapper attenceLeaveExtMapper;
 
     @Test
     public void contextLoads() {
@@ -42,7 +47,7 @@ public class WebvisitApplicationTests {
     @Test
     public void testRedisUtil() {
         UserInfoVO userInfoVO = UserInfoVO.builder().nickname("朱泽宁").username("zhuzening").email("zhuzening@foxmail.com").build();
-        redisTemplate.opsForValue().set("user",userInfoVO,10,TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("user", userInfoVO, 10, TimeUnit.MINUTES);
         Object test = redisTemplate.opsForValue().get("user");
         System.out.println(test);
     }
@@ -55,18 +60,36 @@ public class WebvisitApplicationTests {
 
     @Test
     public void testRegisterUser() {
-        RegisterVO registerVO = new RegisterVO("zhuzening","zhuzening8","zhuzening8");
+        RegisterVO registerVO = new RegisterVO("zhuzening", "zhuzening8", "zhuzening8");
         System.out.println(loginService.register(registerVO));
     }
 
     @Test
-    public void testQueryHolidays(){
+    public void testQueryHolidays() {
         UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
-        List<HolidayVO> holidays = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019,6,11),TimeUtil.createTime(2019,6,11));
-        for (HolidayVO holiday : holidays){
+        List<HolidayVO> holidays = attenceService.queryHolidays(userInfoVO, TimeUtil.createTime(2019, 6, 11), TimeUtil.createTime(2019, 6, 11));
+        for (HolidayVO holiday : holidays) {
             System.out.println(holiday);
         }
         System.out.println(holidays == null);
+    }
+
+    @Test
+    public void testAddLeave() {
+        AttenceLeave attenceLeave = new AttenceLeave();
+        attenceLeave.setName("测试");
+        attenceLeave.setAvailableDays(7);
+        attenceLeave.setSalaryPercent(new BigDecimal(0.70));
+        UserInfoVO userInfoVO = UserInfoVO.builder().companyId(2L).id(2L).build();
+        System.out.println(attenceService.addLeave(userInfoVO, attenceLeave));
+    }
+
+    @Test
+    public void testQueryLeave() {
+        AttenceLeave attenceLeave = new AttenceLeave();
+        attenceLeave.setCompanyId(1L);
+        attenceLeave.setName("测试2");
+        System.out.println(attenceLeaveExtMapper.selectByCompanyId(attenceLeave));
     }
 
 }

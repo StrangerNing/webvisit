@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceLeaveExtMapper">
+    <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceLeave">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="company_id" property="companyId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="available_days" property="availableDays" jdbcType="TINYINT"/>
+        <result column="salary_percent" property="salaryPercent" jdbcType="DECIMAL"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_account_id" property="createAccountId" jdbcType="BIGINT"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_account_id" property="modifyAccountId" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_id, name, type, available_days, salary_percent, create_time, create_account_id,
+    modify_time, modify_account_id, remark
+  </sql>
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.webvisit.model.po.AttenceLeave">
+        select
+        <include refid="Base_Column_List"/>
+        from t_attence_leave s
+        where 1=1
+        <if test="id!=null">
+            and s.id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="companyId!=null">
+            and s.company_id = #{companyId,jdbcType=BIGINT}
+        </if>
+        <if test="name!=null">
+            and s.name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="type!=null">
+            and s.type = #{type,jdbcType=TINYINT}
+        </if>
+    </select>
+</mapper>
