@@ -1,16 +1,15 @@
 package com.webvisit.controller;
 
 import com.webvisit.common.annotation.LoginUser;
-import com.webvisit.common.constant.LocalConstant;
-import com.webvisit.common.exception.BusinessException;
 import com.webvisit.common.re.Result;
+import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.po.AttenceRegulation;
+import com.webvisit.model.vo.AnnualVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -78,6 +77,48 @@ public class AttenceController {
     @ResponseBody
     Result cancelHoliday(@LoginUser UserInfoVO userInfoVO, Date date) {
         return Result.success(attenceService.cancelHoliday(userInfoVO, date));
+    }
+
+    @RequestMapping("/leave/query")
+    @ResponseBody
+    Result queryLeave(@LoginUser UserInfoVO userInfoVO) {
+        return Result.success(attenceService.queryLeave(userInfoVO));
+    }
+
+    @RequestMapping("/leave/add")
+    @ResponseBody
+    Result addLeave(@LoginUser UserInfoVO userInfoVO, AttenceLeave attenceLeave) {
+        return Result.success(attenceService.addLeave(userInfoVO, attenceLeave));
+    }
+
+    @RequestMapping("/leave/delete")
+    @ResponseBody
+    Result deleteLeave(@LoginUser UserInfoVO userInfoVO, Long leaveId) {
+        return Result.success(attenceService.deleteLeave(userInfoVO, leaveId));
+    }
+
+    @RequestMapping("/annual/query")
+    @ResponseBody
+    Result queryAnnual(@LoginUser UserInfoVO userInfoVO) {
+        return Result.success(attenceService.queryAnnul(userInfoVO));
+    }
+
+    @RequestMapping("/annual/delete")
+    @ResponseBody
+    Result deleteAnnual(@LoginUser UserInfoVO userInfoVO, Long annualId) {
+        return Result.success(attenceService.deleteAnnul(userInfoVO, annualId));
+    }
+
+    @RequestMapping("/annual/add")
+    @ResponseBody
+    Result addAnnual(@LoginUser UserInfoVO userInfoVO, AnnualVO annualVO) {
+        return Result.success(attenceService.addAnnual(userInfoVO, annualVO));
+    }
+
+    @RequestMapping("/annual/update")
+    @ResponseBody
+    Result editAnnual(@LoginUser UserInfoVO userInfoVO, AnnualVO annualVO) {
+        return Result.success(attenceService.editAnnual(userInfoVO, annualVO));
     }
 
 }
