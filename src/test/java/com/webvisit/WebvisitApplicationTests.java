@@ -1,11 +1,9 @@
 package com.webvisit;
 
+import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.dao.AttenceLeaveExtMapper;
 import com.webvisit.model.po.AttenceLeave;
-import com.webvisit.model.vo.HolidayVO;
-import com.webvisit.model.vo.LoginVO;
-import com.webvisit.model.vo.RegisterVO;
-import com.webvisit.model.vo.UserInfoVO;
+import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.service.LoginService;
 import com.webvisit.utils.TimeUtil;
@@ -89,7 +87,31 @@ public class WebvisitApplicationTests {
         AttenceLeave attenceLeave = new AttenceLeave();
         attenceLeave.setCompanyId(1L);
         attenceLeave.setName("测试2");
-        System.out.println(attenceLeaveExtMapper.selectByCompanyId(attenceLeave));
+        System.out.println(attenceLeaveExtMapper.selectByCondition(attenceLeave));
+    }
+
+    @Test
+    public void testDeleteLeave() {
+        UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
+        attenceService.deleteLeave(userInfoVO,5L);
+    }
+
+    @Test
+    public void testAddAnnual(){
+        UserInfoVO userInfoVO = UserInfoVO.builder().id(1L).companyId(1L).build();
+        AnnualVO annualVO = new AnnualVO();
+        annualVO.setStatus(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode());
+        annualVO.setAccumulateToNextYear(AnnualBaseEnum.AnnualAccumulateEnum.DISABLE.getCode());
+        annualVO.setProbationHas(AnnualBaseEnum.AnnualProbationHasEnum.ENABLE.getCode());
+        annualVO.setGraduationOneYearHas(AnnualBaseEnum.AnnualGraduationOneYearHasEnum.ENABLE.getCode());
+        annualVO.setExpireDate(TimeUtil.createTime(2019,0,1));
+        attenceService.addAnnual(userInfoVO,annualVO);
+    }
+
+    @Test
+    public void testDeleteAnnual(){
+        UserInfoVO userInfoVO = UserInfoVO.builder().id(1L).companyId(1L).build();
+        attenceService.deleteAnnul(userInfoVO,6L);
     }
 
 }

@@ -1,28 +1,24 @@
 package com.webvisit.service.impl;
 
+import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.common.enums.CustomHolidayTypeEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
 import com.webvisit.common.enums.LeaveTypeEnum;
 import com.webvisit.common.exception.BusinessException;
-import com.webvisit.dao.AttenceHolidayCustomExtMapper;
-import com.webvisit.dao.AttenceHolidayDefaultExtMapper;
-import com.webvisit.dao.AttenceLeaveExtMapper;
-import com.webvisit.dao.AttenceRegulationExtMapper;
-import com.webvisit.dao.common.AttenceHolidayCustomMapper;
-import com.webvisit.dao.common.AttenceLeaveMapper;
-import com.webvisit.dao.common.AttenceRegulationMapper;
-import com.webvisit.model.po.AttenceHolidayCustom;
-import com.webvisit.model.po.AttenceLeave;
-import com.webvisit.model.po.AttenceRegulation;
+import com.webvisit.dao.*;
+import com.webvisit.dao.common.*;
+import com.webvisit.model.po.*;
+import com.webvisit.model.vo.AnnualVO;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
+import com.webvisit.utils.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +44,14 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceLeaveExtMapper attenceLeaveExtMapper;
     @Resource
     private AttenceLeaveMapper attenceLeaveMapper;
+    @Resource
+    private AttenceAnnualMapper attenceAnnualMapper;
+    @Resource
+    private AttenceAnnualExtMapper attenceAnnualExtMapper;
+    @Resource
+    private AttenceAnnualStepMapper attenceAnnualStepMapper;
+    @Resource
+    private AttenceAnnualStepExtMapper attenceAnnualStepExtMapper;
 
     @Override
     public Boolean addRegulation(AttenceRegulation attenceRegulation) {
@@ -181,20 +185,20 @@ public class AttenceServiceImpl implements AttenceService {
     @Override
     public Boolean addLeave(UserInfoVO userInfoVO, AttenceLeave attenceLeave) {
         AttenceLeave queryLeave = new AttenceLeave();
-        if (StringUtils.isEmpty(attenceLeave.getName())){
+        if (StringUtils.isEmpty(attenceLeave.getName())) {
             throw new BusinessException("请假类型名必填！");
         }
-        if (null == attenceLeave.getAvailableDays()){
+        if (null == attenceLeave.getAvailableDays()) {
             throw new BusinessException("可请假天数不能为空！");
         }
-        if (null == attenceLeave.getSalaryPercent()){
+        if (null == attenceLeave.getSalaryPercent()) {
             throw new BusinessException("薪资比例不能为空！");
         }
         queryLeave.setName(attenceLeave.getName());
         queryLeave.setCompanyId(userInfoVO.getCompanyId());
         queryLeave.setType(LeaveTypeEnum.COMPANY_ADD.getCode());
         List<AttenceLeave> attenceLeaveList = attenceLeaveExtMapper.selectByCondition(queryLeave);
-        if (!attenceLeaveList.isEmpty()){
+        if (!attenceLeaveList.isEmpty()) {
             throw new BusinessException("请假类型名不能重复！");
         }
         attenceLeave.setCompanyId(userInfoVO.getCompanyId());
@@ -211,12 +215,90 @@ public class AttenceServiceImpl implements AttenceService {
             throw new BusinessException("没有查询到此请假类型");
         }
         Long leaveCompanyId = attenceLeave.getCompanyId();
-        if (null == leaveCompanyId){
+        if (null == leaveCompanyId) {
             throw new BusinessException("此请假类型无效");
         }
-        if (!leaveCompanyId.equals(userInfoVO.getCompanyId())){
+        if (!leaveCompanyId.equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限删除此请假类型！");
         }
         return attenceLeaveMapper.deleteByPrimaryKey(leaveId) == 1;
+    }
+
+    @Override
+    public List<AttenceAnnual> queryAnnul(UserInfoVO userInfoVO) {
+        AttenceAnnual attenceAnnual = new AttenceAnnual();
+        attenceAnnual.setCompanyId(userInfoVO.getCompanyId());
+        return attenceAnnualExtMapper.selectByCondition(attenceAnnual);
+    }
+
+    @Override
+    public Boolean deleteAnnul(UserInfoVO userInfoVO, Long annulId) {
+        AttenceAnnual queryAnnul = attenceAnnualMapper.selectByPrimaryKey(annulId);
+        if (null == queryAnnul) {
+            throw new BusinessException("没有查询到此年假类型");
+        }
+        Long annulCompanyId = queryAnnul.getCompanyId();
+        if (null == annulCompanyId) {
+            throw new BusinessException("此请假类型无效");
+        }
+        if (!annulCompanyId.equals(userInfoVO.getCompanyId())) {
+            throw new BusinessException("您没有权限删除此年假类型！");
+        }
+        if (queryAnnul.getStatus().equals(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode())) {
+            throw new BusinessException("已启用的年假类型无法删除！");
+        }
+        if (attenceAnnualStepExtMapper.deleteByAnnualId(annulId) == 0) {
+            throw new BusinessException("删除年假类型出错！");
+        }
+        return attenceAnnualMapper.deleteByPrimaryKey(annulId) == 1;
+    }
+
+    @Override
+    public Boolean addAnnual(UserInfoVO userInfoVO, AnnualVO annualVO) {
+        ValidatorUtil.validate(annualVO);
+        AttenceAnnual queryCondition = new AttenceAnnual();
+        queryCondition.setCompanyId(userInfoVO.getCompanyId());
+        queryCondition.setStatus(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode());
+        List<AttenceAnnual> queryAnnuals = attenceAnnualExtMapper.selectByCondition(queryCondition);
+        if (queryAnnuals.size() > 1) {
+            throw new BusinessException("查询出错");
+        }
+        if (annualVO.getStatus().equals(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode())) {
+            if (queryAnnuals.size() == 1) {
+                AttenceAnnual setAnnual = new AttenceAnnual();
+                setAnnual.setId(queryAnnuals.get(0).getId());
+                setAnnual.setStatus(AnnualBaseEnum.AnnualStatusEnum.DISABLE.getCode());
+                setAnnual.setModifyAccountId(userInfoVO.getId());
+                setAnnual.setModifyTime(TimeUtil.createNowTime());
+                attenceAnnualMapper.updateByPrimaryKeySelective(setAnnual);
+            }
+        }
+        AttenceAnnual attenceAnnual = new AttenceAnnual();
+        BeanUtils.copyProperties(annualVO, attenceAnnual);
+        attenceAnnual.setCompanyId(userInfoVO.getCompanyId());
+        attenceAnnual.setCreateAccountId(userInfoVO.getId());
+        attenceAnnual.setCreateTime(TimeUtil.createNowTime());
+        int insertNum =  attenceAnnualExtMapper.insertSelectiveReturnId(attenceAnnual);
+        AttenceAnnualStep attenceAnnualStep = new AttenceAnnualStep();
+        attenceAnnualStep.setAnnualId(attenceAnnual.getId());
+        attenceAnnualStep.setMoreThan(1);
+        attenceAnnualStep.setLessThan(100);
+        attenceAnnualStep.setVacationDays(10);
+        int insertStepNum = attenceAnnualStepMapper.insert(attenceAnnualStep);
+        return insertNum == 1 && insertStepNum == 1;
+    }
+
+    @Override
+    public Boolean editAnnual(UserInfoVO userInfoVO, AnnualVO annualVO) {
+        if (null == annualVO.getId()){
+            throw new BusinessException("年假规则id不可为空！");
+        }
+        AttenceAnnual attenceAnnual = attenceAnnualMapper.selectByPrimaryKey(annualVO.getId());
+        if (!attenceAnnual.getCompanyId().equals(userInfoVO.getCompanyId())){
+            throw new BusinessException("您没有权限编辑此年假类型！");
+        }
+        AttenceAnnual editAnnual = new AttenceAnnual();
+        BeanUtils.copyProperties(annualVO,editAnnual);
+        return attenceAnnualMapper.updateByPrimaryKeySelective(editAnnual) == 1;
     }
 }

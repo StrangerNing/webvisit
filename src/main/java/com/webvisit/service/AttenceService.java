@@ -1,7 +1,9 @@
 package com.webvisit.service;
 
+import com.webvisit.model.po.AttenceAnnual;
 import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.po.AttenceRegulation;
+import com.webvisit.model.vo.AnnualVO;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
 
@@ -87,18 +89,53 @@ public interface AttenceService {
 
     /**
      * 添加请假类型
-     * @param userInfoVO 当前用户信息
+     *
+     * @param userInfoVO   当前用户信息
      * @param attenceLeave 请假类型
      * @return 添加结果
      */
-    Boolean addLeave(UserInfoVO userInfoVO,AttenceLeave attenceLeave);
+    Boolean addLeave(UserInfoVO userInfoVO, AttenceLeave attenceLeave);
 
     /**
      * 删除请假类型
      *
      * @param userInfoVO 当前用户信息
-     * @param leaveId 请假类型id
+     * @param leaveId    请假类型id
      * @return 操作结果
      */
     Boolean deleteLeave(UserInfoVO userInfoVO, Long leaveId);
+
+    /**
+     * 查询年假规则
+     *
+     * @param userInfoVO 当前用户信息
+     * @return 操作结果
+     */
+    List<AttenceAnnual> queryAnnul(UserInfoVO userInfoVO);
+
+    /**
+     * 删除年假规则
+     *
+     * @param userInfoVO 当前用户信息
+     * @param annulId 年假规则id
+     * @return 删除结果
+     */
+    Boolean deleteAnnul(UserInfoVO userInfoVO, Long annulId);
+
+    /**
+     * 增加年假规则
+     * @param userInfoVO 当前用户信息
+     * @param annualVO 年假规则信息
+     * @return 增加结果
+     */
+    Boolean addAnnual(UserInfoVO userInfoVO, AnnualVO annualVO);
+
+    /**
+     * 编辑年假规则
+     * @param userInfoVO 当前用户信息
+     * @param annualVO 年假规则信息
+     * @return 编辑结果
+     */
+    Boolean editAnnual(UserInfoVO userInfoVO,AnnualVO annualVO);
+
 }

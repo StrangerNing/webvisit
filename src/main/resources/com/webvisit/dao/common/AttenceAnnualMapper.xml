@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.webvisit.dao.common.AttenceAnnulMapper" >
-  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceAnnul" >
+<mapper namespace="com.webvisit.dao.common.AttenceAnnualMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceAnnual" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
     <result column="expire_date" property="expireDate" jdbcType="DATE" />
     <result column="accumulate_to_next_year" property="accumulateToNextYear" jdbcType="TINYINT" />
     <result column="probation_has" property="probationHas" jdbcType="TINYINT" />
     <result column="graduation_one_year_has" property="graduationOneYearHas" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
@@ -15,11 +16,11 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, company_id, expire_date, accumulate_to_next_year, probation_has, graduation_one_year_has, 
-    create_time, create_account_id, modify_time, modify_account_id, remark
+    id, company_id, expire_date, accumulate_to_next_year, probation_has, graduation_one_year_has,
+    status, create_time, create_account_id, modify_time, modify_account_id, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_attence_annual
     where id = #{id,jdbcType=BIGINT}
@@ -28,17 +29,19 @@
     delete from t_attence_annual
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.webvisit.model.po.AttenceAnnul" >
-    insert into t_attence_annual (id, company_id, expire_date, 
-      accumulate_to_next_year, probation_has, graduation_one_year_has, 
-      create_time, create_account_id, modify_time, 
-      modify_account_id, remark)
-    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{expireDate,jdbcType=DATE}, 
-      #{accumulateToNextYear,jdbcType=TINYINT}, #{probationHas,jdbcType=TINYINT}, #{graduationOneYearHas,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{modifyAccountId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.webvisit.model.po.AttenceAnnual" >
+    insert into t_attence_annual (id, company_id, expire_date,
+      accumulate_to_next_year, probation_has, graduation_one_year_has,
+      status, create_time, create_account_id,
+      modify_time, modify_account_id, remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{expireDate,jdbcType=DATE},
+      #{accumulateToNextYear,jdbcType=TINYINT}, #{probationHas,jdbcType=TINYINT}, #{graduationOneYearHas,jdbcType=TINYINT},
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=BIGINT},
+      #{modifyTime,jdbcType=TIMESTAMP}, #{modifyAccountId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceAnnul" >
+  <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceAnnual" >
     insert into t_attence_annual
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -58,6 +61,9 @@
       </if>
       <if test="graduationOneYearHas != null" >
         graduation_one_year_has,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -94,6 +100,9 @@
       <if test="graduationOneYearHas != null" >
         #{graduationOneYearHas,jdbcType=TINYINT},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -111,7 +120,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.AttenceAnnul" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.AttenceAnnual" >
     update t_attence_annual
     <set >
       <if test="companyId != null" >
@@ -128,6 +137,9 @@
       </if>
       <if test="graduationOneYearHas != null" >
         graduation_one_year_has = #{graduationOneYearHas,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -147,13 +159,14 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceAnnul" >
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceAnnual" >
     update t_attence_annual
     set company_id = #{companyId,jdbcType=BIGINT},
       expire_date = #{expireDate,jdbcType=DATE},
       accumulate_to_next_year = #{accumulateToNextYear,jdbcType=TINYINT},
       probation_has = #{probationHas,jdbcType=TINYINT},
       graduation_one_year_has = #{graduationOneYearHas,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_account_id = #{createAccountId,jdbcType=BIGINT},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},

@@ -1,6 +1,6 @@
 package com.webvisit.model.po;
 
-public class AttenceAnnulStep {
+public class AttenceAnnualStep {
     private Long id;
 
     private Long annualId;

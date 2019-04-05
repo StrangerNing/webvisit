@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.webvisit.dao.common.AttenceAnnulStepMapper" >
-  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceAnnulStep" >
+<mapper namespace="com.webvisit.dao.common.AttenceAnnualStepMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceAnnualStep" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="annual_id" property="annualId" jdbcType="BIGINT" />
     <result column="more_than" property="moreThan" jdbcType="TINYINT" />
@@ -12,7 +12,7 @@
     id, annual_id, more_than, less_than, vacation_days
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_attence_annual_step
     where id = #{id,jdbcType=BIGINT}
@@ -21,13 +21,13 @@
     delete from t_attence_annual_step
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.webvisit.model.po.AttenceAnnulStep" >
-    insert into t_attence_annual_step (id, annual_id, more_than, 
+  <insert id="insert" parameterType="com.webvisit.model.po.AttenceAnnualStep" >
+    insert into t_attence_annual_step (id, annual_id, more_than,
       less_than, vacation_days)
-    values (#{id,jdbcType=BIGINT}, #{annualId,jdbcType=BIGINT}, #{moreThan,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=BIGINT}, #{annualId,jdbcType=BIGINT}, #{moreThan,jdbcType=TINYINT},
       #{lessThan,jdbcType=TINYINT}, #{vacationDays,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceAnnulStep" >
+  <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceAnnualStep" >
     insert into t_attence_annual_step
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.AttenceAnnulStep" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.AttenceAnnualStep" >
     update t_attence_annual_step
     <set >
       <if test="annualId != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceAnnulStep" >
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceAnnualStep" >
     update t_attence_annual_step
     set annual_id = #{annualId,jdbcType=BIGINT},
       more_than = #{moreThan,jdbcType=TINYINT},

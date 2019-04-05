@@ -2,7 +2,7 @@ package com.webvisit.model.po;
 
 import java.util.Date;
 
-public class AttenceAnnul {
+public class AttenceAnnual {
     private Long id;
 
     private Long companyId;
@@ -14,6 +14,8 @@ public class AttenceAnnul {
     private Integer probationHas;
 
     private Integer graduationOneYearHas;
+
+    private Integer status;
 
     private Date createTime;
 
@@ -71,6 +73,14 @@ public class AttenceAnnul {
 
     public void setGraduationOneYearHas(Integer graduationOneYearHas) {
         this.graduationOneYearHas = graduationOneYearHas;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {
