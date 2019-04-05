@@ -10,23 +10,23 @@ public enum CustomHolidayTypeEnum {
     /**
      * 新增节假日
      */
-    NEW(new Byte("0"), "新增"),
+    NEW(0, "新增"),
 
     /**
      * 取消节假日
      */
-    CANCEL(new Byte("1"), "取消");
+    CANCEL(1, "取消");
 
-    private Byte code;
+    private Integer code;
 
     private String msg;
 
-    CustomHolidayTypeEnum(Byte code, String msg) {
+    CustomHolidayTypeEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public static String getMsg(Byte code) {
+    public static String getMsg(Integer code) {
         for (CustomHolidayTypeEnum customHolidayTypeEnum : values()) {
             if (customHolidayTypeEnum.code.equals(code)) {
                 return customHolidayTypeEnum.msg;
@@ -35,7 +35,7 @@ public enum CustomHolidayTypeEnum {
         return "未知的操作类型";
     }
 
-    public Byte getCode() {
+    public Integer getCode() {
         return code;
     }
 

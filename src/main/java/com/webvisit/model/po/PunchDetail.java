@@ -14,9 +14,9 @@ public class PunchDetail {
 
     private Date punchOutTime;
 
-    private Byte punchInStatus;
+    private Integer punchInStatus;
 
-    private Byte punchOutStatus;
+    private Integer punchOutStatus;
 
     private BigDecimal punchInLocationLon;
 
@@ -66,19 +66,19 @@ public class PunchDetail {
         this.punchOutTime = punchOutTime;
     }
 
-    public Byte getPunchInStatus() {
+    public Integer getPunchInStatus() {
         return punchInStatus;
     }
 
-    public void setPunchInStatus(Byte punchInStatus) {
+    public void setPunchInStatus(Integer punchInStatus) {
         this.punchInStatus = punchInStatus;
     }
 
-    public Byte getPunchOutStatus() {
+    public Integer getPunchOutStatus() {
         return punchOutStatus;
     }
 
-    public void setPunchOutStatus(Byte punchOutStatus) {
+    public void setPunchOutStatus(Integer punchOutStatus) {
         this.punchOutStatus = punchOutStatus;
     }
 

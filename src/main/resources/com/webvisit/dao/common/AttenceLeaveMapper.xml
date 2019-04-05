@@ -6,9 +6,17 @@
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="available_days" property="availableDays" jdbcType="TINYINT" />
+    <result column="salary_percent" property="salaryPercent" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_account_id" property="createAccountId" jdbcType="TINYINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_account_id" property="modifyAccountId" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, company_id, name, type
+    id, company_id, name, type, available_days, salary_percent, create_time, create_account_id, 
+    modify_time, modify_account_id, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -22,9 +30,13 @@
   </delete>
   <insert id="insert" parameterType="com.webvisit.model.po.AttenceLeave" >
     insert into t_attence_leave (id, company_id, name, 
-      type)
+      type, available_days, salary_percent, 
+      create_time, create_account_id, modify_time, 
+      modify_account_id, remark)
     values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{type,jdbcType=TINYINT})
+      #{type,jdbcType=TINYINT}, #{availableDays,jdbcType=TINYINT}, #{salaryPercent,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=TINYINT}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{modifyAccountId,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceLeave" >
     insert into t_attence_leave
@@ -41,6 +53,27 @@
       <if test="type != null" >
         type,
       </if>
+      <if test="availableDays != null" >
+        available_days,
+      </if>
+      <if test="salaryPercent != null" >
+        salary_percent,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createAccountId != null" >
+        create_account_id,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyAccountId != null" >
+        modify_account_id,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -54,6 +87,27 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=TINYINT},
+      </if>
+      <if test="availableDays != null" >
+        #{availableDays,jdbcType=TINYINT},
+      </if>
+      <if test="salaryPercent != null" >
+        #{salaryPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAccountId != null" >
+        #{createAccountId,jdbcType=TINYINT},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccountId != null" >
+        #{modifyAccountId,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -69,6 +123,27 @@
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},
       </if>
+      <if test="availableDays != null" >
+        available_days = #{availableDays,jdbcType=TINYINT},
+      </if>
+      <if test="salaryPercent != null" >
+        salary_percent = #{salaryPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAccountId != null" >
+        create_account_id = #{createAccountId,jdbcType=TINYINT},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccountId != null" >
+        modify_account_id = #{modifyAccountId,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -76,7 +151,14 @@
     update t_attence_leave
     set company_id = #{companyId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
-      type = #{type,jdbcType=TINYINT}
+      type = #{type,jdbcType=TINYINT},
+      available_days = #{availableDays,jdbcType=TINYINT},
+      salary_percent = #{salaryPercent,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_account_id = #{createAccountId,jdbcType=TINYINT},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_account_id = #{modifyAccountId,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

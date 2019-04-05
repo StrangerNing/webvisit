@@ -1,5 +1,8 @@
 package com.webvisit.model.po;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 public class AttenceLeave {
     private Long id;
 
@@ -7,7 +10,21 @@ public class AttenceLeave {
 
     private String name;
 
-    private Byte type;
+    private Integer type;
+
+    private Integer availableDays;
+
+    private BigDecimal salaryPercent;
+
+    private Date createTime;
+
+    private Integer createAccountId;
+
+    private Date modifyTime;
+
+    private Date modifyAccountId;
+
+    private String remark;
 
     public Long getId() {
         return id;
@@ -33,11 +50,67 @@ public class AttenceLeave {
         this.name = name == null ? null : name.trim();
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getAvailableDays() {
+        return availableDays;
+    }
+
+    public void setAvailableDays(Integer availableDays) {
+        this.availableDays = availableDays;
+    }
+
+    public BigDecimal getSalaryPercent() {
+        return salaryPercent;
+    }
+
+    public void setSalaryPercent(BigDecimal salaryPercent) {
+        this.salaryPercent = salaryPercent;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getCreateAccountId() {
+        return createAccountId;
+    }
+
+    public void setCreateAccountId(Integer createAccountId) {
+        this.createAccountId = createAccountId;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public Date getModifyAccountId() {
+        return modifyAccountId;
+    }
+
+    public void setModifyAccountId(Date modifyAccountId) {
+        this.modifyAccountId = modifyAccountId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

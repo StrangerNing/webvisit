@@ -7,11 +7,11 @@ public class AttenceHolidayDetail {
 
     private Long leaveType;
 
-    private Byte thisYearLeaveLeft;
+    private Integer thisYearLeaveLeft;
 
-    private Byte lastYearLeaveLeft;
+    private Integer lastYearLeaveLeft;
 
-    private Byte vacationNumber;
+    private Integer vacationNumber;
 
     public Long getId() {
         return id;
@@ -37,27 +37,27 @@ public class AttenceHolidayDetail {
         this.leaveType = leaveType;
     }
 
-    public Byte getThisYearLeaveLeft() {
+    public Integer getThisYearLeaveLeft() {
         return thisYearLeaveLeft;
     }
 
-    public void setThisYearLeaveLeft(Byte thisYearLeaveLeft) {
+    public void setThisYearLeaveLeft(Integer thisYearLeaveLeft) {
         this.thisYearLeaveLeft = thisYearLeaveLeft;
     }
 
-    public Byte getLastYearLeaveLeft() {
+    public Integer getLastYearLeaveLeft() {
         return lastYearLeaveLeft;
     }
 
-    public void setLastYearLeaveLeft(Byte lastYearLeaveLeft) {
+    public void setLastYearLeaveLeft(Integer lastYearLeaveLeft) {
         this.lastYearLeaveLeft = lastYearLeaveLeft;
     }
 
-    public Byte getVacationNumber() {
+    public Integer getVacationNumber() {
         return vacationNumber;
     }
 
-    public void setVacationNumber(Byte vacationNumber) {
+    public void setVacationNumber(Integer vacationNumber) {
         this.vacationNumber = vacationNumber;
     }
 }

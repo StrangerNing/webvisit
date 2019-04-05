@@ -125,7 +125,7 @@ public class AttenceServiceImpl implements AttenceService {
         throw new BusinessException("设置节假日失败，请确认状态后重试");
     }
 
-    private AttenceHolidayCustom generateCustomHoliday(UserInfoVO userInfoVO, Date date, Byte customHolidayType) {
+    private AttenceHolidayCustom generateCustomHoliday(UserInfoVO userInfoVO, Date date, Integer customHolidayType) {
         AttenceHolidayCustom custom = new AttenceHolidayCustom();
         custom.setHolidayDate(date);
         custom.setCompanyId(userInfoVO.getCompanyId());

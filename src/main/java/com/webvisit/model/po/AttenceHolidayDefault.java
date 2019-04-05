@@ -7,7 +7,7 @@ public class AttenceHolidayDefault {
 
     private Date holidayDate;
 
-    private Byte type;
+    private Integer type;
 
     public Long getId() {
         return id;
@@ -25,11 +25,11 @@ public class AttenceHolidayDefault {
         this.holidayDate = holidayDate;
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 }

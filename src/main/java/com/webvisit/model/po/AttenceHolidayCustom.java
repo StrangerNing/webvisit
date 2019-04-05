@@ -9,7 +9,7 @@ public class AttenceHolidayCustom {
 
     private Date holidayDate;
 
-    private Byte type;
+    private Integer type;
 
     private Date createTime;
 
@@ -45,11 +45,11 @@ public class AttenceHolidayCustom {
         this.holidayDate = holidayDate;
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

@@ -7,7 +7,7 @@ public class DeviceInfo {
 
     private String name;
 
-    private Byte type;
+    private Integer type;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class DeviceInfo {
         this.name = name == null ? null : name.trim();
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 }

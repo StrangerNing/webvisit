@@ -5,7 +5,7 @@ public class AttenceWorkday {
 
     private Long regulationId;
 
-    private Byte weekDay;
+    private Integer weekDay;
 
     public Long getId() {
         return id;
@@ -23,11 +23,11 @@ public class AttenceWorkday {
         this.regulationId = regulationId;
     }
 
-    public Byte getWeekDay() {
+    public Integer getWeekDay() {
         return weekDay;
     }
 
-    public void setWeekDay(Byte weekDay) {
+    public void setWeekDay(Integer weekDay) {
         this.weekDay = weekDay;
     }
 }

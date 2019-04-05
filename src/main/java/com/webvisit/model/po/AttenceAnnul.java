@@ -9,11 +9,11 @@ public class AttenceAnnul {
 
     private Date expireDate;
 
-    private Byte accumulateToNextYear;
+    private Integer accumulateToNextYear;
 
-    private Byte probationHas;
+    private Integer probationHas;
 
-    private Byte graduationOneYearHas;
+    private Integer graduationOneYearHas;
 
     private Date createTime;
 
@@ -49,27 +49,27 @@ public class AttenceAnnul {
         this.expireDate = expireDate;
     }
 
-    public Byte getAccumulateToNextYear() {
+    public Integer getAccumulateToNextYear() {
         return accumulateToNextYear;
     }
 
-    public void setAccumulateToNextYear(Byte accumulateToNextYear) {
+    public void setAccumulateToNextYear(Integer accumulateToNextYear) {
         this.accumulateToNextYear = accumulateToNextYear;
     }
 
-    public Byte getProbationHas() {
+    public Integer getProbationHas() {
         return probationHas;
     }
 
-    public void setProbationHas(Byte probationHas) {
+    public void setProbationHas(Integer probationHas) {
         this.probationHas = probationHas;
     }
 
-    public Byte getGraduationOneYearHas() {
+    public Integer getGraduationOneYearHas() {
         return graduationOneYearHas;
     }
 
-    public void setGraduationOneYearHas(Byte graduationOneYearHas) {
+    public void setGraduationOneYearHas(Integer graduationOneYearHas) {
         this.graduationOneYearHas = graduationOneYearHas;
     }
 

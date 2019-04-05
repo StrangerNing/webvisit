@@ -9,7 +9,7 @@ public class AttenceRecord {
 
     private Date checkTime;
 
-    private Byte checkType;
+    private Integer checkType;
 
     public Long getId() {
         return id;
@@ -35,11 +35,11 @@ public class AttenceRecord {
         this.checkTime = checkTime;
     }
 
-    public Byte getCheckType() {
+    public Integer getCheckType() {
         return checkType;
     }
 
-    public void setCheckType(Byte checkType) {
+    public void setCheckType(Integer checkType) {
         this.checkType = checkType;
     }
 }

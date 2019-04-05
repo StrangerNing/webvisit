@@ -5,11 +5,11 @@ public class AttenceAnnulStep {
 
     private Long annualId;
 
-    private Byte moreThan;
+    private Integer moreThan;
 
-    private Byte lessThan;
+    private Integer lessThan;
 
-    private Byte vacationDays;
+    private Integer vacationDays;
 
     public Long getId() {
         return id;
@@ -27,27 +27,27 @@ public class AttenceAnnulStep {
         this.annualId = annualId;
     }
 
-    public Byte getMoreThan() {
+    public Integer getMoreThan() {
         return moreThan;
     }
 
-    public void setMoreThan(Byte moreThan) {
+    public void setMoreThan(Integer moreThan) {
         this.moreThan = moreThan;
     }
 
-    public Byte getLessThan() {
+    public Integer getLessThan() {
         return lessThan;
     }
 
-    public void setLessThan(Byte lessThan) {
+    public void setLessThan(Integer lessThan) {
         this.lessThan = lessThan;
     }
 
-    public Byte getVacationDays() {
+    public Integer getVacationDays() {
         return vacationDays;
     }
 
-    public void setVacationDays(Byte vacationDays) {
+    public void setVacationDays(Integer vacationDays) {
         this.vacationDays = vacationDays;
     }
 }

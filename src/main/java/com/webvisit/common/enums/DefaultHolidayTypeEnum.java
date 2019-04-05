@@ -9,23 +9,23 @@ public enum DefaultHolidayTypeEnum {
     /**
      * 法定节假日
      */
-    LEGAL_HOLIDAY(new Byte("0"), "法定节假日"),
+    LEGAL_HOLIDAY(0, "法定节假日"),
 
     /**
      * 调休补班
      */
-    DUTY_DAY(new Byte("1"), "补班");
+    DUTY_DAY(1, "补班");
 
-    private Byte code;
+    private Integer code;
 
     private String msg;
 
-    DefaultHolidayTypeEnum(Byte code, String msg) {
+    DefaultHolidayTypeEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public static String getMsg(Byte code) {
+    public static String getMsg(Integer code) {
         for (DefaultHolidayTypeEnum defaultHolidayTypeEnum : values()) {
             if (defaultHolidayTypeEnum.code.equals(code)) {
                 return defaultHolidayTypeEnum.msg;
@@ -34,7 +34,7 @@ public enum DefaultHolidayTypeEnum {
         return "未知的操作类型";
     }
 
-    public Byte getCode() {
+    public Integer getCode() {
         return code;
     }
 

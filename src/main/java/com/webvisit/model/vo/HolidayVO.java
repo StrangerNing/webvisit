@@ -24,8 +24,8 @@ public class HolidayVO {
 
     private Date holidayDate;
 
-    private Byte defaultType;
+    private Integer defaultType;
 
-    private Byte customType;
+    private Integer customType;
 
 }
