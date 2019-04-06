@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceWorkdayExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceWorkday" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="regulation_id" property="regulationId" jdbcType="BIGINT" />
+    <result column="week_day" property="weekDay" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, regulation_id, week_day
+  </sql>
+  <select id="selectByRegulationId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from t_attence_workday
+    where regulation_id = #{regulationId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_attence_workday
+    where annual_id = #{annualId,jdbcType=BIGINT}
+  </delete>
+
+  <select id="countByRegulationId" parameterType="java.lang.Long">
+    select count(*)
+    from t_attence_workday
+    where regulation_id = #{regulationId,jdbcType=BIGINT}
+  </select>
+</mapper>

@@ -13,4 +13,6 @@ public class LocalConstant {
     public static final String LOGIN_UUID_KEY = "login_";
 
     public static final Long DEFAULT_REGULATION_COMPANY_ID = 0L;
+
+    public static final int MIN_WORKDAY_COUNT = 1;
 }

@@ -1,5 +1,6 @@
 package com.webvisit.service.impl;
 
+import com.webvisit.common.constant.LocalConstant;
 import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.common.enums.CustomHolidayTypeEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
@@ -8,10 +9,7 @@ import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.*;
 import com.webvisit.dao.common.*;
 import com.webvisit.model.po.*;
-import com.webvisit.model.vo.AnnualStepVO;
-import com.webvisit.model.vo.AnnualVO;
-import com.webvisit.model.vo.HolidayVO;
-import com.webvisit.model.vo.UserInfoVO;
+import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
@@ -20,8 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author zening.zhu
@@ -35,6 +32,10 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceRegulationMapper attenceRegulationMapper;
     @Resource
     private AttenceRegulationExtMapper attenceRegulationExtMapper;
+    @Resource
+    private AttenceWorkdayMapper attenceWorkdayMapper;
+    @Resource
+    private AttenceWorkdayExtMapper attenceWorkdayExtMapper;
     @Resource
     private AttenceHolidayDefaultExtMapper attenceHolidayDefaultExtMapper;
     @Resource
@@ -55,32 +56,36 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceAnnualStepExtMapper attenceAnnualStepExtMapper;
 
     @Override
-    public Boolean addRegulation(AttenceRegulation attenceRegulation) {
-        return attenceRegulationMapper.insert(attenceRegulation) == 1;
+    public Boolean addRegulation(UserInfoVO userInfoVO, AttenceRegulation attenceRegulation) {
+        int insertRegulationResult = attenceRegulationExtMapper.insertSelectiveReturnId(attenceRegulation);
+        Long regulationId = attenceRegulation.getId();
+        for (int i = 1; i < 6; i++) {
+            AttenceWorkday attenceWorkday = new AttenceWorkday();
+            attenceWorkday.setRegulationId(regulationId);
+            attenceWorkday.setWeekDay(i);
+            if(attenceWorkdayMapper.insert(attenceWorkday) !=1){
+                throw new BusinessException("插入默认工作日失败");
+            }
+        }
+        return insertRegulationResult == 1;
     }
 
     @Override
     public Boolean delRegulation(UserInfoVO userInfoVO, Long regulationId) {
         AttenceRegulation attenceRegulation = attenceRegulationMapper.selectByPrimaryKey(regulationId);
-        if (null != attenceRegulation) {
-            if (null != userInfoVO) {
-                Long loginCompanyId = userInfoVO.getCompanyId();
-                Long regulationCompanyId = attenceRegulation.getCompanyId();
-                if (null != loginCompanyId && null != regulationCompanyId) {
-                    if (loginCompanyId.equals(regulationCompanyId)) {
-                        return attenceRegulationMapper.deleteByPrimaryKey(regulationId) == 1;
-                    } else {
-                        throw new BusinessException("你没有权限删除这个考勤规则！");
-                    }
-                } else {
-                    throw new BusinessException("请绑定公司！");
-                }
-            } else {
-                throw new BusinessException("获取用户信息失败，请重新登录");
-            }
-        } else {
+        if (null == attenceRegulation) {
             throw new BusinessException("没有查询到这个考勤规则");
         }
+        Long companyId = attenceRegulation.getCompanyId();
+        if (null == companyId) {
+            throw new BusinessException("该考勤规则无效");
+        }
+        if (!companyId.equals(userInfoVO.getCompanyId())) {
+            throw new BusinessException("您没有权限删除这个考勤规则！");
+        }
+        int deleteRegulationResult = attenceRegulationMapper.deleteByPrimaryKey(regulationId);
+        int deleteWorkdayResult = attenceWorkdayExtMapper.deleteByRegulationId(regulationId);
+        return deleteRegulationResult == 1 && deleteWorkdayResult > 0;
     }
 
     @Override
@@ -106,6 +111,51 @@ public class AttenceServiceImpl implements AttenceService {
     @Override
     public List<AttenceRegulation> queryRegulations(Long companyId) {
         return attenceRegulationExtMapper.queryRegulationListByCompanyId(companyId);
+    }
+
+    @Override
+    public List<AttenceWorkday> queryWorkDays(UserInfoVO userInfoVO, Long regulationId) {
+        checkRelatedRegulation(userInfoVO, regulationId);
+        return attenceWorkdayExtMapper.selectByRegulationId(regulationId);
+    }
+
+    @Override
+    public Boolean setWorkday(UserInfoVO userInfoVO, WorkdayVO workdayVO) {
+        ValidatorUtil.validate(workdayVO);
+        List<Integer> workdayList = workdayVO.getWorkdayList();
+        if (Collections.max(workdayList) > 7 || Collections.min(workdayList) < 1) {
+            throw new BusinessException("工作日设置出错");
+        }
+        Long regulationId = workdayVO.getRegulationId();
+        if (attenceWorkdayExtMapper.deleteByRegulationId(regulationId) == 0) {
+            throw new BusinessException("工作日设置出错");
+        }
+        Set<Integer> noDuplicateList = new HashSet<Integer>();
+        for (Integer workday : workdayList) {
+            if (noDuplicateList.add(workday)) {
+                AttenceWorkday attenceWorkday = new AttenceWorkday();
+                attenceWorkday.setRegulationId(regulationId);
+                attenceWorkday.setWeekDay(workday);
+                if (attenceWorkdayMapper.insert(attenceWorkday) != 1) {
+                    throw new BusinessException("设置工作日出错");
+                }
+            }
+        }
+        return true;
+    }
+
+    private void checkRelatedRegulation(UserInfoVO userInfoVO, Long regulationId) {
+        AttenceRegulation regulation = attenceRegulationMapper.selectByPrimaryKey(regulationId);
+        if (null == regulation) {
+            throw new BusinessException("没有查询到关联的考勤规则");
+        }
+        Long companyId = regulation.getCompanyId();
+        if (null == companyId) {
+            throw new BusinessException("关联的考勤规则无效！");
+        }
+        if (!companyId.equals(userInfoVO.getCompanyId())) {
+            throw new BusinessException("您没有权限操作该考勤规则！");
+        }
     }
 
     @Override
@@ -279,7 +329,7 @@ public class AttenceServiceImpl implements AttenceService {
         attenceAnnual.setCompanyId(userInfoVO.getCompanyId());
         attenceAnnual.setCreateAccountId(userInfoVO.getId());
         attenceAnnual.setCreateTime(TimeUtil.createNowTime());
-        int insertNum =  attenceAnnualExtMapper.insertSelectiveReturnId(attenceAnnual);
+        int insertNum = attenceAnnualExtMapper.insertSelectiveReturnId(attenceAnnual);
         AttenceAnnualStep attenceAnnualStep = new AttenceAnnualStep();
         attenceAnnualStep.setAnnualId(attenceAnnual.getId());
         attenceAnnualStep.setMoreThan(1);
@@ -291,29 +341,29 @@ public class AttenceServiceImpl implements AttenceService {
 
     @Override
     public Boolean editAnnual(UserInfoVO userInfoVO, AnnualVO annualVO) {
-        if (null == annualVO.getId()){
+        if (null == annualVO.getId()) {
             throw new BusinessException("年假规则id不可为空！");
         }
         AttenceAnnual attenceAnnual = attenceAnnualMapper.selectByPrimaryKey(annualVO.getId());
-        if (!attenceAnnual.getCompanyId().equals(userInfoVO.getCompanyId())){
+        if (!attenceAnnual.getCompanyId().equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限编辑此年假类型！");
         }
         AttenceAnnual editAnnual = new AttenceAnnual();
-        BeanUtils.copyProperties(annualVO,editAnnual);
+        BeanUtils.copyProperties(annualVO, editAnnual);
         return attenceAnnualMapper.updateByPrimaryKeySelective(editAnnual) == 1;
     }
 
     @Override
     public List<AttenceAnnualStep> queryAnnualStep(UserInfoVO userInfoVO, Long annualId) {
         AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualId);
-        if (null == queryAnnual){
+        if (null == queryAnnual) {
             throw new BusinessException("没有查询到关联的年假规则");
         }
         Long companyId = queryAnnual.getCompanyId();
-        if (null == companyId){
+        if (null == companyId) {
             throw new BusinessException("该年假规则无效！");
         }
-        if (!companyId.equals(userInfoVO.getCompanyId())){
+        if (!companyId.equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限查看该年假阶梯设置");
         }
         return attenceAnnualStepExtMapper.selectByAnnualId(annualId);
@@ -323,45 +373,45 @@ public class AttenceServiceImpl implements AttenceService {
     public Boolean addAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
         ValidatorUtil.validate(annualStepVO);
         AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualStepVO.getAnnualId());
-        if (null == queryAnnual){
+        if (null == queryAnnual) {
             throw new BusinessException("没有查询到此年假规则");
         }
         Long companyId = queryAnnual.getCompanyId();
-        if (null == companyId){
+        if (null == companyId) {
             throw new BusinessException("该年假规则无效！");
         }
-        if (!companyId.equals(userInfoVO.getCompanyId())){
+        if (!companyId.equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限修改该年假阶梯设置！");
         }
         AttenceAnnualStep attenceAnnualStep = new AttenceAnnualStep();
-        BeanUtils.copyProperties(annualStepVO,attenceAnnualStep);
+        BeanUtils.copyProperties(annualStepVO, attenceAnnualStep);
         return attenceAnnualStepMapper.insert(attenceAnnualStep) == 1;
     }
 
     @Override
     public Boolean deleteAnnualStep(UserInfoVO userInfoVO, Long annualStepId) {
-        checkAnnualStep(userInfoVO,annualStepId);
+        checkAnnualStep(userInfoVO, annualStepId);
         return attenceAnnualStepMapper.deleteByPrimaryKey(annualStepId) == 1;
     }
 
-    private void checkAnnualStep(UserInfoVO userInfoVO,Long annualStepId){
+    private void checkAnnualStep(UserInfoVO userInfoVO, Long annualStepId) {
         AttenceAnnualStep queryAnnualStep = attenceAnnualStepMapper.selectByPrimaryKey(annualStepId);
-        if (null == queryAnnualStep){
+        if (null == queryAnnualStep) {
             throw new BusinessException("没有查询到此年假阶梯设置");
         }
         Long annualId = queryAnnualStep.getAnnualId();
-        if (null == annualId){
+        if (null == annualId) {
             throw new BusinessException("该年假阶梯设置无效！");
         }
         AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualId);
-        if (null == queryAnnual){
+        if (null == queryAnnual) {
             throw new BusinessException("没有查询到关联的年假规则！");
         }
         Long companyId = queryAnnual.getCompanyId();
-        if (null == companyId){
+        if (null == companyId) {
             throw new BusinessException("关联的年假规则无效！");
         }
-        if (!companyId.equals(userInfoVO.getCompanyId())){
+        if (!companyId.equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限操作该年假阶梯设置!");
         }
     }
@@ -369,9 +419,9 @@ public class AttenceServiceImpl implements AttenceService {
     @Override
     public Boolean editAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
         ValidatorUtil.validate(annualStepVO);
-        checkAnnualStep(userInfoVO,annualStepVO.getAnnualId());
+        checkAnnualStep(userInfoVO, annualStepVO.getAnnualId());
         AttenceAnnualStep attenceAnnualStep = new AttenceAnnualStep();
-        BeanUtils.copyProperties(annualStepVO,attenceAnnualStep);
+        BeanUtils.copyProperties(annualStepVO, attenceAnnualStep);
         return attenceAnnualStepMapper.updateByPrimaryKeySelective(attenceAnnualStep) == 1;
     }
 }

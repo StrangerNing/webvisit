@@ -32,4 +32,114 @@
     where company_id = #{companyId,jdbcType=BIGINT}
   </select>
 
+  <insert id="insertSelectiveReturnId" useGeneratedKeys="true" keyProperty="id" parameterType="com.webvisit.model.po.AttenceRegulation" >
+    insert into t_attence_regulation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="punchInStart != null" >
+        punch_in_start,
+      </if>
+      <if test="punchInEnd != null" >
+        punch_in_end,
+      </if>
+      <if test="punchOutStart != null" >
+        punch_out_start,
+      </if>
+      <if test="punchOutEnd != null" >
+        punch_out_end,
+      </if>
+      <if test="allowLate != null" >
+        allow_late,
+      </if>
+      <if test="allowLeaveEarly != null" >
+        allow_leave_early,
+      </if>
+      <if test="allowLocationOffset != null" >
+        allow_location_offset,
+      </if>
+      <if test="checkLocationLon != null" >
+        check_location_lon,
+      </if>
+      <if test="checkLocationLat != null" >
+        check_location_lat,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createAccountId != null" >
+        create_account_id,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyAccountId != null" >
+        modify_account_id,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="punchInStart != null" >
+        #{punchInStart,jdbcType=TIME},
+      </if>
+      <if test="punchInEnd != null" >
+        #{punchInEnd,jdbcType=TIME},
+      </if>
+      <if test="punchOutStart != null" >
+        #{punchOutStart,jdbcType=TIME},
+      </if>
+      <if test="punchOutEnd != null" >
+        #{punchOutEnd,jdbcType=TIME},
+      </if>
+      <if test="allowLate != null" >
+        #{allowLate,jdbcType=TIME},
+      </if>
+      <if test="allowLeaveEarly != null" >
+        #{allowLeaveEarly,jdbcType=TIME},
+      </if>
+      <if test="allowLocationOffset != null" >
+        #{allowLocationOffset,jdbcType=INTEGER},
+      </if>
+      <if test="checkLocationLon != null" >
+        #{checkLocationLon,jdbcType=DECIMAL},
+      </if>
+      <if test="checkLocationLat != null" >
+        #{checkLocationLat,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAccountId != null" >
+        #{createAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccountId != null" >
+        #{modifyAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
 </mapper>

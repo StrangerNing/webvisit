@@ -1,13 +1,7 @@
 package com.webvisit.service;
 
-import com.webvisit.model.po.AttenceAnnual;
-import com.webvisit.model.po.AttenceAnnualStep;
-import com.webvisit.model.po.AttenceLeave;
-import com.webvisit.model.po.AttenceRegulation;
-import com.webvisit.model.vo.AnnualStepVO;
-import com.webvisit.model.vo.AnnualVO;
-import com.webvisit.model.vo.HolidayVO;
-import com.webvisit.model.vo.UserInfoVO;
+import com.webvisit.model.po.*;
+import com.webvisit.model.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -22,10 +16,11 @@ public interface AttenceService {
     /**
      * 新增考勤规则
      *
+     * @param userInfoVO 当前用户信息
      * @param attenceRegulation 考勤规则
      * @return 新增结果
      */
-    Boolean addRegulation(AttenceRegulation attenceRegulation);
+    Boolean addRegulation(UserInfoVO userInfoVO, AttenceRegulation attenceRegulation);
 
     /**
      * 删除考勤规则
@@ -52,6 +47,24 @@ public interface AttenceService {
      * @return 操作结果
      */
     List<AttenceRegulation> queryRegulations(Long companyId);
+
+    /**
+     * 查看工作日设置
+     *
+     * @param userInfoVO   当前用户信息
+     * @param regulationId 考勤规则id
+     * @return 工作日列表
+     */
+    List<AttenceWorkday> queryWorkDays(UserInfoVO userInfoVO, Long regulationId);
+
+    /**
+     * 设置工作日
+     *
+     * @param userInfoVO 当前用户信息
+     * @param workdayVO  工作日列表
+     * @return 设置结果
+     */
+    Boolean setWorkday(UserInfoVO userInfoVO, WorkdayVO workdayVO);
 
     /**
      * 根据公司id查询节假日
@@ -153,7 +166,8 @@ public interface AttenceService {
 
     /**
      * 增加年假规则的年假阶梯设置
-     * @param userInfoVO 当前用户信息
+     *
+     * @param userInfoVO   当前用户信息
      * @param annualStepVO 年假阶梯设置
      * @return 操作结果
      */
@@ -161,18 +175,21 @@ public interface AttenceService {
 
     /**
      * 根据年假阶梯设置id删除年假阶梯设置
-     * @param userInfoVO 当前用户信息
+     *
+     * @param userInfoVO   当前用户信息
      * @param annualStepId 年假阶梯设置id
      * @return 删除结果
      */
-    Boolean deleteAnnualStep(UserInfoVO userInfoVO,Long annualStepId);
+    Boolean deleteAnnualStep(UserInfoVO userInfoVO, Long annualStepId);
 
     /**
      * 修改年假阶梯设置
-     * @param userInfoVO 当前用户信息
+     *
+     * @param userInfoVO   当前用户信息
      * @param annualStepVO 年假阶梯设置
      * @return 修改结果
      */
-    Boolean editAnnualStep(UserInfoVO userInfoVO,AnnualStepVO annualStepVO);
+    Boolean editAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO);
+
 
 }

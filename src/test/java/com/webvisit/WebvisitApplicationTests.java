@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -112,6 +113,12 @@ public class WebvisitApplicationTests {
     public void testDeleteAnnual(){
         UserInfoVO userInfoVO = UserInfoVO.builder().id(1L).companyId(1L).build();
         attenceService.deleteAnnul(userInfoVO,6L);
+    }
+
+    @Test
+    public void testtest(){
+        Date date = TimeUtil.createTime(2019,3,7);
+        System.out.println("日期:"+date+" 星期 "+TimeUtil.getDayOfWeek(date));
     }
 
 }

@@ -88,7 +88,7 @@ public final class TimeUtil {
         return format4YYYYMMDDHHMISS(createNowTime());
     }
 
-    public static String getNowDateStr(){
+    public static String getNowDateStr() {
         return format(createNowTime(), YYYYMMDD);
     }
 
@@ -247,6 +247,12 @@ public final class TimeUtil {
         return calendar.get(Calendar.YEAR);
     }
 
+    public static int getDayOfWeek(Date date) {
+        Calendar calendar = getCalendar();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
     /**
      * Description: 获取date在当天的第几个小时
      *
@@ -369,7 +375,7 @@ public final class TimeUtil {
     }
 
 
-    public static Long getTimeBetweenDate(Date start, Date end){
+    public static Long getTimeBetweenDate(Date start, Date end) {
         return end.getTime() - start.getTime();
     }
 
@@ -380,7 +386,7 @@ public final class TimeUtil {
      * @param end
      * @return int
      **/
-    public static int getCeilDaysBetweenDate(Date start, Date end){
+    public static int getCeilDaysBetweenDate(Date start, Date end) {
         Long time = getTimeBetweenDate(start, end);
         Double dayCeil = Math.ceil(time / (1000 * 3600 * 24.0));
 

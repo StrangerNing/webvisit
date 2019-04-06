@@ -13,9 +13,18 @@ public interface AttenceRegulationExtMapper {
 
     /**
      * 根据公司id获取考勤规则列表
+     *
      * @param companyId 公司id
      * @return 考勤规则列表
      */
     List<AttenceRegulation> queryRegulationListByCompanyId(Long companyId);
+
+    /**
+     * 插入考勤规则返回主键id
+     *
+     * @param attenceRegulation 考勤规则
+     * @return 影响条数
+     */
+    int insertSelectiveReturnId(AttenceRegulation attenceRegulation);
 
 }
