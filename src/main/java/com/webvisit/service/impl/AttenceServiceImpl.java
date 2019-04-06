@@ -307,6 +307,23 @@ public class AttenceServiceImpl implements AttenceService {
     public List<AttenceAnnualStep> queryAnnualStep(UserInfoVO userInfoVO, Long annualId) {
         AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualId);
         if (null == queryAnnual){
+            throw new BusinessException("没有查询到关联的年假规则");
+        }
+        Long companyId = queryAnnual.getCompanyId();
+        if (null == companyId){
+            throw new BusinessException("该年假规则无效！");
+        }
+        if (!companyId.equals(userInfoVO.getCompanyId())){
+            throw new BusinessException("您没有权限查看该年假阶梯设置");
+        }
+        return attenceAnnualStepExtMapper.selectByAnnualId(annualId);
+    }
+
+    @Override
+    public Boolean addAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
+        ValidatorUtil.validate(annualStepVO);
+        AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualStepVO.getAnnualId());
+        if (null == queryAnnual){
             throw new BusinessException("没有查询到此年假规则");
         }
         Long companyId = queryAnnual.getCompanyId();
@@ -314,13 +331,47 @@ public class AttenceServiceImpl implements AttenceService {
             throw new BusinessException("该年假规则无效！");
         }
         if (!companyId.equals(userInfoVO.getCompanyId())){
-            throw new BusinessException("您没有权限查看该年假规则");
+            throw new BusinessException("您没有权限修改该年假阶梯设置！");
         }
-        return attenceAnnualStepExtMapper.selectByAnnualId(annualId);
+        AttenceAnnualStep attenceAnnualStep = new AttenceAnnualStep();
+        BeanUtils.copyProperties(annualStepVO,attenceAnnualStep);
+        return attenceAnnualStepMapper.insert(attenceAnnualStep) == 1;
     }
 
     @Override
-    public Boolean addAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
-        return null;
+    public Boolean deleteAnnualStep(UserInfoVO userInfoVO, Long annualStepId) {
+        checkAnnualStep(userInfoVO,annualStepId);
+        return attenceAnnualStepMapper.deleteByPrimaryKey(annualStepId) == 1;
+    }
+
+    private void checkAnnualStep(UserInfoVO userInfoVO,Long annualStepId){
+        AttenceAnnualStep queryAnnualStep = attenceAnnualStepMapper.selectByPrimaryKey(annualStepId);
+        if (null == queryAnnualStep){
+            throw new BusinessException("没有查询到此年假阶梯设置");
+        }
+        Long annualId = queryAnnualStep.getAnnualId();
+        if (null == annualId){
+            throw new BusinessException("该年假阶梯设置无效！");
+        }
+        AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualId);
+        if (null == queryAnnual){
+            throw new BusinessException("没有查询到关联的年假规则！");
+        }
+        Long companyId = queryAnnual.getCompanyId();
+        if (null == companyId){
+            throw new BusinessException("关联的年假规则无效！");
+        }
+        if (!companyId.equals(userInfoVO.getCompanyId())){
+            throw new BusinessException("您没有权限操作该年假阶梯设置!");
+        }
+    }
+
+    @Override
+    public Boolean editAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
+        ValidatorUtil.validate(annualStepVO);
+        checkAnnualStep(userInfoVO,annualStepVO.getAnnualId());
+        AttenceAnnualStep attenceAnnualStep = new AttenceAnnualStep();
+        BeanUtils.copyProperties(annualStepVO,attenceAnnualStep);
+        return attenceAnnualStepMapper.updateByPrimaryKeySelective(attenceAnnualStep) == 1;
     }
 }

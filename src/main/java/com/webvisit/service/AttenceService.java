@@ -159,4 +159,20 @@ public interface AttenceService {
      */
     Boolean addAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO);
 
+    /**
+     * 根据年假阶梯设置id删除年假阶梯设置
+     * @param userInfoVO 当前用户信息
+     * @param annualStepId 年假阶梯设置id
+     * @return 删除结果
+     */
+    Boolean deleteAnnualStep(UserInfoVO userInfoVO,Long annualStepId);
+
+    /**
+     * 修改年假阶梯设置
+     * @param userInfoVO 当前用户信息
+     * @param annualStepVO 年假阶梯设置
+     * @return 修改结果
+     */
+    Boolean editAnnualStep(UserInfoVO userInfoVO,AnnualStepVO annualStepVO);
+
 }
