@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -52,5 +53,15 @@ public class LoginController {
     @ResponseBody
     public Result register(RegisterVO registerVO) {
         return Result.success(loginService.register(registerVO));
+    }
+
+    @RequestMapping("/logout")
+    @ResponseBody
+    public Result logout(HttpServletRequest request){
+        if (loginService.logout(request)) {
+            return Result.success();
+        } else {
+            return Result.failure();
+        }
     }
 }

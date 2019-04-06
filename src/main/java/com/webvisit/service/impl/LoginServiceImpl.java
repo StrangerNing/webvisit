@@ -1,5 +1,6 @@
 package com.webvisit.service.impl;
 
+import com.webvisit.common.constant.LocalConstant;
 import com.webvisit.common.enums.UserStatusEnum;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.UserExtMapper;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author zening.zhu
@@ -81,5 +84,17 @@ public class LoginServiceImpl implements LoginService {
         user.setUsername(registerVO.getUsername());
         user.setPassword(cryptPassword);
         return userMapper.insert(user) == 1;
+    }
+
+    @Override
+    public Boolean logout(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies){
+            if (cookie.getName().equals(LocalConstant.LOGIN_USER_KEY)){
+                String uuidKey = cookie.getValue();
+                return redisTemplate.delete(uuidKey);
+            }
+        }
+        throw new BusinessException("登出失败");
     }
 }

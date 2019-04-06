@@ -16,4 +16,11 @@
     delete from t_attence_annual_step
     where annual_id = #{annualId,jdbcType=BIGINT}
   </delete>
+
+  <select id="selectByAnnualId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from t_attence_annual_step
+    where annual_id = #{annualId,jdbcType=BIGINT}
+  </select>
 </mapper>

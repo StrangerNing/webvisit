@@ -1,8 +1,11 @@
 package com.webvisit.service;
 
+import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
 import com.webvisit.model.vo.UserInfoVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author zening.zhu
@@ -14,6 +17,7 @@ public interface LoginService {
 
     /**
      * 用户登录
+     *
      * @param loginVO 登录入参
      * @return 用户信息
      */
@@ -21,8 +25,17 @@ public interface LoginService {
 
     /**
      * 用户注册
+     *
      * @param registerVO 注册信息
      * @return 注册结果
      */
     Boolean register(RegisterVO registerVO);
+
+    /**
+     * 用户登出
+     *
+     * @param request 请求
+     * @return 登出结果
+     */
+    Boolean logout(HttpServletRequest request);
 }

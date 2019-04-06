@@ -8,6 +8,7 @@ import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.*;
 import com.webvisit.dao.common.*;
 import com.webvisit.model.po.*;
+import com.webvisit.model.vo.AnnualStepVO;
 import com.webvisit.model.vo.AnnualVO;
 import com.webvisit.model.vo.HolidayVO;
 import com.webvisit.model.vo.UserInfoVO;
@@ -300,5 +301,26 @@ public class AttenceServiceImpl implements AttenceService {
         AttenceAnnual editAnnual = new AttenceAnnual();
         BeanUtils.copyProperties(annualVO,editAnnual);
         return attenceAnnualMapper.updateByPrimaryKeySelective(editAnnual) == 1;
+    }
+
+    @Override
+    public List<AttenceAnnualStep> queryAnnualStep(UserInfoVO userInfoVO, Long annualId) {
+        AttenceAnnual queryAnnual = attenceAnnualMapper.selectByPrimaryKey(annualId);
+        if (null == queryAnnual){
+            throw new BusinessException("没有查询到此年假规则");
+        }
+        Long companyId = queryAnnual.getCompanyId();
+        if (null == companyId){
+            throw new BusinessException("该年假规则无效！");
+        }
+        if (!companyId.equals(userInfoVO.getCompanyId())){
+            throw new BusinessException("您没有权限查看该年假规则");
+        }
+        return attenceAnnualStepExtMapper.selectByAnnualId(annualId);
+    }
+
+    @Override
+    public Boolean addAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
+        return null;
     }
 }
