@@ -3,7 +3,7 @@ package com.webvisit.model.po;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PunchDetail {
+public class AttencePunchDetail {
     private Long id;
 
     private Long empId;
@@ -25,6 +25,10 @@ public class PunchDetail {
     private BigDecimal punchOutLocationLon;
 
     private BigDecimal punchOutLocationLat;
+
+    private Integer punchType;
+
+    private Long leaveId;
 
     public Long getId() {
         return id;
@@ -112,5 +116,21 @@ public class PunchDetail {
 
     public void setPunchOutLocationLat(BigDecimal punchOutLocationLat) {
         this.punchOutLocationLat = punchOutLocationLat;
+    }
+
+    public Integer getPunchType() {
+        return punchType;
+    }
+
+    public void setPunchType(Integer punchType) {
+        this.punchType = punchType;
+    }
+
+    public Long getLeaveId() {
+        return leaveId;
+    }
+
+    public void setLeaveId(Long leaveId) {
+        this.leaveId = leaveId;
     }
 }

@@ -230,6 +230,7 @@ public class AttenceServiceImpl implements AttenceService {
     public List<AttenceLeave> queryLeave(UserInfoVO userInfoVO) {
         AttenceLeave attenceLeave = new AttenceLeave();
         attenceLeave.setCompanyId(userInfoVO.getCompanyId());
+        attenceLeave.setType(LeaveTypeEnum.COMPANY_ADD.getCode());
         return attenceLeaveExtMapper.selectByCondition(attenceLeave);
     }
 
@@ -272,7 +273,12 @@ public class AttenceServiceImpl implements AttenceService {
         if (!leaveCompanyId.equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限删除此请假类型！");
         }
-        return attenceLeaveMapper.deleteByPrimaryKey(leaveId) == 1;
+        AttenceLeave setLeave = new AttenceLeave();
+        setLeave.setId(leaveId);
+        setLeave.setType(LeaveTypeEnum.COMPANY_DELETE.getCode());
+        setLeave.setModifyAccountId(userInfoVO.getId());
+        setLeave.setModifyTime(TimeUtil.createNowTime());
+        return attenceLeaveMapper.updateByPrimaryKeySelective(setLeave) == 1;
     }
 
     @Override

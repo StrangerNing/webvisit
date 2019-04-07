@@ -11,7 +11,7 @@ public class AttenceReport {
 
     private Integer punchInMissCount;
 
-    private Integer punchOutCountin;
+    private Integer punchOutCount;
 
     private Integer punchOutEarlyCount;
 
@@ -61,12 +61,12 @@ public class AttenceReport {
         this.punchInMissCount = punchInMissCount;
     }
 
-    public Integer getPunchOutCountin() {
-        return punchOutCountin;
+    public Integer getPunchOutCount() {
+        return punchOutCount;
     }
 
-    public void setPunchOutCountin(Integer punchOutCountin) {
-        this.punchOutCountin = punchOutCountin;
+    public void setPunchOutCount(Integer punchOutCount) {
+        this.punchOutCount = punchOutCount;
     }
 
     public Integer getPunchOutEarlyCount() {

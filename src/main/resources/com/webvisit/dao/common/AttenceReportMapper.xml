@@ -7,14 +7,14 @@
     <result column="punch_in_count" property="punchInCount" jdbcType="INTEGER" />
     <result column="punch_in_late_count" property="punchInLateCount" jdbcType="INTEGER" />
     <result column="punch_in_miss_count" property="punchInMissCount" jdbcType="INTEGER" />
-    <result column="punch_out_countin_" property="punchOutCountin" jdbcType="INTEGER" />
+    <result column="punch_out_count" property="punchOutCount" jdbcType="INTEGER" />
     <result column="punch_out_early_count" property="punchOutEarlyCount" jdbcType="INTEGER" />
     <result column="punch_out_miss_count" property="punchOutMissCount" jdbcType="INTEGER" />
     <result column="ask_leave_count" property="askLeaveCount" jdbcType="INTEGER" />
     <result column="work_outside_count" property="workOutsideCount" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, emp_id, punch_in_count, punch_in_late_count, punch_in_miss_count, punch_out_countin_, 
+    id, emp_id, punch_in_count, punch_in_late_count, punch_in_miss_count, punch_out_count, 
     punch_out_early_count, punch_out_miss_count, ask_leave_count, work_outside_count
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -29,11 +29,11 @@
   </delete>
   <insert id="insert" parameterType="com.webvisit.model.po.AttenceReport" >
     insert into t_attence_report (id, emp_id, punch_in_count, 
-      punch_in_late_count, punch_in_miss_count, punch_out_countin_, 
+      punch_in_late_count, punch_in_miss_count, punch_out_count, 
       punch_out_early_count, punch_out_miss_count, 
       ask_leave_count, work_outside_count)
     values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{punchInCount,jdbcType=INTEGER}, 
-      #{punchInLateCount,jdbcType=INTEGER}, #{punchInMissCount,jdbcType=INTEGER}, #{punchOutCountin,jdbcType=INTEGER}, 
+      #{punchInLateCount,jdbcType=INTEGER}, #{punchInMissCount,jdbcType=INTEGER}, #{punchOutCount,jdbcType=INTEGER}, 
       #{punchOutEarlyCount,jdbcType=INTEGER}, #{punchOutMissCount,jdbcType=INTEGER}, 
       #{askLeaveCount,jdbcType=INTEGER}, #{workOutsideCount,jdbcType=INTEGER})
   </insert>
@@ -55,8 +55,8 @@
       <if test="punchInMissCount != null" >
         punch_in_miss_count,
       </if>
-      <if test="punchOutCountin != null" >
-        punch_out_countin_,
+      <if test="punchOutCount != null" >
+        punch_out_count,
       </if>
       <if test="punchOutEarlyCount != null" >
         punch_out_early_count,
@@ -87,8 +87,8 @@
       <if test="punchInMissCount != null" >
         #{punchInMissCount,jdbcType=INTEGER},
       </if>
-      <if test="punchOutCountin != null" >
-        #{punchOutCountin,jdbcType=INTEGER},
+      <if test="punchOutCount != null" >
+        #{punchOutCount,jdbcType=INTEGER},
       </if>
       <if test="punchOutEarlyCount != null" >
         #{punchOutEarlyCount,jdbcType=INTEGER},
@@ -119,8 +119,8 @@
       <if test="punchInMissCount != null" >
         punch_in_miss_count = #{punchInMissCount,jdbcType=INTEGER},
       </if>
-      <if test="punchOutCountin != null" >
-        punch_out_countin_ = #{punchOutCountin,jdbcType=INTEGER},
+      <if test="punchOutCount != null" >
+        punch_out_count = #{punchOutCount,jdbcType=INTEGER},
       </if>
       <if test="punchOutEarlyCount != null" >
         punch_out_early_count = #{punchOutEarlyCount,jdbcType=INTEGER},
@@ -143,7 +143,7 @@
       punch_in_count = #{punchInCount,jdbcType=INTEGER},
       punch_in_late_count = #{punchInLateCount,jdbcType=INTEGER},
       punch_in_miss_count = #{punchInMissCount,jdbcType=INTEGER},
-      punch_out_countin_ = #{punchOutCountin,jdbcType=INTEGER},
+      punch_out_count = #{punchOutCount,jdbcType=INTEGER},
       punch_out_early_count = #{punchOutEarlyCount,jdbcType=INTEGER},
       punch_out_miss_count = #{punchOutMissCount,jdbcType=INTEGER},
       ask_leave_count = #{askLeaveCount,jdbcType=INTEGER},
