@@ -1,6 +1,5 @@
 package com.webvisit.service.impl;
 
-import com.webvisit.common.constant.LocalConstant;
 import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.common.enums.CustomHolidayTypeEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
@@ -8,12 +7,12 @@ import com.webvisit.common.enums.LeaveTypeEnum;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.*;
 import com.webvisit.dao.common.*;
+import com.webvisit.model.dto.UserSimpleDTO;
 import com.webvisit.model.po.*;
 import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +28,10 @@ import java.util.*;
 @Service
 public class AttenceServiceImpl implements AttenceService {
     @Resource
+    private UserMapper userMapper;
+    @Resource
+    private UserExtMapper userExtMapper;
+    @Resource
     private AttenceRegulationMapper attenceRegulationMapper;
     @Resource
     private AttenceRegulationExtMapper attenceRegulationExtMapper;
@@ -43,6 +46,10 @@ public class AttenceServiceImpl implements AttenceService {
     @Resource
     private AttenceHolidayCustomExtMapper attenceHolidayCustomExtMapper;
     @Resource
+    private AttenceHolidayDetailMapper attenceHolidayDetailMapper;
+    @Resource
+    private AttenceHolidayDetailExtMapper attenceHolidayDetailExtMapper;
+    @Resource
     private AttenceLeaveExtMapper attenceLeaveExtMapper;
     @Resource
     private AttenceLeaveMapper attenceLeaveMapper;
@@ -54,9 +61,13 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceAnnualStepMapper attenceAnnualStepMapper;
     @Resource
     private AttenceAnnualStepExtMapper attenceAnnualStepExtMapper;
+    @Resource
+    private AttenceReportExtMapper attenceReportExtMapper;
+    @Resource
+    private AttencePunchDetailExtMapper attencePunchDetailExtMapper;
 
     @Override
-    public Boolean addRegulation(UserInfoVO userInfoVO, AttenceRegulation attenceRegulation) {
+    public Boolean addRegulation(AttenceRegulation attenceRegulation) {
         int insertRegulationResult = attenceRegulationExtMapper.insertSelectiveReturnId(attenceRegulation);
         Long regulationId = attenceRegulation.getId();
         for (int i = 1; i < 6; i++) {
@@ -235,17 +246,11 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public Boolean addLeave(UserInfoVO userInfoVO, AttenceLeave attenceLeave) {
+    public Boolean addLeave(UserInfoVO userInfoVO, LeaveVO leaveVO) {
         AttenceLeave queryLeave = new AttenceLeave();
-        if (StringUtils.isEmpty(attenceLeave.getName())) {
-            throw new BusinessException("请假类型名必填！");
-        }
-        if (null == attenceLeave.getAvailableDays()) {
-            throw new BusinessException("可请假天数不能为空！");
-        }
-        if (null == attenceLeave.getSalaryPercent()) {
-            throw new BusinessException("薪资比例不能为空！");
-        }
+        ValidatorUtil.validate(leaveVO);
+        AttenceLeave attenceLeave = new AttenceLeave();
+        BeanUtils.copyProperties(leaveVO,attenceLeave);
         queryLeave.setName(attenceLeave.getName());
         queryLeave.setCompanyId(userInfoVO.getCompanyId());
         queryLeave.setType(LeaveTypeEnum.COMPANY_ADD.getCode());
@@ -430,4 +435,71 @@ public class AttenceServiceImpl implements AttenceService {
         BeanUtils.copyProperties(annualStepVO, attenceAnnualStep);
         return attenceAnnualStepMapper.updateByPrimaryKeySelective(attenceAnnualStep) == 1;
     }
+
+    @Override
+    public List<AnnualDetailVO> queryAnnualDetail(UserInfoVO userInfoVO) {
+        Long companyId = userInfoVO.getCompanyId();
+        List<UserSimpleDTO> userList = userExtMapper.selectByCompanyId(companyId);
+        if (userList.isEmpty()){
+            throw new BusinessException("没有查询到员工");
+        }
+        List<AnnualDetailVO> annualDetailList = new ArrayList<>();
+        for (UserSimpleDTO userSimple : userList){
+            Long empId = userSimple.getId();
+            List<AttenceHolidayDetail> holidayDetailList = attenceHolidayDetailExtMapper.selectByEmpId(empId);
+            AnnualDetailVO annualDetailVO = new AnnualDetailVO();
+            BeanUtils.copyProperties(userSimple,annualDetailVO);
+            annualDetailVO.setHolidayDetailList(holidayDetailList);
+            annualDetailList.add(annualDetailVO);
+        }
+        return annualDetailList;
+    }
+
+    @Override
+    public Boolean editAnnualDetail(UserInfoVO userInfoVO, HolidayDetailVO holidayDetailVO) {
+        ValidatorUtil.validate(holidayDetailVO);
+        AttenceHolidayDetail queryDetail = attenceHolidayDetailMapper.selectByPrimaryKey(holidayDetailVO.getId());
+        Long empId = queryDetail.getEmpId();
+        User user = userMapper.selectByPrimaryKey(empId);
+        if (null == user){
+            throw new BusinessException("没有查询到该员工");
+        }
+        Long companyId = user.getCompanyId();
+        if (null == companyId){
+            throw new BusinessException("请为该员工绑定公司");
+        }
+        if (!companyId.equals(userInfoVO.getCompanyId())){
+            throw new BusinessException("您没有权限操作该员工信息");
+        }
+        AttenceHolidayDetail attenceHolidayDetail = new AttenceHolidayDetail();
+        BeanUtils.copyProperties(holidayDetailVO,attenceHolidayDetail);
+        return attenceHolidayDetailMapper.updateByPrimaryKeySelective(attenceHolidayDetail) == 1;
+    }
+
+    @Override
+    public List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO) {
+        Long companyId = userInfoVO.getCompanyId();
+        return attenceReportExtMapper.selectByCompanyId(companyId);
+    }
+
+    @Override
+    public List<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO) {
+        Long empId = punchDetailVO.getEmpId();
+        if (null != empId) {
+            User user = userMapper.selectByPrimaryKey(empId);
+            if (null == user) {
+                throw new BusinessException("没有找到该员工");
+            }
+            Long companyId = user.getCompanyId();
+            if (null == user.getCompanyId()) {
+                throw new BusinessException("请先为该员工绑定公司");
+            }
+            if (!companyId.equals(userInfoVO.getCompanyId())) {
+                throw new BusinessException("您没有权限查看该员工的考勤信息");
+            }
+        }
+        punchDetailVO.setCompanyId(userInfoVO.getCompanyId());
+        return attencePunchDetailExtMapper.selectByCondition(punchDetailVO);
+    }
+
 }

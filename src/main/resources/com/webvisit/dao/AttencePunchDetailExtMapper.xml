@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttencePunchDetailExtMapper">
+    <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttencePunchDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="emp_id" property="empId" jdbcType="BIGINT"/>
+        <result column="punch_time" property="punchTime" jdbcType="DATE"/>
+        <result column="punch_in_time" property="punchInTime" jdbcType="TIMESTAMP"/>
+        <result column="punch_out_time" property="punchOutTime" jdbcType="TIMESTAMP"/>
+        <result column="punch_in_status" property="punchInStatus" jdbcType="TINYINT"/>
+        <result column="punch_out_status" property="punchOutStatus" jdbcType="TINYINT"/>
+        <result column="punch_in_location_lon" property="punchInLocationLon" jdbcType="DECIMAL"/>
+        <result column="punch_in_location_lat" property="punchInLocationLat" jdbcType="DECIMAL"/>
+        <result column="punch_out_location_lon" property="punchOutLocationLon" jdbcType="DECIMAL"/>
+        <result column="punch_out_location_lat" property="punchOutLocationLat" jdbcType="DECIMAL"/>
+        <result column="punch_type" property="punchType" jdbcType="TINYINT"/>
+        <result column="leave_id" property="leaveId" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, emp_id, punch_time, punch_in_time, punch_out_time, punch_in_status, punch_out_status,
+    punch_in_location_lon, punch_in_location_lat, punch_out_location_lon, punch_out_location_lat,
+    punch_type, leave_id
+  </sql>
+    <select id="selectByCondition" resultType="com.webvisit.model.vo.PunchDetailVO" parameterType="com.webvisit.model.vo.PunchDetailVO">
+        select
+        d.id as id,
+        d.emp_id as empId,
+        u.nickname as nickname,
+        t.name as deptName,
+        d.punch_time as punchTime,
+        d.punch_in_time as punchInTime,
+        d.punch_out_time as punchOutTime,
+        d.punch_in_status as punchInStatus,
+        d.punch_out_status as punchOutStatus,
+        d.punch_in_location_lon as punchInLocationLon,
+        d.punch_in_location_lat as punchInLocationLat,
+        d.punch_out_location_lon as punchOutLocationLon,
+        d.punch_out_location_lat as punchOutLocationLat,
+        d.punch_type as punchType,
+        d.leave_id as leaveId
+        from t_attence_punch_detail d,t_webvisit_user u,t_company_dept t,t_company_info i
+        where d.emp_id = u.id and u.dept_id = t.id and u.company_id = i.id
+        <if test="empId != null">
+            and d.emp_id = #{empId,jdbcType=BIGINT}
+        </if>
+        <if test="deptId != null">
+            and  u.dept_id = #{deptId,jdbcType=BIGINT}
+        </if>
+        <if test="companyId != null">
+            and  i.id = #{companyId,jdbcType=BIGINT}
+        </if>
+        <if test="beginDate!=null">
+            <![CDATA[  and DATE_FORMAT(d.punchTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        </if>
+        <if test="endDate!=null">
+            <![CDATA[  and DATE_FORMAT(d.punchTime, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+        </if>
+        <if test="punchInStatus != null">
+            and d.punch_in_status = #{punchInStatus,jdbcType=TINYINT}
+        </if>
+        <if test="punchOutStatus != null">
+            and d.punch_out_status = #{punchOutStatus,jdbcType=TINYINT}
+        </if>
+        <if test="punchType != null">
+            and d.punch_type = #{punchType,jdbcType=TINYINT}
+        </if>
+        <if test="leaveId != null">
+            and d.leave_id = #{leaveId,jdbcType=BIGINT}
+        </if>
+        order by punchTime desc
+    </select>
+</mapper>

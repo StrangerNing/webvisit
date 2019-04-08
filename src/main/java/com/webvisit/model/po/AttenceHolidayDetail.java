@@ -5,7 +5,9 @@ public class AttenceHolidayDetail {
 
     private Long empId;
 
-    private Long leaveType;
+    private Integer leaveType;
+
+    private Long leaveId;
 
     private Integer thisYearLeaveLeft;
 
@@ -29,12 +31,20 @@ public class AttenceHolidayDetail {
         this.empId = empId;
     }
 
-    public Long getLeaveType() {
+    public Integer getLeaveType() {
         return leaveType;
     }
 
-    public void setLeaveType(Long leaveType) {
+    public void setLeaveType(Integer leaveType) {
         this.leaveType = leaveType;
+    }
+
+    public Long getLeaveId() {
+        return leaveId;
+    }
+
+    public void setLeaveId(Long leaveId) {
+        this.leaveId = leaveId;
     }
 
     public Integer getThisYearLeaveLeft() {

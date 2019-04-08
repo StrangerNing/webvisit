@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayDetail" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="emp_id" property="empId" jdbcType="BIGINT" />
-    <result column="leave_type" property="leaveType" jdbcType="BIGINT" />
+    <result column="leave_type" property="leaveType" jdbcType="TINYINT" />
+    <result column="leave_id" property="leaveId" jdbcType="BIGINT" />
     <result column="this_year_leave_left" property="thisYearLeaveLeft" jdbcType="TINYINT" />
     <result column="last_year_leave_left" property="lastYearLeaveLeft" jdbcType="TINYINT" />
     <result column="vacation_number" property="vacationNumber" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, emp_id, leave_type, this_year_leave_left, last_year_leave_left, vacation_number
+    id, emp_id, leave_type, leave_id, this_year_leave_left, last_year_leave_left, vacation_number
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -24,11 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.webvisit.model.po.AttenceHolidayDetail" >
     insert into t_attence_holiday_detail (id, emp_id, leave_type, 
-      this_year_leave_left, last_year_leave_left, vacation_number
-      )
-    values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{leaveType,jdbcType=BIGINT}, 
-      #{thisYearLeaveLeft,jdbcType=TINYINT}, #{lastYearLeaveLeft,jdbcType=TINYINT}, #{vacationNumber,jdbcType=TINYINT}
-      )
+      leave_id, this_year_leave_left, last_year_leave_left, 
+      vacation_number)
+    values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{leaveType,jdbcType=TINYINT}, 
+      #{leaveId,jdbcType=BIGINT}, #{thisYearLeaveLeft,jdbcType=TINYINT}, #{lastYearLeaveLeft,jdbcType=TINYINT}, 
+      #{vacationNumber,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceHolidayDetail" >
     insert into t_attence_holiday_detail
@@ -41,6 +42,9 @@
       </if>
       <if test="leaveType != null" >
         leave_type,
+      </if>
+      <if test="leaveId != null" >
+        leave_id,
       </if>
       <if test="thisYearLeaveLeft != null" >
         this_year_leave_left,
@@ -60,7 +64,10 @@
         #{empId,jdbcType=BIGINT},
       </if>
       <if test="leaveType != null" >
-        #{leaveType,jdbcType=BIGINT},
+        #{leaveType,jdbcType=TINYINT},
+      </if>
+      <if test="leaveId != null" >
+        #{leaveId,jdbcType=BIGINT},
       </if>
       <if test="thisYearLeaveLeft != null" >
         #{thisYearLeaveLeft,jdbcType=TINYINT},
@@ -80,7 +87,10 @@
         emp_id = #{empId,jdbcType=BIGINT},
       </if>
       <if test="leaveType != null" >
-        leave_type = #{leaveType,jdbcType=BIGINT},
+        leave_type = #{leaveType,jdbcType=TINYINT},
+      </if>
+      <if test="leaveId != null" >
+        leave_id = #{leaveId,jdbcType=BIGINT},
       </if>
       <if test="thisYearLeaveLeft != null" >
         this_year_leave_left = #{thisYearLeaveLeft,jdbcType=TINYINT},
@@ -97,7 +107,8 @@
   <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttenceHolidayDetail" >
     update t_attence_holiday_detail
     set emp_id = #{empId,jdbcType=BIGINT},
-      leave_type = #{leaveType,jdbcType=BIGINT},
+      leave_type = #{leaveType,jdbcType=TINYINT},
+      leave_id = #{leaveId,jdbcType=BIGINT},
       this_year_leave_left = #{thisYearLeaveLeft,jdbcType=TINYINT},
       last_year_leave_left = #{lastYearLeaveLeft,jdbcType=TINYINT},
       vacation_number = #{vacationNumber,jdbcType=TINYINT}

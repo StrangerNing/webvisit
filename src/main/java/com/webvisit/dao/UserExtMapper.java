@@ -1,7 +1,10 @@
 package com.webvisit.dao;
 
 import com.webvisit.model.dto.UserInfoDTO;
+import com.webvisit.model.dto.UserSimpleDTO;
 import com.webvisit.model.vo.LoginVO;
+
+import java.util.List;
 
 /**
  * @author zening.zhu
@@ -18,4 +21,11 @@ public interface UserExtMapper {
      * @return 用户信息
      */
     UserInfoDTO selectByUsername(LoginVO loginVO);
+
+    /**
+     * 根据公司id查询用户列表
+     * @param companyId 公司id
+     * @return 用户列表
+     */
+    List<UserSimpleDTO> selectByCompanyId(Long companyId);
 }

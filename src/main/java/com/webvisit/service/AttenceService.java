@@ -16,11 +16,10 @@ public interface AttenceService {
     /**
      * 新增考勤规则
      *
-     * @param userInfoVO 当前用户信息
      * @param attenceRegulation 考勤规则
      * @return 新增结果
      */
-    Boolean addRegulation(UserInfoVO userInfoVO, AttenceRegulation attenceRegulation);
+    Boolean addRegulation(AttenceRegulation attenceRegulation);
 
     /**
      * 删除考勤规则
@@ -105,11 +104,11 @@ public interface AttenceService {
     /**
      * 添加请假类型
      *
-     * @param userInfoVO   当前用户信息
-     * @param attenceLeave 请假类型
+     * @param userInfoVO 当前用户信息
+     * @param leaveVO    请假类型
      * @return 添加结果
      */
-    Boolean addLeave(UserInfoVO userInfoVO, AttenceLeave attenceLeave);
+    Boolean addLeave(UserInfoVO userInfoVO, LeaveVO leaveVO);
 
     /**
      * 删除请假类型
@@ -191,5 +190,34 @@ public interface AttenceService {
      */
     Boolean editAnnualStep(UserInfoVO userInfoVO, AnnualStepVO annualStepVO);
 
+    /**
+     * 查询员工年假信息
+     *
+     * @param userInfoVO 当前用户信息
+     * @return 员工年假信息
+     */
+    List<AnnualDetailVO> queryAnnualDetail(UserInfoVO userInfoVO);
 
+    /**
+     * 编辑员工年假天数
+     * @param userInfoVO 当前用户信息
+     * @param holidayDetailVO 假期设置
+     * @return 编辑结果
+     */
+    Boolean editAnnualDetail(UserInfoVO userInfoVO, HolidayDetailVO holidayDetailVO);
+
+    /**
+     * 查询考勤统计总报
+     * @param userInfoVO 当前用户信息
+     * @return 考勤统计
+     */
+    List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO);
+
+    /**
+     * 根据员工id获取考勤详情
+     * @param userInfoVO 当前用户信息
+     * @param punchDetailVO 查询条件
+     * @return 考勤详情
+     */
+    List<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO,PunchDetailVO punchDetailVO);
 }

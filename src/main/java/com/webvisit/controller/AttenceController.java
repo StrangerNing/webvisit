@@ -5,6 +5,7 @@ import com.webvisit.common.re.Result;
 import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.po.AttenceRegulation;
 import com.webvisit.model.vo.AnnualVO;
+import com.webvisit.model.vo.LeaveVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
@@ -87,8 +88,8 @@ public class AttenceController {
 
     @RequestMapping("/leave/add")
     @ResponseBody
-    Result addLeave(@LoginUser UserInfoVO userInfoVO, AttenceLeave attenceLeave) {
-        return Result.success(attenceService.addLeave(userInfoVO, attenceLeave));
+    Result addLeave(@LoginUser UserInfoVO userInfoVO, LeaveVO leaveVO) {
+        return Result.success(attenceService.addLeave(userInfoVO, leaveVO));
     }
 
     @RequestMapping("/leave/delete")

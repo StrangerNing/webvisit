@@ -59,7 +59,7 @@ public class WebvisitApplicationTests {
 
     @Test
     public void testRegisterUser() {
-        RegisterVO registerVO = new RegisterVO("zhuzening", "zhuzening8", "zhuzening8");
+        RegisterVO registerVO = new RegisterVO("test2", "test2", "test2");
         System.out.println(loginService.register(registerVO));
     }
 
@@ -75,7 +75,7 @@ public class WebvisitApplicationTests {
 
     @Test
     public void testAddLeave() {
-        AttenceLeave attenceLeave = new AttenceLeave();
+        LeaveVO attenceLeave = new LeaveVO();
         attenceLeave.setName("测试");
         attenceLeave.setAvailableDays(7);
         attenceLeave.setSalaryPercent(new BigDecimal(0.70));
@@ -119,6 +119,25 @@ public class WebvisitApplicationTests {
     public void testtest(){
         Date date = TimeUtil.createTime(2019,3,7);
         System.out.println("日期:"+date+" 星期 "+TimeUtil.getDayOfWeek(date));
+    }
+
+    @Test
+    public void testQueryAttenceReport(){
+        UserInfoVO userInfoVO = UserInfoVO.builder().companyId(2L).build();
+        List<AttenceReportVO> attenceReportVOList = attenceService.queryAttenceReport(userInfoVO);
+        for (AttenceReportVO attenceReportVO : attenceReportVOList){
+            System.out.println(attenceReportVO);
+        }
+    }
+
+    @Test
+    public void testQueryPunchDetail(){
+        PunchDetailVO punchDetailVO = new PunchDetailVO();
+        UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
+        List<PunchDetailVO> punchDetailVOList = attenceService.queryAttencePunchDetail(userInfoVO,punchDetailVO);
+        for (PunchDetailVO punchDetail : punchDetailVOList){
+            System.out.println(punchDetail);
+        }
     }
 
 }

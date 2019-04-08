@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.AttenceHolidayDetailExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttenceHolidayDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="emp_id" property="empId" jdbcType="BIGINT" />
+    <result column="leave_type" property="leaveType" jdbcType="TINYINT" />
+    <result column="leave_id" property="leaveId" jdbcType="BIGINT" />
+    <result column="this_year_leave_left" property="thisYearLeaveLeft" jdbcType="TINYINT" />
+    <result column="last_year_leave_left" property="lastYearLeaveLeft" jdbcType="TINYINT" />
+    <result column="vacation_number" property="vacationNumber" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, emp_id, leave_type, leave_id, this_year_leave_left, last_year_leave_left, vacation_number
+  </sql>
+  <select id="selectByEmpId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from t_attence_holiday_detail
+    where emp_id = #{empId,jdbcType=BIGINT}
+  </select>
+</mapper>
