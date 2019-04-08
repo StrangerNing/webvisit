@@ -2,7 +2,6 @@ package com.webvisit.common.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.webvisit.common.annotation.GetLog;
-import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.constant.LocalConstant;
 import com.webvisit.model.po.Log;
 import com.webvisit.model.vo.UserInfoVO;
@@ -38,8 +37,8 @@ public class SysLogAspect {
 
     @Resource
     private SysLogService sysLogService;
-    @LoginUser
-    private UserInfoVO userInfo;
+    @Resource
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Pointcut("@annotation(com.webvisit.common.annotation.GetLog)")
     public void logPointCut(){
@@ -79,7 +78,18 @@ public class SysLogAspect {
             Map<String,String[]> params = request.getParameterMap();
             log.setParams(JSON.toJSONString(params));
             //获取用户名
-            log.setUsername(userInfo.getUsername());
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies){
+                if (cookie.getName().equals(LocalConstant.LOGIN_USER_KEY)){
+                    String uuid = cookie.getValue();
+                    UserInfoVO userInfoVO = (UserInfoVO)redisTemplate.opsForValue().get(uuid);
+                    if (null != userInfoVO) {
+                        log.setUsername(userInfoVO.getUsername());
+                    } else {
+                        logger.error("获取用户名失败");
+                    }
+                }
+            }
             //获取操作者ip
             String ip = request.getRemoteAddr();
             log.setIp(ip);
