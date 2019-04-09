@@ -38,4 +38,11 @@ public interface LoginService {
      * @return 登出结果
      */
     Boolean logout(HttpServletRequest request);
+
+    /**
+     * 根据token获取用户信息
+     * @param token token
+     * @return 用户信息
+     */
+    UserInfoVO getUserInfoByToken(String token);
 }

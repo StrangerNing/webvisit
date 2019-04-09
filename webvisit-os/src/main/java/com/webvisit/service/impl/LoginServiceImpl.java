@@ -11,11 +11,10 @@ import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.LoginService;
+import com.webvisit.utils.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,7 +35,7 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private UserMapper userMapper;
     @Resource
-    private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public UserInfoVO login(LoginVO loginVO) {
@@ -51,8 +50,7 @@ public class LoginServiceImpl implements LoginService {
         }else if (UserStatusEnum.FREEZE.getCode().equals(user.getStatus())){
             throw new BusinessException("该用户账号已冻结");
         }
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if (passwordEncoder.matches(loginVO.getPassword(), user.getPassword())) {
+        if (MD5Util.verify(loginVO.getPassword(),user.getPassword())) {
             UserInfoVO userInfoVO = new UserInfoVO();
             BeanUtils.copyProperties(user,userInfoVO);
             return userInfoVO;
@@ -69,8 +67,7 @@ public class LoginServiceImpl implements LoginService {
         if (StringUtils.isNotEmpty(password)) {
             if (StringUtils.isNotEmpty(checkPassword)) {
                 if (StringUtils.equals(password, checkPassword)) {
-                    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                    cryptPassword = passwordEncoder.encode(password);
+                    cryptPassword = MD5Util.generate(password);
                 } else {
                     throw new BusinessException("两次密码不一致！");
                 }
@@ -96,5 +93,20 @@ public class LoginServiceImpl implements LoginService {
             }
         }
         throw new BusinessException("登出失败");
+    }
+
+    @Override
+    public UserInfoVO getUserInfoByToken(String token) {
+        if (StringUtils.isEmpty(token)){
+            throw new BusinessException("未登录，请先登录");
+        }
+        UserInfoVO userInfoVO = (UserInfoVO)redisTemplate.opsForValue().get(token);
+        if (null == userInfoVO){
+            throw new BusinessException("获取用户信息失败，请重新登录");
+        }
+        if (null == userInfoVO.getCompanyId()){
+            throw new BusinessException("请先绑定公司！");
+        }
+        return userInfoVO;
     }
 }

@@ -43,7 +43,6 @@ public class LoginController {
             redisTemplate.opsForValue().set(uuid, userInfoVO, 12, TimeUnit.HOURS);
             Cookie cookie = new Cookie(LocalConstant.LOGIN_USER_KEY, uuid);
             cookie.setMaxAge(-1);
-            cookie.setDomain(".znzn.me");
             response.addCookie(cookie);
         }
         return Result.success(loginService.login(loginVO));

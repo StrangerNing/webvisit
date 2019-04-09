@@ -6,6 +6,7 @@ import com.webvisit.model.po.AttenceLeave;
 import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.service.LoginService;
+import com.webvisit.utils.MD5Util;
 import com.webvisit.utils.TimeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +39,8 @@ public class WebvisitApplicationTests {
 
     @Test
     public void testRedis() {
-        redisTemplate.opsForValue().set("test", "success!!", 10, TimeUnit.SECONDS);
-        Object test = redisTemplate.opsForValue().get("test");
+//        redisTemplate.opsForValue().set("test", "success!!", 10, TimeUnit.SECONDS);
+        UserInfoVO test = (UserInfoVO)redisTemplate.opsForValue().get("login_1ff59a65-8e28-4e56-a243-bb4ee58098b4");
         System.out.println(test);
     }
 
@@ -49,6 +50,13 @@ public class WebvisitApplicationTests {
         redisTemplate.opsForValue().set("user", userInfoVO, 10, TimeUnit.MINUTES);
         Object test = redisTemplate.opsForValue().get("user");
         System.out.println(test);
+    }
+
+    @Test
+    public void testGenerateMd5(){
+        String password = "zhuzening8";
+        String encryptPassword = MD5Util.generate(password);
+        System.out.println(encryptPassword);
     }
 
     @Test

@@ -32,6 +32,9 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>webvisit-os</module>
+    </modules>
     <build>
         <plugins>
             <plugin>
