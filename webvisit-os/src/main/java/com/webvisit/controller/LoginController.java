@@ -9,7 +9,9 @@ import com.webvisit.service.LoginService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -34,9 +36,9 @@ public class LoginController {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/user/login",method = RequestMethod.POST)
     @ResponseBody
-    public Result login(LoginVO loginVO, HttpServletResponse response) {
+    public Result login(@RequestBody LoginVO loginVO, HttpServletResponse response) {
         UserInfoVO userInfoVO = loginService.login(loginVO);
         if (null != userInfoVO) {
             String uuid = LocalConstant.LOGIN_UUID_KEY + UUID.randomUUID().toString();
@@ -44,8 +46,16 @@ public class LoginController {
             Cookie cookie = new Cookie(LocalConstant.LOGIN_USER_KEY, uuid);
             cookie.setMaxAge(-1);
             response.addCookie(cookie);
+            return Result.success(uuid);
+        }else {
+            return Result.failure();
         }
-        return Result.success(loginService.login(loginVO));
+    }
+
+    @RequestMapping(value = "/user/info")
+    @ResponseBody
+    public Result getUserInfo(String token){
+        return Result.success(loginService.getUserInfoByToken(token));
     }
 
     @RequestMapping("/register")

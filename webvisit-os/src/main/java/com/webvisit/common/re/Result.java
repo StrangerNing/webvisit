@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = -2310002475443677643L;
-    private static final Integer STATUS_SUCCESS =1;
+    private static final Integer STATUS_SUCCESS = 200;
     private static final Integer STATUS_FAILURE = -1;
     private static final Integer STATUS_ERROR = -2;
     public static final String MSG_SUCCESS = "success";
@@ -57,43 +57,43 @@ public class Result<T> implements Serializable {
     /**
      * 消息
      */
-    private String msg;
+    private String message;
 
     /**
      * 数据
      */
-    private T re;
+    private T data;
 
     public Result(){
 
     }
 
-    public Result(int status, boolean success, String msg) {
+    public Result(int status, boolean success, String message) {
         this.status = status;
         this.success = success;
-        this.msg = msg;
+        this.message = message;
     }
 
-    public Result(int status, boolean success, String code, String msg) {
+    public Result(int status, boolean success, String code, String message) {
         this.status = status;
         this.success = success;
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
-    public Result(int status, boolean success, String msg, T re) {
+    public Result(int status, boolean success, String message, T data) {
         this.status = status;
         this.success = success;
-        this.msg = msg;
-        this.re = re;
+        this.message = message;
+        this.data = data;
     }
 
-    public Result(int status, boolean success, String code, String msg, T re) {
+    public Result(int status, boolean success, String code, String message, T data) {
         this.status = status;
         this.success = success;
         this.code = code;
-        this.msg = msg;
-        this.re = re;
+        this.message = message;
+        this.data = data;
     }
 
     /**
@@ -119,12 +119,12 @@ public class Result<T> implements Serializable {
 
     /**
      * 请求成功
-     * @param msg
+     * @param message
      * @param code
      * @return
      */
-    public static Result success(String msg, String code){
-        return new Result(STATUS_SUCCESS, Boolean.TRUE, code, msg);
+    public static Result success(String message, String code){
+        return new Result(STATUS_SUCCESS, Boolean.TRUE, code, message);
     }
 
     /**
@@ -140,12 +140,12 @@ public class Result<T> implements Serializable {
     /**
      * 失败，带消息
      *
-     * @param msg
+     * @param message
      * @param
      * @return
      */
-    public static Result failure(String msg) {
-        return new Result(STATUS_FAILURE, Boolean.FALSE, Result.CODE_OTHER, msg);
+    public static Result failure(String message) {
+        return new Result(STATUS_FAILURE, Boolean.FALSE, Result.CODE_OTHER, message);
     }
 
     /**
@@ -155,19 +155,19 @@ public class Result<T> implements Serializable {
      * @param <T>
      * @return
      */
-    public static <T> Result<T> failure(String msg, T data) {
-        return new Result<T>(STATUS_FAILURE, Boolean.FALSE, Result.CODE_OTHER, msg, data);
+    public static <T> Result<T> failure(String message, T data) {
+        return new Result<T>(STATUS_FAILURE, Boolean.FALSE, Result.CODE_OTHER, message, data);
     }
 
     /**
      * 失败，带消息，带错误码
      *
-     * @param msg
+     * @param message
      * @param code
      * @return
      */
-    public static <T> Result<T> failure(String msg, String code) {
-        return new Result<T>(STATUS_FAILURE, Boolean.FALSE, code, msg);
+    public static <T> Result<T> failure(String message, String code) {
+        return new Result<T>(STATUS_FAILURE, Boolean.FALSE, code, message);
     }
 
     /**
@@ -178,8 +178,8 @@ public class Result<T> implements Serializable {
      * @param code
      * @return
      */
-    public static <T> Result<T> failure(String msg, T data, String code) {
-        return new Result<T>(STATUS_FAILURE, Boolean.FALSE, code, msg, data);
+    public static <T> Result<T> failure(String message, T data, String code) {
+        return new Result<T>(STATUS_FAILURE, Boolean.FALSE, code, message, data);
     }
 
     /**
@@ -195,21 +195,21 @@ public class Result<T> implements Serializable {
     /**
      * 错误，带消息
      *
-     * @param msg
+     * @param message
      * @return
      */
-    public static Result error(String msg) {
-        return new Result(STATUS_ERROR, Boolean.FALSE, Result.CODE_OTHER, msg);
+    public static Result error(String message) {
+        return new Result(STATUS_ERROR, Boolean.FALSE, Result.CODE_OTHER, message);
     }
 
     /**
      * 错误，带消息 ,带code
      *
-     * @param msg
+     * @param message
      * @return
      */
-    public static Result error(String msg, String code) {
-        return new Result(STATUS_ERROR, Boolean.FALSE, code, msg);
+    public static Result error(String message, String code) {
+        return new Result(STATUS_ERROR, Boolean.FALSE, code, message);
     }
 
     /**
@@ -219,8 +219,8 @@ public class Result<T> implements Serializable {
      * @param <T>
      * @return
      */
-    public static <T> Result<T> error(String msg, T data) {
-        return new Result<T>(STATUS_ERROR, Boolean.FALSE, Result.CODE_OTHER,msg, data);
+    public static <T> Result<T> error(String message, T data) {
+        return new Result<T>(STATUS_ERROR, Boolean.FALSE, Result.CODE_OTHER,message, data);
     }
 
     public int getStatus() {
@@ -239,20 +239,20 @@ public class Result<T> implements Serializable {
         this.success = success;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public T getRe() {
-        return re;
+    public T getData() {
+        return data;
     }
 
-    public void setRe(T re) {
-        this.re = re;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public String getCode() {
@@ -269,8 +269,8 @@ public class Result<T> implements Serializable {
                 "status=" + status +
                 ", success=" + success +
                 ", code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", re=" + re +
+                ", message='" + message + '\'' +
+                ", data=" + data +
                 '}';
     }
 }
