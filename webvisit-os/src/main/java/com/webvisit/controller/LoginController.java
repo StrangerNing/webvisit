@@ -40,9 +40,6 @@ public class LoginController {
         if (null != userInfoVO) {
             String uuid = LocalConstant.LOGIN_UUID_KEY + UUID.randomUUID().toString();
             redisTemplate.opsForValue().set(uuid, userInfoVO, 12, TimeUnit.HOURS);
-            Cookie cookie = new Cookie(LocalConstant.LOGIN_USER_KEY, uuid);
-            cookie.setMaxAge(-1);
-            response.addCookie(cookie);
             return Result.success(uuid);
         }else {
             return Result.failure();

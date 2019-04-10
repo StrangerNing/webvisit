@@ -101,7 +101,7 @@ public class LoginServiceImpl implements LoginService {
         Cookie[] cookies = request.getCookies();
         String token = "";
         for (Cookie cookie : cookies){
-            if (cookie.getName().equals(LocalConstant.LOGIN_USER_KEY)){
+            if (cookie.getName().equals(LocalConstant.LOGIN_USER_KEY) && !"undefined".equals(cookie.getValue())){
                 token = cookie.getValue();
             }
         }

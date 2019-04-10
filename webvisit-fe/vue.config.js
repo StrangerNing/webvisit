@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = pkg.name || 'vue-element-admin' // page title
+const name = pkg.name || '智慧访客管理平台' // page title
 const port = 80 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
