@@ -9,6 +9,7 @@ import com.webvisit.model.dto.UserInfoDTO;
 import com.webvisit.model.po.User;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
+import com.webvisit.model.vo.UserInfoRe;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.LoginService;
 import com.webvisit.utils.MD5Util;
@@ -96,7 +97,14 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public UserInfoVO getUserInfoByToken(String token) {
+    public UserInfoRe getUserInfoByToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        for (Cookie cookie : cookies){
+            if (cookie.getName().equals(LocalConstant.LOGIN_USER_KEY)){
+                token = cookie.getValue();
+            }
+        }
         if (StringUtils.isEmpty(token)){
             throw new BusinessException("未登录，请先登录");
         }
@@ -107,6 +115,11 @@ public class LoginServiceImpl implements LoginService {
         if (null == userInfoVO.getCompanyId()){
             throw new BusinessException("请先绑定公司！");
         }
-        return userInfoVO;
+        UserInfoRe re = new UserInfoRe();
+        re.setUsername(userInfoVO.getUsername());
+        re.setRoles(new String[]{"admin"});
+        re.setAvatar("http://img3.imgtn.bdimg.com/it/u=3018968254,2801372361&fm=26&gp=0.jpg");
+        re.setIntroduction("测试");
+        return re;
     }
 }

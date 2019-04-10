@@ -3,6 +3,7 @@ package com.webvisit.service;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
+import com.webvisit.model.vo.UserInfoRe;
 import com.webvisit.model.vo.UserInfoVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,5 +45,5 @@ public interface LoginService {
      * @param token token
      * @return 用户信息
      */
-    UserInfoVO getUserInfoByToken(String token);
+    UserInfoRe getUserInfoByToken(HttpServletRequest request);
 }

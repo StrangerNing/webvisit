@@ -12,7 +12,7 @@ public class Result<T> implements Serializable {
     private static final long serialVersionUID = -2310002475443677643L;
     private static final Integer STATUS_SUCCESS = 200;
     private static final Integer STATUS_FAILURE = -1;
-    private static final Integer STATUS_ERROR = -2;
+    private static final Integer STATUS_ERROR = 500;
     public static final String MSG_SUCCESS = "success";
     public static final String MSG_FAILURE = "failure";
     public static final String MSG_ERROR = "error";

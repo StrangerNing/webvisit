@@ -9,10 +9,7 @@ import com.webvisit.service.LoginService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -54,8 +51,8 @@ public class LoginController {
 
     @RequestMapping(value = "/user/info")
     @ResponseBody
-    public Result getUserInfo(String token){
-        return Result.success(loginService.getUserInfoByToken(token));
+    public Result getUserInfo(HttpServletRequest request){
+        return Result.success(loginService.getUserInfoByToken(request));
     }
 
     @RequestMapping("/register")
