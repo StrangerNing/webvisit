@@ -7,7 +7,8 @@ export default {
     rolePermission: '角色权限',
     pagePermission: '页面权限',
     directivePermission: '指令权限',
-    attence: '考勤管理'
+    attence: '考勤管理',
+    attenceEdit: '考勤设置'
   },
   navbar: {
     logOut: '退出登录',
