@@ -2,7 +2,14 @@
   <div style="margin-bottom: 100px">
     <div class="module">
       <el-card>
-        <h2>考勤设置</h2>
+        <el-row class="row-title">
+          <el-col :span="12">
+            <h2>考勤设置</h2>
+          </el-col>
+          <el-col :span="11" style="text-align: right;margin-bottom:0.3%;">
+            <el-button type="primary" icon="el-icon-plus" @click="addRegulation()">添加</el-button>
+          </el-col>
+        </el-row>
         <el-table :data="regulationList" border stripe fit>
           <el-table-column
             type="index"
@@ -10,7 +17,14 @@
           <el-table-column
             prop="name"
             label="规则名称"
-          />
+          >
+            <span slot-scope="scope">
+              <span v-if="scope.row.type === 0">
+                <el-tag type="danger">法定</el-tag>
+              </span>
+              <span>{{ scope.row.name }}</span>
+            </span>
+          </el-table-column>
           <el-table-column
             prop="punchInStart"
             label="签到开始时间"
@@ -43,8 +57,16 @@
             label="允许偏移范围（米）"
           />
           <el-table-column
+            label="查看工作日"
+            min-width="60"
+          >
+            <span slot-scope="scope">
+              <el-button type="success" size="small" icon="el-icon-search" @click="getWorkdayList(scope.row.id)">查看</el-button>
+            </span>
+          </el-table-column>
+          <el-table-column
             label="操作"
-            min-width="100"
+            min-width="110"
           >
             <span slot-scope="scope">
               <el-button type="primary" size="small" icon="el-icon-edit" @click="editRegulation(scope.$index, scope.row)">编辑</el-button>
@@ -53,55 +75,63 @@
           </el-table-column>
         </el-table>
         <el-dialog
-          title="编辑考勤规则"
+          title="工作日设置"
+          :visible.sync="workdayListVisible"
+        >
+          <el-checkbox-group v-model="workdayList">
+            <el-checkbox v-for="weekDay in weekDays" :key="weekDay" :label="weekDay">{{ weekDay }}</el-checkbox>
+          </el-checkbox-group>
+        </el-dialog>
+        <el-dialog
+          :title="editTitle"
           :visible.sync="editRegulationVisible"
         >
           <el-form :model="regulation" label-width="25%" style="width: 100%;">
             <el-row>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="规则名称">
                   <el-input v-model="regulation.name" style="width: 90%;" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="签到开始时间">
                   <el-input v-model="regulation.punchInStart" style="width: 90%;" />
                 </el-form-item>
               </el-col>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="签到结束时间">
                   <el-input v-model="regulation.punchInEnd" style="width: 90%;" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="签退开始时间">
                   <el-input v-model="regulation.punchOutStart" style="width: 90%;" />
                 </el-form-item>
               </el-col>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="签退结束时间">
                   <el-input v-model="regulation.punchOutEnd" style="width: 90%;" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="允许迟到时间">
                   <el-input v-model="regulation.allowLate" style="width: 90%;" />
                 </el-form-item>
               </el-col>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="允许早退时间">
                   <el-input v-model="regulation.allowLeaveEarly" style="width: 90%;" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col span="12">
+              <el-col :span="12">
                 <el-form-item label="允许偏差范围">
                   <el-input v-model="regulation.allowLocationOffset" style="width: 90%;" />
                 </el-form-item>
@@ -212,11 +242,12 @@
 
 <script>
 import {
+  addRegulation,
   cancelHoliday,
   deleteRegulation,
   editRegulation,
   getHolidayList,
-  getRegulationList,
+  getRegulationList, getWorkdayList,
   setHoliday
 } from '../../api/attence'
 import { Message } from 'element-ui'
@@ -229,7 +260,10 @@ export default {
         beginDate: this.getYearFirstDay(new Date(), 0),
         endDate: this.getYearFirstDay(new Date(), 1)
       },
+      editTitle: '编辑考勤规则',
+      deleteConfirmVisible: false,
       editRegulationVisible: false,
+      workdayListVisible: false,
       regulation: {
         id: 0,
         name: '',
@@ -245,8 +279,10 @@ export default {
         allowLocationOffset: 0.00,
         type: 0
       },
+      weekDays: [1, 2, 3, 4, 5, 6, 7],
       regulationList: [],
-      holidayList: []
+      holidayList: [],
+      workdayList: []
     }
   },
   created() {
@@ -265,7 +301,25 @@ export default {
         console.log(res.data)
       })
     },
+    getWorkdayList(id) {
+      this.workdayList = []
+      getWorkdayList({ regulationId: id }).then(res => {
+        for (const workday in res.data) {
+          this.workdayList.push(res.data[workday].weekDay)
+        }
+        console.log(this.workdayList)
+      })
+      this.workdayListVisible = true
+    },
+    addRegulation() {
+      this.editTitle = '新增考勤规则'
+      for (const key in this.regulation) {
+        this.regulation[key] = null
+      }
+      this.editRegulationVisible = true
+    },
     editRegulation(index, row) {
+      this.editTitle = '编辑考勤规则'
       this.regulation = row
       this.editRegulationVisible = true
     },
@@ -273,39 +327,61 @@ export default {
       this.editRegulationVisible = false
     },
     commitRegulation() {
-      editRegulation(this.regulationList).then(res => {
-        if (res.data) {
-          Message({
-            message: '提交成功',
-            type: 'success',
-            duration: 10 * 1000
-          })
-          this.getRegulationList()
-        } else {
-          Message({
-            message: '提交失败',
-            type: 'error',
-            duration: 10 * 1000
-          })
-        }
-      })
+      if (this.editTitle === '新增考勤规则') {
+        addRegulation(this.regulation).then(res => {
+          this.statusConfirm(res)
+        })
+      } else {
+        editRegulation(this.regulation).then(res => {
+          this.statusConfirm(res)
+        })
+      }
+    },
+    statusConfirm(res) {
+      if (res.data) {
+        Message({
+          message: '提交成功',
+          type: 'success',
+          duration: 10 * 1000
+        })
+        this.editRegulationVisible = false
+        this.getRegulationList()
+      } else {
+        Message({
+          message: '提交失败',
+          type: 'error',
+          duration: 10 * 1000
+        })
+      }
     },
     deleteRegulation(index, row) {
-      deleteRegulation(row.id).then(res => {
-        if (res.data) {
-          Message({
-            message: '删除成功',
-            type: 'success',
-            duration: 10 * 1000
-          })
-          this.getRegulationList()
-        } else {
-          Message({
-            message: '取消失败',
-            type: 'error',
-            duration: 10 * 1000
-          })
-        }
+      this.$confirm('被删除的考勤规则无法恢复, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteRegulation({ regulationId: row.id }).then(res => {
+          if (res.data) {
+            Message({
+              message: '删除成功',
+              type: 'success',
+              duration: 10 * 1000
+            })
+            this.getRegulationList()
+          } else {
+            Message({
+              message: '删除失败',
+              type: 'error',
+              duration: 10 * 1000
+            })
+            this.getRegulationList()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     },
     getHolidayList() {
@@ -399,5 +475,13 @@ export default {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 20px;
+  }
+  .row-title {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px
   }
 </style>

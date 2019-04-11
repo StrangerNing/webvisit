@@ -1,5 +1,6 @@
 package com.webvisit.service;
 
+import com.webvisit.model.dto.RegulationDTO;
 import com.webvisit.model.po.*;
 import com.webvisit.model.vo.*;
 
@@ -16,10 +17,10 @@ public interface AttenceService {
     /**
      * 新增考勤规则
      *
-     * @param attenceRegulation 考勤规则
+     * @param regulationDTO 考勤规则
      * @return 新增结果
      */
-    Boolean addRegulation(AttenceRegulation attenceRegulation);
+    Boolean addRegulation(RegulationDTO regulationDTO);
 
     /**
      * 删除考勤规则
@@ -34,10 +35,10 @@ public interface AttenceService {
      * 修改考勤规则
      *
      * @param userInfoVO        当前用户信息
-     * @param attenceRegulation 考勤规则
+     * @param regulationDTO 考勤规则
      * @return 操作结果
      */
-    Boolean editRegulation(UserInfoVO userInfoVO, AttenceRegulation attenceRegulation);
+    Boolean editRegulation(UserInfoVO userInfoVO, RegulationDTO regulationDTO);
 
     /**
      * 根据公司id查询考勤规则

@@ -4,6 +4,7 @@ import com.webvisit.common.enums.*;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.*;
 import com.webvisit.dao.common.*;
+import com.webvisit.model.dto.RegulationDTO;
 import com.webvisit.model.dto.UserSimpleDTO;
 import com.webvisit.model.po.*;
 import com.webvisit.model.vo.*;
@@ -65,9 +66,9 @@ public class AttenceServiceImpl implements AttenceService {
     private AttencePunchDetailExtMapper attencePunchDetailExtMapper;
 
     @Override
-    public Boolean addRegulation(AttenceRegulation attenceRegulation) {
-        int insertRegulationResult = attenceRegulationExtMapper.insertSelectiveReturnId(attenceRegulation);
-        Long regulationId = attenceRegulation.getId();
+    public Boolean addRegulation(RegulationDTO regulationDTO) {
+        int insertRegulationResult = attenceRegulationExtMapper.insertSelectiveReturnId(regulationDTO);
+        Long regulationId = regulationDTO.getId();
         for (int i = 1; i < 6; i++) {
             AttenceWorkday attenceWorkday = new AttenceWorkday();
             attenceWorkday.setRegulationId(regulationId);
@@ -101,8 +102,8 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public Boolean editRegulation(UserInfoVO userInfoVO, AttenceRegulation attenceRegulation) {
-        Long regulationId = attenceRegulation.getId();
+    public Boolean editRegulation(UserInfoVO userInfoVO, RegulationDTO regulationDTO) {
+        Long regulationId = regulationDTO.getId();
         AttenceRegulation queryRegulation = attenceRegulationMapper.selectByPrimaryKey(regulationId);
         if (null == queryRegulation) {
             throw new BusinessException("没有查询到这个考勤规则");
@@ -111,7 +112,7 @@ public class AttenceServiceImpl implements AttenceService {
         Long queryRegulationCompanyId = queryRegulation.getCompanyId();
         if (null != queryRegulationCompanyId) {
             if (queryRegulationCompanyId.equals(userCompanyId)) {
-                return attenceRegulationMapper.updateByPrimaryKey(attenceRegulation) == 1;
+                return attenceRegulationExtMapper.updateRegulation(regulationDTO) == 1;
             } else {
                 throw new BusinessException("你没有权限修改这个考勤规则！");
             }

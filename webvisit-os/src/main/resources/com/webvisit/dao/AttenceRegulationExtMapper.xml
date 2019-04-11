@@ -28,7 +28,7 @@
     where company_id = #{companyId,jdbcType=BIGINT}
   </select>
 
-  <insert id="insertSelectiveReturnId" useGeneratedKeys="true" keyProperty="id" parameterType="com.webvisit.model.po.AttenceRegulation" >
+  <insert id="insertSelectiveReturnId" useGeneratedKeys="true" keyProperty="id" parameterType="com.webvisit.model.dto.RegulationDTO" >
     insert into t_attence_regulation
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -144,4 +144,61 @@
     </trim>
   </insert>
 
+  <update id="updateRegulation" parameterType="com.webvisit.model.dto.RegulationDTO" >
+    update t_attence_regulation
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="punchInStart != null" >
+        punch_in_start = #{punchInStart,jdbcType=TIME},
+      </if>
+      <if test="punchInEnd != null" >
+        punch_in_end = #{punchInEnd,jdbcType=TIME},
+      </if>
+      <if test="punchOutStart != null" >
+        punch_out_start = #{punchOutStart,jdbcType=TIME},
+      </if>
+      <if test="punchOutEnd != null" >
+        punch_out_end = #{punchOutEnd,jdbcType=TIME},
+      </if>
+      <if test="allowLate != null" >
+        allow_late = #{allowLate,jdbcType=TIME},
+      </if>
+      <if test="allowLeaveEarly != null" >
+        allow_leave_early = #{allowLeaveEarly,jdbcType=TIME},
+      </if>
+      <if test="allowLocationOffset != null" >
+        allow_location_offset = #{allowLocationOffset,jdbcType=INTEGER},
+      </if>
+      <if test="checkLocationLon != null" >
+        check_location_lon = #{checkLocationLon,jdbcType=DECIMAL},
+      </if>
+      <if test="checkLocationLat != null" >
+        check_location_lat = #{checkLocationLat,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAccountId != null" >
+        create_account_id = #{createAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccountId != null" >
+        modify_account_id = #{modifyAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>

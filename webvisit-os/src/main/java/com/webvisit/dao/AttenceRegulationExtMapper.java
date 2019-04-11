@@ -1,5 +1,6 @@
 package com.webvisit.dao;
 
+import com.webvisit.model.dto.RegulationDTO;
 import com.webvisit.model.po.AttenceRegulation;
 import com.webvisit.model.vo.RegulationVO;
 
@@ -23,9 +24,17 @@ public interface AttenceRegulationExtMapper {
     /**
      * 插入考勤规则返回主键id
      *
-     * @param attenceRegulation 考勤规则
+     * @param regulationDTO 考勤规则
      * @return 影响条数
      */
-    int insertSelectiveReturnId(AttenceRegulation attenceRegulation);
+    int insertSelectiveReturnId(RegulationDTO regulationDTO);
+
+    /**
+     * 更新考勤规则
+     *
+     * @param regulationDTO 考勤规则
+     * @return 影响条数
+     */
+    int updateRegulation(RegulationDTO regulationDTO);
 
 }

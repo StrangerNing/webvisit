@@ -7,11 +7,27 @@ export function getRegulationList() {
   })
 }
 
+export function getWorkdayList(id) {
+  return request({
+    url: '/attence/workday/query',
+    method: 'get',
+    params: id
+  })
+}
+
+export function setWorkday(param) {
+  return request({
+    url: '/attence/workday/update',
+    method: 'post',
+    params: param
+  })
+}
+
 export function editRegulation(param) {
   return request({
     url: 'attence/regulation/update',
     method: 'post',
-    body: param
+    params: param
   })
 }
 
@@ -20,6 +36,14 @@ export function deleteRegulation(id) {
     url: '/attence/regulation/delete',
     method: 'post',
     params: id
+  })
+}
+
+export function addRegulation(param) {
+  return request({
+    url: '/attence/regulation/new',
+    method: 'post',
+    params: param
   })
 }
 

@@ -3,11 +3,9 @@ package com.webvisit.controller;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.common.re.Result;
+import com.webvisit.model.dto.RegulationDTO;
 import com.webvisit.model.po.AttenceRegulation;
-import com.webvisit.model.vo.AnnualVO;
-import com.webvisit.model.vo.LeaveVO;
-import com.webvisit.model.vo.RegulationVO;
-import com.webvisit.model.vo.UserInfoVO;
+import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
 import org.springframework.beans.BeanUtils;
@@ -38,13 +36,13 @@ public class AttenceController {
 
     @RequestMapping(value = "/regulation/new", method = RequestMethod.POST)
     @ResponseBody
-    Result addRegulation(@RequestBody AttenceRegulation attenceRegulation, @LoginUser UserInfoVO userInfoVO) {
+    Result addRegulation(RegulationDTO regulationDTO, @LoginUser UserInfoVO userInfoVO) {
         if (null != userInfoVO) {
-            attenceRegulation.setCompanyId(userInfoVO.getCompanyId());
-            attenceRegulation.setCreateAccountId(userInfoVO.getId());
+            regulationDTO.setCompanyId(userInfoVO.getCompanyId());
+            regulationDTO.setCreateAccountId(userInfoVO.getId());
         }
-        attenceRegulation.setCreateTime(TimeUtil.createNowTime());
-        return Result.success(attenceService.addRegulation(attenceRegulation));
+        regulationDTO.setCreateTime(TimeUtil.createNowTime());
+        return Result.success(attenceService.addRegulation(regulationDTO));
     }
 
     @RequestMapping("/regulation/query")
@@ -62,10 +60,8 @@ public class AttenceController {
 
     @RequestMapping(value = "/regulation/update",method = RequestMethod.POST)
     @ResponseBody
-    Result updateRegulation(@LoginUser UserInfoVO userInfoVO, @RequestBody RegulationVO regulationVO) {
-        AttenceRegulation attenceRegulation = new AttenceRegulation();
-        BeanUtils.copyProperties(regulationVO,attenceRegulation);
-        return Result.success(attenceService.editRegulation(userInfoVO, attenceRegulation));
+    Result updateRegulation(@LoginUser UserInfoVO userInfoVO, RegulationDTO regulationDTO) {
+        return Result.success(attenceService.editRegulation(userInfoVO, regulationDTO));
     }
 
 
@@ -137,6 +133,18 @@ public class AttenceController {
     @ResponseBody
     Result editAnnual(@LoginUser UserInfoVO userInfoVO, AnnualVO annualVO) {
         return Result.success(attenceService.editAnnual(userInfoVO, annualVO));
+    }
+
+    @RequestMapping("/workday/query")
+    @ResponseBody
+    Result queryWorkday(@LoginUser UserInfoVO userInfoVO, Long regulationId) {
+        return Result.success(attenceService.queryWorkDays(userInfoVO,regulationId));
+    }
+
+    @RequestMapping("/workday/update")
+    @ResponseBody
+    Result editWorkday(@LoginUser UserInfoVO userInfoVO, WorkdayVO workdayVO){
+        return Result.success(attenceService.setWorkday(userInfoVO,workdayVO));
     }
 
     @InitBinder

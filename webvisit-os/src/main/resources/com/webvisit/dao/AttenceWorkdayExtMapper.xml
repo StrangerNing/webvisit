@@ -16,9 +16,9 @@
     where regulation_id = #{regulationId,jdbcType=BIGINT}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByRegulationId" parameterType="java.lang.Long" >
     delete from t_attence_workday
-    where annual_id = #{annualId,jdbcType=BIGINT}
+    where regulation_id = #{regulationId,jdbcType=BIGINT}
   </delete>
 
   <select id="countByRegulationId" parameterType="java.lang.Long">
