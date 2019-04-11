@@ -6,3 +6,11 @@ export function getRegulationList() {
     method: 'get'
   })
 }
+
+export function getHolidayList(param) {
+  return request({
+    url: '/attence/holiday/query',
+    method: 'get',
+    params: param
+  })
+}

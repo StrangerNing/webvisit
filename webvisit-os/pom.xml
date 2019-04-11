@@ -11,6 +11,7 @@
     <groupId>com</groupId>
     <artifactId>webvisit-os</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>webvisit-os</name>
     <description>for graduation project</description>
 
