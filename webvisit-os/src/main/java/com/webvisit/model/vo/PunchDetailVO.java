@@ -1,5 +1,6 @@
 package com.webvisit.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.webvisit.model.po.AttencePunchDetail;
 import lombok.*;
 
@@ -26,7 +27,9 @@ public class PunchDetailVO extends AttencePunchDetail {
 
     private Long companyId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date beginDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date endDate;
 }

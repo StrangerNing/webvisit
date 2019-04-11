@@ -1,6 +1,7 @@
 package com.webvisit.dao;
 
 import com.webvisit.model.po.AttenceRegulation;
+import com.webvisit.model.vo.RegulationVO;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface AttenceRegulationExtMapper {
      * @param companyId 公司id
      * @return 考勤规则列表
      */
-    List<AttenceRegulation> queryRegulationListByCompanyId(Long companyId);
+    List<RegulationVO> queryRegulationListByCompanyId(Long companyId);
 
     /**
      * 插入考勤规则返回主键id

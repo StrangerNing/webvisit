@@ -1,5 +1,6 @@
 package com.webvisit.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.webvisit.model.po.AttenceHolidayDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,7 @@ public class AnnualDetailVO {
 
     private Long deptName;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date employmentDate;
 
     private List<AttenceHolidayDetail> holidayDetailList;

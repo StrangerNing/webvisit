@@ -28,6 +28,8 @@ public class AttenceRegulation {
 
     private BigDecimal checkLocationLat;
 
+    private Integer type;
+
     private Date createTime;
 
     private Long createAccountId;
@@ -132,6 +134,14 @@ public class AttenceRegulation {
 
     public void setCheckLocationLat(BigDecimal checkLocationLat) {
         this.checkLocationLat = checkLocationLat;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Date getCreateTime() {

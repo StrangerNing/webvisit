@@ -1,5 +1,6 @@
 package com.webvisit.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.webvisit.model.po.AttenceHolidayCustom;
 import com.webvisit.model.po.AttenceHolidayDefault;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 public class HolidayVO {
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date holidayDate;
 
     private Integer defaultType;

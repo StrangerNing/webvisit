@@ -1,9 +1,6 @@
 package com.webvisit.service.impl;
 
-import com.webvisit.common.enums.AnnualBaseEnum;
-import com.webvisit.common.enums.CustomHolidayTypeEnum;
-import com.webvisit.common.enums.DefaultHolidayTypeEnum;
-import com.webvisit.common.enums.LeaveTypeEnum;
+import com.webvisit.common.enums.*;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.*;
 import com.webvisit.dao.common.*;
@@ -13,6 +10,7 @@ import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +92,9 @@ public class AttenceServiceImpl implements AttenceService {
         if (!companyId.equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限删除这个考勤规则！");
         }
+        if (RegulationTypeEnum.DEFAULT.getCode().equals(attenceRegulation.getType())) {
+            throw new BusinessException("默认考勤规则无法删除！");
+        }
         int deleteRegulationResult = attenceRegulationMapper.deleteByPrimaryKey(regulationId);
         int deleteWorkdayResult = attenceWorkdayExtMapper.deleteByRegulationId(regulationId);
         return deleteRegulationResult == 1 && deleteWorkdayResult > 0;
@@ -120,7 +121,7 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public List<AttenceRegulation> queryRegulations(Long companyId) {
+    public List<RegulationVO> queryRegulations(Long companyId) {
         return attenceRegulationExtMapper.queryRegulationListByCompanyId(companyId);
     }
 
@@ -182,7 +183,7 @@ public class AttenceServiceImpl implements AttenceService {
             return attenceHolidayCustomMapper.insert(custom) == 1;
         } else if (holidays.size() == 1) {
             HolidayVO holiday = holidays.get(0);
-            if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.DUTY_DAY.getCode())) {
+            if (DefaultHolidayTypeEnum.DUTY_DAY.getCode().equals(holiday.getDefaultType())) {
                 if (null == holiday.getCustomType()) {
                     AttenceHolidayCustom custom = generateCustomHoliday(userInfoVO, date, CustomHolidayTypeEnum.NEW.getCode());
                     return attenceHolidayCustomMapper.insert(custom) == 1;
@@ -217,19 +218,17 @@ public class AttenceServiceImpl implements AttenceService {
         if (!holidays.isEmpty()) {
             if (holidays.size() == 1) {
                 HolidayVO holiday = holidays.get(0);
-                if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.LEGAL_HOLIDAY.getCode())) {
+                if (DefaultHolidayTypeEnum.LEGAL_HOLIDAY.getCode().equals(holiday.getDefaultType())) {
                     if (null == holiday.getCustomType()) {
-                        AttenceHolidayCustom custom = generateCustomHoliday(userInfoVO, date, CustomHolidayTypeEnum.CANCEL.getCode());
+                        AttenceHolidayCustom custom = generateCustomHoliday(userInfoVO,date,CustomHolidayTypeEnum.CANCEL.getCode());
                         return attenceHolidayCustomMapper.insert(custom) == 1;
                     }
-                } else if (holiday.getDefaultType().equals(DefaultHolidayTypeEnum.DUTY_DAY.getCode())) {
-                    if (null != holiday.getCustomType()) {
-                        if (holiday.getCustomType().equals(CustomHolidayTypeEnum.NEW.getCode())) {
-                            AttenceHolidayCustom custom = new AttenceHolidayCustom();
-                            custom.setCompanyId(userInfoVO.getCompanyId());
-                            custom.setHolidayDate(date);
-                            return attenceHolidayCustomExtMapper.deleteByDate(custom) == 1;
-                        }
+                } else if (DefaultHolidayTypeEnum.DUTY_DAY.getCode().equals(holiday.getDefaultType()) || null == holiday.getDefaultType()) {
+                    if (CustomHolidayTypeEnum.NEW.getCode().equals(holiday.getCustomType())) {
+                        AttenceHolidayCustom custom = new AttenceHolidayCustom();
+                        custom.setCompanyId(userInfoVO.getCompanyId());
+                        custom.setHolidayDate(date);
+                        return attenceHolidayCustomExtMapper.deleteByDate(custom) == 1;
                     }
                 }
             }

@@ -45,7 +45,7 @@ public interface AttenceService {
      * @param companyId 公司id
      * @return 操作结果
      */
-    List<AttenceRegulation> queryRegulations(Long companyId);
+    List<RegulationVO> queryRegulations(Long companyId);
 
     /**
      * 查看工作日设置

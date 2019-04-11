@@ -14,6 +14,7 @@
     <result column="allow_location_offset" property="allowLocationOffset" jdbcType="INTEGER" />
     <result column="check_location_lon" property="checkLocationLon" jdbcType="DECIMAL" />
     <result column="check_location_lat" property="checkLocationLat" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_account_id" property="createAccountId" jdbcType="BIGINT" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
@@ -23,7 +24,7 @@
   <sql id="Base_Column_List" >
     id, company_id, name, punch_in_start, punch_in_end, punch_out_start, punch_out_end, 
     allow_late, allow_leave_early, allow_location_offset, check_location_lon, check_location_lat, 
-    create_time, create_account_id, modify_time, modify_account_id, remark
+    type, create_time, create_account_id, modify_time, modify_account_id, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -40,16 +41,16 @@
       punch_in_start, punch_in_end, punch_out_start, 
       punch_out_end, allow_late, allow_leave_early, 
       allow_location_offset, check_location_lon, 
-      check_location_lat, create_time, create_account_id, 
-      modify_time, modify_account_id, remark
-      )
+      check_location_lat, type, create_time, 
+      create_account_id, modify_time, modify_account_id, 
+      remark)
     values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{punchInStart,jdbcType=TIME}, #{punchInEnd,jdbcType=TIME}, #{punchOutStart,jdbcType=TIME}, 
       #{punchOutEnd,jdbcType=TIME}, #{allowLate,jdbcType=TIME}, #{allowLeaveEarly,jdbcType=TIME}, 
       #{allowLocationOffset,jdbcType=INTEGER}, #{checkLocationLon,jdbcType=DECIMAL}, 
-      #{checkLocationLat,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{createAccountId,jdbcType=BIGINT}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{modifyAccountId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
-      )
+      #{checkLocationLat,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createAccountId,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyAccountId,jdbcType=BIGINT}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.webvisit.model.po.AttenceRegulation" >
     insert into t_attence_regulation
@@ -89,6 +90,9 @@
       </if>
       <if test="checkLocationLat != null" >
         check_location_lat,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -143,6 +147,9 @@
       <if test="checkLocationLat != null" >
         #{checkLocationLat,jdbcType=DECIMAL},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -196,6 +203,9 @@
       <if test="checkLocationLat != null" >
         check_location_lat = #{checkLocationLat,jdbcType=DECIMAL},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -227,6 +237,7 @@
       allow_location_offset = #{allowLocationOffset,jdbcType=INTEGER},
       check_location_lon = #{checkLocationLon,jdbcType=DECIMAL},
       check_location_lat = #{checkLocationLat,jdbcType=DECIMAL},
+      type = #{type,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_account_id = #{createAccountId,jdbcType=BIGINT},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
