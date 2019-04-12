@@ -29,7 +29,7 @@ public class LeaveVO {
 
     private Integer type;
 
-    @NotBlank(message = "请输入可请假天数")
+    @NotNull(message = "请输入可请假天数")
     private Integer availableDays;
 
     @NotNull(message = "请输入薪资比例")

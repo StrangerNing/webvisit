@@ -140,7 +140,7 @@ public class AttenceServiceImpl implements AttenceService {
             throw new BusinessException("工作日设置出错");
         }
         Long regulationId = workdayVO.getRegulationId();
-        if (attenceWorkdayExtMapper.deleteByRegulationId(regulationId) == 0) {
+        if (attenceWorkdayExtMapper.deleteByRegulationId(regulationId) < 0) {
             throw new BusinessException("工作日设置出错");
         }
         Set<Integer> noDuplicateList = new HashSet<Integer>();
