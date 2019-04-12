@@ -287,7 +287,7 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public List<AttenceAnnual> queryAnnul(UserInfoVO userInfoVO) {
+    public List<AnnualVO> queryAnnul(UserInfoVO userInfoVO) {
         AttenceAnnual attenceAnnual = new AttenceAnnual();
         attenceAnnual.setCompanyId(userInfoVO.getCompanyId());
         return attenceAnnualExtMapper.selectByCondition(attenceAnnual);
@@ -321,7 +321,7 @@ public class AttenceServiceImpl implements AttenceService {
         AttenceAnnual queryCondition = new AttenceAnnual();
         queryCondition.setCompanyId(userInfoVO.getCompanyId());
         queryCondition.setStatus(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode());
-        List<AttenceAnnual> queryAnnuals = attenceAnnualExtMapper.selectByCondition(queryCondition);
+        List<AnnualVO> queryAnnuals = attenceAnnualExtMapper.selectByCondition(queryCondition);
         if (queryAnnuals.size() > 1) {
             throw new BusinessException("查询出错");
         }

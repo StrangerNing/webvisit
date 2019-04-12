@@ -1,6 +1,7 @@
 package com.webvisit.dao;
 
 import com.webvisit.model.po.AttenceAnnual;
+import com.webvisit.model.vo.AnnualVO;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface AttenceAnnualExtMapper {
      * @param attenceAnnual 查询条件
      * @return 年假规则列表
      */
-    List<AttenceAnnual> selectByCondition(AttenceAnnual attenceAnnual);
+    List<AnnualVO> selectByCondition(AttenceAnnual attenceAnnual);
 
     /**
      * 根据入参插入年假规则返回主键id

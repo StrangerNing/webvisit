@@ -122,13 +122,13 @@ public class AttenceController {
 
     @RequestMapping("/annual/add")
     @ResponseBody
-    Result addAnnual(@LoginUser UserInfoVO userInfoVO, AnnualVO annualVO) {
+    Result addAnnual(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualVO annualVO) {
         return Result.success(attenceService.addAnnual(userInfoVO, annualVO));
     }
 
     @RequestMapping("/annual/update")
     @ResponseBody
-    Result editAnnual(@LoginUser UserInfoVO userInfoVO, AnnualVO annualVO) {
+    Result editAnnual(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualVO annualVO) {
         return Result.success(attenceService.editAnnual(userInfoVO, annualVO));
     }
 
@@ -140,13 +140,13 @@ public class AttenceController {
 
     @RequestMapping("/annual/step/add")
     @ResponseBody
-    Result addAnnualStep(@LoginUser UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
+    Result addAnnualStep(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualStepVO annualStepVO) {
         return Result.success(attenceService.addAnnualStep(userInfoVO,annualStepVO));
     }
 
     @RequestMapping("/annual/step/update")
     @ResponseBody
-    Result updateAnnualStep(@LoginUser UserInfoVO userInfoVO, AnnualStepVO annualStepVO) {
+    Result updateAnnualStep(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualStepVO annualStepVO) {
         return Result.success(attenceService.editAnnualStep(userInfoVO,annualStepVO));
     }
 

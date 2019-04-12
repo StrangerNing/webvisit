@@ -434,7 +434,7 @@
             <h2>年假设置</h2>
           </el-col>
           <el-col :span="11" style="text-align: right;margin-bottom:0.3%;">
-            <el-button type="primary" icon="el-icon-plus" @click="addRegulation()">添加</el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="newAnnual()">添加</el-button>
           </el-col>
         </el-row>
         <el-table :data="annualList" border stripe fit>
@@ -448,15 +448,27 @@
           <el-table-column
             prop="accumulateToNextYear"
             label="是否可以累积到下一年"
-          />
+          >
+            <span slot-scope="scope">
+              {{ getAccumulateToNextYear(scope.row.accumulateToNextYear) }}
+            </span>
+          </el-table-column>
           <el-table-column
             prop="probationHas"
             label="试用期是否享受"
-          />
+          >
+            <span slot-scope="scope">
+              {{ getProbationHas(scope.row.probationHas) }}
+            </span>
+          </el-table-column>
           <el-table-column
             prop="graduationOneYearHas"
             label="毕业未满一年是否享受"
-          />
+          >
+            <span slot-scope="scope">
+              {{ getGraduation(scope.row.graduationOneYearHas) }}
+            </span>
+          </el-table-column>
           <el-table-column
             label="年假阶梯设置"
           >
@@ -487,7 +499,7 @@
                     type="danger"
                     size="small"
                     icon="el-icon-delete"
-                    @click="deleteAnnual(scope.$index, scope.row)"
+                    @click="delAnnual(scope.$index, scope.row)"
                   >删除</el-button>
                 </el-col>
               </el-row>
@@ -499,7 +511,7 @@
           :visible.sync="annualStepVisible"
         >
           <div v-if="annualStepEdit">
-            <el-button type="primary" size="small" icon="el-icon-plus" @click="addAnnualStep()">添加</el-button>
+            <el-button type="primary" size="small" icon="el-icon-plus" @click="addStep()">添加</el-button>
           </div>
           <div v-else>
             <el-button type="primary" size="small" icon="el-icon-plus" @click="startEditAnnualStep()">编辑</el-button>
@@ -557,7 +569,7 @@
                       type="primary"
                       size="small"
                       icon="el-icon-edit"
-                      @click="editAnnual(scope.$index, scope.row)"
+                      @click="editAnnualStep(scope.$index, scope.row)"
                     >提交</el-button>
                   </div>
                   <div v-else>
@@ -565,7 +577,7 @@
                       type="danger"
                       size="small"
                       icon="el-icon-delete"
-                      @click="deleteAnnual(scope.$index, scope.row)"
+                      @click="deleteAnnualStep(scope.$index, scope.row)"
                     >删除</el-button>
                   </div>
                 </el-row>
@@ -574,7 +586,38 @@
           </el-table>
           <el-row style="text-align: center;margin-top: 100px">
             <el-button icon="el-icon-close" style="margin-right: 10px" @click="cancelEditAnnualStep()">取消</el-button>
-            <el-button type="primary" icon="el-icon-upload" style="margin-left: 10px" @click="commitLeaveType()">提交
+            <el-button type="primary" icon="el-icon-upload" style="margin-left: 10px" @click="cancelEditAnnualStep()">确定
+            </el-button>
+          </el-row>
+        </el-dialog>
+        <el-dialog
+          :title="annualTitle"
+          :visible.sync="annualVisible"
+        >
+          <el-form :model="annual" label-width="25%" style="width: 100%;">
+            <el-form-item label="年假到期日">
+              <el-date-picker
+                v-model="annual.expireDate"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              />
+            </el-form-item>
+            <el-form-item label="是否可以累积到下一年">
+              <el-radio v-model="annual.accumulateToNextYear" :label="accumulateToNextYearEnum.yes">是</el-radio>
+              <el-radio v-model="annual.accumulateToNextYear" :label="accumulateToNextYearEnum.no">否</el-radio>
+            </el-form-item>
+            <el-form-item label="试用期是否享受">
+              <el-radio v-model="annual.probationHas" :label="probationHasEnum.yes">是</el-radio>
+              <el-radio v-model="annual.probationHas" :label="probationHasEnum.no">否</el-radio>
+            </el-form-item>
+            <el-form-item label="毕业未满一年是否享受">
+              <el-radio v-model="annual.graduationOneYearHas" :label="graduationOneYearHasEnum.yes">是</el-radio>
+              <el-radio v-model="annual.graduationOneYearHas" :label="graduationOneYearHasEnum.no">否</el-radio>
+            </el-form-item>
+          </el-form>
+          <el-row style="text-align: center;margin-top: 100px">
+            <el-button icon="el-icon-close" style="margin-right: 10px" @click="cancelSetAnnual()">取消</el-button>
+            <el-button type="primary" icon="el-icon-upload" style="margin-left: 10px" @click="commitAnnual()">提交
             </el-button>
           </el-row>
         </el-dialog>
@@ -585,14 +628,16 @@
 
 <script>
 import {
+  addAnnual,
+  addAnnualStep,
   addLeave,
   addRegulation,
-  cancelHoliday, deleteLeave,
+  cancelHoliday, deleteAnnualStep, deleteLeave,
   deleteRegulation,
   editRegulation,
   getHolidayList, getLeaveList,
   getRegulationList, getWorkdayList, queryAnnual, queryAnnualStep,
-  setHoliday, setWorkday
+  setHoliday, setWorkday, updateAnnual, updateAnnualStep, deleteAnnual
 } from '../../api/attence'
 import { Message } from 'element-ui'
 import enums from './enums'
@@ -607,6 +652,7 @@ export default {
       },
       editTitle: '编辑考勤规则',
       leaveTypeTile: '编辑请假类型',
+      annualTitle: '编辑年假规则',
       annualStepEdit: false,
       deleteConfirmVisible: false,
       editRegulationVisible: false,
@@ -614,6 +660,7 @@ export default {
       addHolidayVisible: false,
       editLeaveVisible: false,
       annualStepVisible: false,
+      annualVisible: false,
       regulation: {
         id: 0,
         name: '',
@@ -646,13 +693,50 @@ export default {
         name: '',
         availableDays: 0,
         salaryPercent: 0
-      }
+      },
+      accumulateToNextYearEnum: {
+        yes: enums.accumulateToNextYearEnum.yes.value,
+        no: enums.accumulateToNextYearEnum.no.value
+      },
+      probationHasEnum: {
+        yes: enums.probationHasEnum.yes.value,
+        no: enums.probationHasEnum.no.value
+      },
+      graduationOneYearHasEnum: {
+        yes: enums.graduationOneYearHasEnum.yes.value,
+        no: enums.graduationOneYearHasEnum.no.value
+      },
+      annual: {
+        id: null,
+        companyId: null,
+        expireDate: '',
+        accumulateToNextYear: null,
+        probationHas: null,
+        graduationOneYearHas: null,
+        status: null
+      },
+      annualIdForStep: 0
     }
   },
   computed: {
     getWorkdayLabel() {
       return function(param) {
         return enums.attenceEnum.getLabelByValue(param)
+      }
+    },
+    getAccumulateToNextYear() {
+      return function(param) {
+        return enums.accumulateToNextYearEnum.getLabelByValue(param)
+      }
+    },
+    getProbationHas() {
+      return function(param) {
+        return enums.probationHasEnum.getLabelByValue(param)
+      }
+    },
+    getGraduation() {
+      return function(param) {
+        return enums.graduationOneYearHasEnum.getLabelByValue(param)
       }
     }
   },
@@ -693,7 +777,9 @@ export default {
     },
     editRegulation(index, row) {
       this.editTitle = '编辑考勤规则'
-      this.regulation = row
+      for (const key in row) {
+        this.regulation[key] = row[key]
+      }
       this.editRegulationVisible = true
     },
     cancelRegulation() {
@@ -896,7 +982,9 @@ export default {
     },
     editLeaveType(index, row) {
       this.leaveTypeTile = '编辑请假类型'
-      this.leaveType = row
+      for (const key in row) {
+        this.leaveType[key] = row[key]
+      }
       this.editLeaveVisible = true
     },
     deleteLeaveType(index, row) {
@@ -914,6 +1002,7 @@ export default {
         this.annualStepList = res.data
         this.annualStepVisible = true
         this.annualStepEdit = false
+        this.annualIdForStep = row.id
       })
     },
     startEditAnnualStep() {
@@ -922,6 +1011,100 @@ export default {
     cancelEditAnnualStep() {
       this.annualStepVisible = false
       this.annualStepEdit = false
+    },
+    addStep() {
+      const step = {
+        id: null,
+        annualId: this.annualIdForStep,
+        moreThan: null,
+        lessThan: null,
+        vacationDays: null
+      }
+      this.annualStepList.push(step)
+    },
+    cancelSetAnnual() {
+      this.annualVisible = false
+    },
+    editAnnual(index, row) {
+      this.annualTitle = '编辑年假规则'
+      for (const key in row) {
+        this.annual[key] = row[key]
+      }
+      this.annualVisible = true
+    },
+    newAnnual() {
+      this.annualTitle = '新增年假规则'
+      for (const key in this.annual) {
+        this.annual[key] = null
+      }
+      this.annualVisible = true
+    },
+    delAnnual(index, row) {
+      deleteAnnual({ annualId: row.id }).then(res => {
+        this.checkCommitAnnual(res)
+      })
+    },
+    commitAnnual() {
+      if (this.annual.id === null) {
+        addAnnual(this.annual).then(res => {
+          this.checkCommitAnnual(res)
+        })
+      } else {
+        updateAnnual(this.annual).then(res => {
+          this.checkCommitAnnual(res)
+        })
+      }
+    },
+    checkCommitAnnual(res) {
+      if (res.data) {
+        Message({
+          message: '提交成功',
+          type: 'success',
+          duration: 10 * 1000
+        })
+      } else {
+        Message({
+          message: '提交失败',
+          type: 'error',
+          duration: 10 * 1000
+        })
+      }
+      this.getAnnualList()
+      this.annualVisible = false
+    },
+    editAnnualStep(index, row) {
+      if (row.id === null) {
+        addAnnualStep(row).then(res => {
+          this.checkAnnualStepCommit(res, index, row)
+        })
+      } else {
+        updateAnnualStep(row).then(res => {
+          this.checkAnnualStepCommit(res, index, row)
+        })
+      }
+    },
+    checkAnnualStepCommit(res, index, row) {
+      if (res.data) {
+        Message({
+          message: '提交成功',
+          type: 'success',
+          duration: 10 * 1000
+        })
+      } else {
+        Message({
+          message: '提交失败',
+          type: 'error',
+          duration: 10 * 1000
+        })
+      }
+      queryAnnualStep({ annualId: row.annualId }).then(res => {
+        this.annualStepList = res.data
+      })
+    },
+    deleteAnnualStep(index, row) {
+      deleteAnnualStep({ annualStepId: row.id }).then(res => {
+        this.checkAnnualStepCommit(res, index, row)
+      })
     }
   }
 }

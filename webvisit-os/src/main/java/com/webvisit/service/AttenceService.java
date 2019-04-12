@@ -126,7 +126,7 @@ public interface AttenceService {
      * @param userInfoVO 当前用户信息
      * @return 操作结果
      */
-    List<AttenceAnnual> queryAnnul(UserInfoVO userInfoVO);
+    List<AnnualVO> queryAnnul(UserInfoVO userInfoVO);
 
     /**
      * 删除年假规则
