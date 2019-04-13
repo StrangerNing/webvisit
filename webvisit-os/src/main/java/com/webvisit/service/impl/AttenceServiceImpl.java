@@ -13,6 +13,7 @@ import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -266,6 +267,17 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
+    public Boolean editLeave(UserInfoVO userInfoVO, LeaveVO leaveVO) {
+        AttenceLeave attenceLeave = new AttenceLeave();
+        BeanUtils.copyProperties(leaveVO,attenceLeave);
+        attenceLeave.setCompanyId(userInfoVO.getCompanyId());
+        attenceLeave.setType(LeaveTypeEnum.COMPANY_ADD.getCode());
+        attenceLeave.setModifyTime(TimeUtil.createNowTime());
+        attenceLeave.setModifyAccountId(userInfoVO.getId());
+        return attenceLeaveMapper.updateByPrimaryKeySelective(attenceLeave) == 1;
+    }
+
+    @Override
     public Boolean deleteLeave(UserInfoVO userInfoVO, Long leaveId) {
         AttenceLeave attenceLeave = attenceLeaveMapper.selectByPrimaryKey(leaveId);
         if (null == attenceLeave) {
@@ -318,22 +330,8 @@ public class AttenceServiceImpl implements AttenceService {
     @Override
     public Boolean addAnnual(UserInfoVO userInfoVO, AnnualVO annualVO) {
         ValidatorUtil.validate(annualVO);
-        AttenceAnnual queryCondition = new AttenceAnnual();
-        queryCondition.setCompanyId(userInfoVO.getCompanyId());
-        queryCondition.setStatus(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode());
-        List<AnnualVO> queryAnnuals = attenceAnnualExtMapper.selectByCondition(queryCondition);
-        if (queryAnnuals.size() > 1) {
-            throw new BusinessException("查询出错");
-        }
-        if (annualVO.getStatus().equals(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode())) {
-            if (queryAnnuals.size() == 1) {
-                AttenceAnnual setAnnual = new AttenceAnnual();
-                setAnnual.setId(queryAnnuals.get(0).getId());
-                setAnnual.setStatus(AnnualBaseEnum.AnnualStatusEnum.DISABLE.getCode());
-                setAnnual.setModifyAccountId(userInfoVO.getId());
-                setAnnual.setModifyTime(TimeUtil.createNowTime());
-                attenceAnnualMapper.updateByPrimaryKeySelective(setAnnual);
-            }
+        if (!checkAnnualStatus(userInfoVO,annualVO)) {
+            throw new BusinessException("设置其他默认年假出错");
         }
         AttenceAnnual attenceAnnual = new AttenceAnnual();
         BeanUtils.copyProperties(annualVO, attenceAnnual);
@@ -350,6 +348,27 @@ public class AttenceServiceImpl implements AttenceService {
         return insertNum == 1 && insertStepNum == 1;
     }
 
+    private Boolean checkAnnualStatus(UserInfoVO userInfoVO,AnnualVO annualVO) {
+        AttenceAnnual queryCondition = new AttenceAnnual();
+        queryCondition.setCompanyId(userInfoVO.getCompanyId());
+        queryCondition.setStatus(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode());
+        List<AnnualVO> queryAnnuals = attenceAnnualExtMapper.selectByCondition(queryCondition);
+        if (queryAnnuals.size() > 1) {
+            throw new BusinessException("查询出错");
+        }
+        if (annualVO.getStatus().equals(AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode())) {
+            if (queryAnnuals.size() == 1) {
+                AttenceAnnual setAnnual = new AttenceAnnual();
+                setAnnual.setId(queryAnnuals.get(0).getId());
+                setAnnual.setStatus(AnnualBaseEnum.AnnualStatusEnum.DISABLE.getCode());
+                setAnnual.setModifyAccountId(userInfoVO.getId());
+                setAnnual.setModifyTime(TimeUtil.createNowTime());
+                return attenceAnnualMapper.updateByPrimaryKeySelective(setAnnual) == 1;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Boolean editAnnual(UserInfoVO userInfoVO, AnnualVO annualVO) {
         if (null == annualVO.getId()) {
@@ -358,6 +377,15 @@ public class AttenceServiceImpl implements AttenceService {
         AttenceAnnual attenceAnnual = attenceAnnualMapper.selectByPrimaryKey(annualVO.getId());
         if (!attenceAnnual.getCompanyId().equals(userInfoVO.getCompanyId())) {
             throw new BusinessException("您没有权限编辑此年假类型！");
+        }
+        if (AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode().equals(annualVO.getStatus())) {
+            if (AnnualBaseEnum.AnnualStatusEnum.DISABLE.getCode().equals(attenceAnnual.getStatus())) {
+                checkAnnualStatus(userInfoVO,annualVO);
+            }
+        } else {
+            if (AnnualBaseEnum.AnnualStatusEnum.ENABLE.getCode().equals(attenceAnnual.getStatus())) {
+                throw new BusinessException("必须保留一个启用的年假规则");
+            }
         }
         AttenceAnnual editAnnual = new AttenceAnnual();
         BeanUtils.copyProperties(annualVO, editAnnual);

@@ -1,11 +1,14 @@
 package com.webvisit.service.impl;
 
+import com.webvisit.dao.LogExtMapper;
 import com.webvisit.dao.common.LogMapper;
 import com.webvisit.model.po.Log;
+import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.SysLogService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zening.zhu
@@ -18,9 +21,16 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Resource
     private LogMapper logMapper;
+    @Resource
+    private LogExtMapper logExtMapper;
 
     @Override
     public Boolean saveLog(Log log) {
         return logMapper.insert(log) == 1;
+    }
+
+    @Override
+    public List<Log> queryLog(UserInfoVO userInfoVO) {
+        return logExtMapper.queryLog(userInfoVO.getCompanyId());
     }
 }

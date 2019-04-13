@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.webvisit.model.po.AttencePunchDetail;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -12,12 +13,11 @@ import java.util.Date;
  * @date 2019/4/8
  */
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PunchDetailVO extends AttencePunchDetail {
+public class PunchDetailVO {
 
     private String nickname;
 
@@ -32,4 +32,33 @@ public class PunchDetailVO extends AttencePunchDetail {
 
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date endDate;
+
+    private Long id;
+
+    private Long empId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    private Date punchTime;
+
+    @JsonFormat(pattern = "HH:mm:ss",timezone="GMT+8")
+    private Date punchInTime;
+
+    @JsonFormat(pattern = "HH:mm:ss",timezone="GMT+8")
+    private Date punchOutTime;
+
+    private Integer punchInStatus;
+
+    private Integer punchOutStatus;
+
+    private BigDecimal punchInLocationLon;
+
+    private BigDecimal punchInLocationLat;
+
+    private BigDecimal punchOutLocationLon;
+
+    private BigDecimal punchOutLocationLat;
+
+    private Integer punchType;
+
+    private Long leaveId;
 }

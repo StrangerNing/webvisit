@@ -6,6 +6,7 @@ import com.webvisit.common.constant.LocalConstant;
 import com.webvisit.model.po.Log;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.SysLogService;
+import com.webvisit.utils.TimeUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -85,6 +86,7 @@ public class SysLogAspect {
                     UserInfoVO userInfoVO = (UserInfoVO)redisTemplate.opsForValue().get(uuid);
                     if (null != userInfoVO) {
                         log.setUsername(userInfoVO.getUsername());
+                        log.setCompanyId(userInfoVO.getCompanyId());
                     } else {
                         logger.error("获取用户名失败");
                     }
@@ -93,6 +95,7 @@ public class SysLogAspect {
             //获取操作者ip
             String ip = request.getRemoteAddr();
             log.setIp(ip);
+            log.setCreateTime(TimeUtil.createNowTime());
         }
         if (!sysLogService.saveLog(log)){
             logger.error("保存日志失败");

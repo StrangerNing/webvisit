@@ -136,12 +136,44 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
+        path: 'report',
+        component: () => import('@/views/attence/attenceReport'),
+        name: 'AttenceReport',
         meta: {
-          title: 'directivePermission'
+          title: 'attenceReport',
+          roles: ['admin']
           // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'detail',
+        component: () => import('@/views/attence/holidayDetail'),
+        name: 'HolidayDetail',
+        meta: {
+          title: 'holidayDetail',
+          roles: ['admin', 'editor']
+        }
+      }
+    ]
+  },
+  {
+    path: '/yellowPages',
+    component: Layout,
+    redirect: '/yellowPages/index',
+    alwaysShow: true,
+    meta: {
+      title: 'yellowPages',
+      icon: 'excel',
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/yellow-page/index'),
+        name: 'YellowPageEdit',
+        meta: {
+          title: 'yellowPageEdit',
+          roles: ['admin'] // or you can only set roles in sub nav
         }
       }
     ]

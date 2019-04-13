@@ -28,9 +28,9 @@ public class AnnualDetailVO {
 
     private String nickname;
 
-    private Long companyName;
+    private String companyName;
 
-    private Long deptName;
+    private String deptName;
 
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date employmentDate;

@@ -1,6 +1,7 @@
 package com.webvisit.service;
 
 import com.webvisit.model.dto.RegulationDTO;
+import com.webvisit.model.dto.UserSimpleDTO;
 import com.webvisit.model.po.*;
 import com.webvisit.model.vo.*;
 
@@ -112,6 +113,14 @@ public interface AttenceService {
     Boolean addLeave(UserInfoVO userInfoVO, LeaveVO leaveVO);
 
     /**
+     * 编辑请假类型
+     * @param userInfoVO 当前用户信息
+     * @param leaveVO 请假类型
+     * @return 编辑结果
+     */
+    Boolean editLeave(UserInfoVO userInfoVO, LeaveVO leaveVO);
+
+    /**
      * 删除请假类型
      *
      * @param userInfoVO 当前用户信息
@@ -221,4 +230,11 @@ public interface AttenceService {
      * @return 考勤详情
      */
     List<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO,PunchDetailVO punchDetailVO);
+//
+//    /**
+//     * 获取公司职员列表
+//     * @param userInfoVO 当前用户信息
+//     * @return 职员列表
+//     */
+//    List<UserSimpleDTO> queryEmpList(UserInfoVO userInfoVO);
 }

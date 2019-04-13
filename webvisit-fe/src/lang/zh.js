@@ -8,7 +8,11 @@ export default {
     pagePermission: '页面权限',
     directivePermission: '指令权限',
     attence: '考勤管理',
-    attenceEdit: '考勤设置'
+    attenceEdit: '考勤设置',
+    attenceReport: '考勤报告',
+    holidayDetail: '假期明细',
+    yellowPages: '企业黄页',
+    yellowPageEdit: '黄页设置'
   },
   navbar: {
     logOut: '退出登录',

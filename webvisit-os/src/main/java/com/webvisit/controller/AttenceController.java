@@ -1,5 +1,6 @@
 package com.webvisit.controller;
 
+import com.webvisit.common.annotation.GetLog;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.common.re.Result;
@@ -33,6 +34,7 @@ public class AttenceController {
 
     @RequestMapping(value = "/regulation/new", method = RequestMethod.POST)
     @ResponseBody
+    @GetLog(value = "新增考勤规则")
     Result addRegulation(@RequestBody RegulationDTO regulationDTO, @LoginUser UserInfoVO userInfoVO) {
         if (null != userInfoVO) {
             regulationDTO.setCompanyId(userInfoVO.getCompanyId());
@@ -51,12 +53,14 @@ public class AttenceController {
 
     @RequestMapping("/regulation/delete")
     @ResponseBody
+    @GetLog(value = "删除考勤规则")
     Result deleteRegulation(@LoginUser UserInfoVO userInfoVO, Long regulationId) {
         return Result.success(attenceService.delRegulation(userInfoVO, regulationId));
     }
 
-    @RequestMapping(value = "/regulation/update",method = RequestMethod.POST)
+    @RequestMapping(value = "/regulation/update", method = RequestMethod.POST)
     @ResponseBody
+    @GetLog(value = "更新考勤规则")
     Result updateRegulation(@LoginUser UserInfoVO userInfoVO, @RequestBody RegulationDTO regulationDTO) {
         return Result.success(attenceService.editRegulation(userInfoVO, regulationDTO));
     }
@@ -72,7 +76,8 @@ public class AttenceController {
 
     @RequestMapping(value = "/holiday/new", method = RequestMethod.POST)
     @ResponseBody
-    Result addHoliday(@LoginUser UserInfoVO userInfoVO,@RequestParam Date date) {
+    @GetLog(value = "新增节假日")
+    Result addHoliday(@LoginUser UserInfoVO userInfoVO, @RequestParam Date date) {
         if (date != null) {
             return Result.success(attenceService.setHoliday(userInfoVO, date));
         } else {
@@ -82,7 +87,8 @@ public class AttenceController {
 
     @RequestMapping(value = "/holiday/cancel", method = RequestMethod.POST)
     @ResponseBody
-    Result cancelHoliday(@LoginUser UserInfoVO userInfoVO,@RequestParam Date date) {
+    @GetLog(value = "取消节假日")
+    Result cancelHoliday(@LoginUser UserInfoVO userInfoVO, @RequestParam Date date) {
         if (date != null) {
             return Result.success(attenceService.cancelHoliday(userInfoVO, date));
         } else {
@@ -98,12 +104,21 @@ public class AttenceController {
 
     @RequestMapping("/leave/add")
     @ResponseBody
+    @GetLog(value = "新增请假类型")
     Result addLeave(@LoginUser UserInfoVO userInfoVO, @RequestBody LeaveVO leaveVO) {
         return Result.success(attenceService.addLeave(userInfoVO, leaveVO));
     }
 
+    @RequestMapping("/leave/update")
+    @ResponseBody
+    @GetLog(value = "更新请假类型")
+    Result editLeave(@LoginUser UserInfoVO userInfoVO, @RequestBody LeaveVO leaveVO) {
+        return Result.success(attenceService.editLeave(userInfoVO, leaveVO));
+    }
+
     @RequestMapping("/leave/delete")
     @ResponseBody
+    @GetLog(value = "删除请假类型")
     Result deleteLeave(@LoginUser UserInfoVO userInfoVO, Long leaveId) {
         return Result.success(attenceService.deleteLeave(userInfoVO, leaveId));
     }
@@ -116,56 +131,88 @@ public class AttenceController {
 
     @RequestMapping("/annual/delete")
     @ResponseBody
+    @GetLog(value = "删除年假规则")
     Result deleteAnnual(@LoginUser UserInfoVO userInfoVO, Long annualId) {
         return Result.success(attenceService.deleteAnnul(userInfoVO, annualId));
     }
 
     @RequestMapping("/annual/add")
     @ResponseBody
+    @GetLog(value = "新增年假规则")
     Result addAnnual(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualVO annualVO) {
         return Result.success(attenceService.addAnnual(userInfoVO, annualVO));
     }
 
     @RequestMapping("/annual/update")
     @ResponseBody
+    @GetLog(value = "更新年假规则")
     Result editAnnual(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualVO annualVO) {
         return Result.success(attenceService.editAnnual(userInfoVO, annualVO));
     }
 
     @RequestMapping("/annual/step/query")
     @ResponseBody
-    Result queryAnnualStep(@LoginUser UserInfoVO userInfoVO,Long annualId) {
-        return Result.success(attenceService.queryAnnualStep(userInfoVO,annualId));
+    Result queryAnnualStep(@LoginUser UserInfoVO userInfoVO, Long annualId) {
+        return Result.success(attenceService.queryAnnualStep(userInfoVO, annualId));
     }
 
     @RequestMapping("/annual/step/add")
     @ResponseBody
+    @GetLog(value = "新增年假阶梯设置")
     Result addAnnualStep(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualStepVO annualStepVO) {
-        return Result.success(attenceService.addAnnualStep(userInfoVO,annualStepVO));
+        return Result.success(attenceService.addAnnualStep(userInfoVO, annualStepVO));
     }
 
     @RequestMapping("/annual/step/update")
     @ResponseBody
+    @GetLog(value = "更新年假阶梯设置")
     Result updateAnnualStep(@LoginUser UserInfoVO userInfoVO, @RequestBody AnnualStepVO annualStepVO) {
-        return Result.success(attenceService.editAnnualStep(userInfoVO,annualStepVO));
+        return Result.success(attenceService.editAnnualStep(userInfoVO, annualStepVO));
     }
 
     @RequestMapping("/annual/step/delete")
     @ResponseBody
-    Result deleteAnnualStep(@LoginUser UserInfoVO userInfoVO,Long annualStepId) {
-        return Result.success(attenceService.deleteAnnualStep(userInfoVO,annualStepId));
+    @GetLog(value = "删除年假阶梯设置")
+    Result deleteAnnualStep(@LoginUser UserInfoVO userInfoVO, Long annualStepId) {
+        return Result.success(attenceService.deleteAnnualStep(userInfoVO, annualStepId));
     }
 
     @RequestMapping("/workday/query")
     @ResponseBody
     Result queryWorkday(@LoginUser UserInfoVO userInfoVO, Long regulationId) {
-        return Result.success(attenceService.queryWorkDays(userInfoVO,regulationId));
+        return Result.success(attenceService.queryWorkDays(userInfoVO, regulationId));
     }
 
     @RequestMapping("/workday/update")
     @ResponseBody
-    Result editWorkday(@LoginUser UserInfoVO userInfoVO, @RequestBody WorkdayVO workdayVO){
-        return Result.success(attenceService.setWorkday(userInfoVO,workdayVO));
+    @GetLog(value = "更新工作日")
+    Result editWorkday(@LoginUser UserInfoVO userInfoVO, @RequestBody WorkdayVO workdayVO) {
+        return Result.success(attenceService.setWorkday(userInfoVO, workdayVO));
+    }
+
+    @RequestMapping("/annual/report/query")
+    @ResponseBody
+    Result queryAnnualReport(@LoginUser UserInfoVO userInfoVO) {
+        return Result.success(attenceService.queryAnnualDetail(userInfoVO));
+    }
+
+    @RequestMapping("/annual/report/update")
+    @ResponseBody
+    @GetLog(value = "更新个人假期详情")
+    Result editAnnualReport(@LoginUser UserInfoVO userInfoVO, HolidayDetailVO holidayDetailVO) {
+        return Result.success(attenceService.editAnnualDetail(userInfoVO, holidayDetailVO));
+    }
+
+    @RequestMapping("/report/all/query")
+    @ResponseBody
+    Result queryReportAll(@LoginUser UserInfoVO userInfoVO) {
+        return Result.success(attenceService.queryAttenceReport(userInfoVO));
+    }
+
+    @RequestMapping("/report/detail/query")
+    @ResponseBody
+    Result queryReportDetail(@LoginUser UserInfoVO userInfoVO, @RequestBody PunchDetailVO punchDetailVO) {
+        return Result.success(attenceService.queryAttencePunchDetail(userInfoVO, punchDetailVO));
     }
 
     @InitBinder

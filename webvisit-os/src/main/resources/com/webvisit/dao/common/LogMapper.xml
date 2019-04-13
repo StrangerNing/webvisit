@@ -9,9 +9,10 @@
     <result column="params" property="params" jdbcType="VARCHAR" />
     <result column="ip" property="ip" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, operation, method, params, ip, create_time
+    id, username, operation, method, params, ip, create_time, company_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -26,10 +27,10 @@
   <insert id="insert" parameterType="com.webvisit.model.po.Log" >
     insert into t_webvisit_log (id, username, operation, 
       method, params, ip, 
-      create_time)
+      create_time, company_id)
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, 
       #{method,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{companyId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.webvisit.model.po.Log" >
     insert into t_webvisit_log
@@ -55,6 +56,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -77,6 +81,9 @@
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -101,6 +108,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -111,7 +121,8 @@
       method = #{method,jdbcType=VARCHAR},
       params = #{params,jdbcType=VARCHAR},
       ip = #{ip,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      company_id = #{companyId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

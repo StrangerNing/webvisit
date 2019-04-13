@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "spring.fdfs.soTimeout",
+      "type": "java.lang.String",
+      "description": "Description for spring.fdfs.soTimeout."
+    },
+    {
+      "name": "spring.fdfs.connectTimeout",
+      "type": "java.lang.String",
+      "description": "Description for spring.fdfs.connectTimeout."
+    },
+    {
+      "name": "spring.fdfs.trackerList",
+      "type": "java.lang.String",
+      "description": "Description for spring.fdfs.trackerList."
+    }
+  ] }

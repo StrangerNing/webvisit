@@ -86,6 +86,14 @@ export function addLeave(data) {
   })
 }
 
+export function editLeave(data) {
+  return request({
+    url: '/attence/leave/update',
+    method: 'post',
+    data: data
+  })
+}
+
 export function deleteLeave(id) {
   return request({
     url: '/attence/leave/delete',
@@ -127,7 +135,7 @@ export function queryAnnual() {
 
 export function queryAnnualStep(id) {
   return request({
-    url: 'attence/annual/step/query',
+    url: '/attence/annual/step/query',
     method: 'get',
     params: id
   })
@@ -135,7 +143,7 @@ export function queryAnnualStep(id) {
 
 export function addAnnualStep(data) {
   return request({
-    url: 'attence/annual/step/add',
+    url: '/attence/annual/step/add',
     method: 'post',
     data: data
   })
@@ -143,7 +151,7 @@ export function addAnnualStep(data) {
 
 export function deleteAnnualStep(id) {
   return request({
-    url: 'attence/annual/step/delete',
+    url: '/attence/annual/step/delete',
     method: 'post',
     params: id
   })
@@ -151,7 +159,37 @@ export function deleteAnnualStep(id) {
 
 export function updateAnnualStep(data) {
   return request({
-    url: 'attence/annual/step/update',
+    url: '/attence/annual/step/update',
+    method: 'post',
+    data: data
+  })
+}
+
+export function queryAnnualReport() {
+  return request({
+    url: '/attence/annual/report/query',
+    method: 'get'
+  })
+}
+
+export function updateAnnualReport(data) {
+  return request({
+    url: '/attence/annual/report/update',
+    method: 'post',
+    data: data
+  })
+}
+
+export function getAllPunchReport() {
+  return request({
+    url: '/attence/report/all/query',
+    method: 'get'
+  })
+}
+
+export function getPunchDetailReport(data) {
+  return request({
+    url: '/attence/report/detail/query',
     method: 'post',
     data: data
   })

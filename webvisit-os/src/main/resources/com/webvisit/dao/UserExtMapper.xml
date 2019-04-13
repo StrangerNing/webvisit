@@ -55,7 +55,7 @@
         where username = #{username,jdbcType=VARCHAR} AND u.company_id = c.id AND u.dept_id = d.id
     </select>
 
-    <select id="selectByCompanyId" resultType="com.webvisit.model.dto.UserInfoDTO" parameterType="java.lang.Long">
+    <select id="selectByCompanyId" resultType="com.webvisit.model.dto.UserSimpleDTO" parameterType="java.lang.Long">
         select
         u.id AS id,
         u.username AS username,
@@ -67,6 +67,6 @@
         c.name AS companyName,
         d.name AS deptName
         from t_webvisit_user u,t_company_info c,t_company_dept d
-        where company_id = #{companyId,jdbcType=BIGINT} AND u.company_id = c.id AND u.dept_id = d.id
+        where u.company_id = #{companyId,jdbcType=BIGINT} AND u.company_id = c.id AND u.dept_id = d.id
     </select>
 </mapper>
