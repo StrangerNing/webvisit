@@ -12,7 +12,9 @@ export default {
     attenceReport: '考勤报告',
     holidayDetail: '假期明细',
     yellowPages: '企业黄页',
-    yellowPageEdit: '黄页设置'
+    yellowPageEdit: '黄页设置',
+    security: '安全设置',
+    log: '操作日志'
   },
   navbar: {
     logOut: '退出登录',

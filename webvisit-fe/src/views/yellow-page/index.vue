@@ -24,6 +24,17 @@
           <el-form-item label="注册时间">
             <el-input v-model="companyInfo.registTime" style="width: 300px;" />
           </el-form-item>
+          <el-form-item label="企业登录页log">
+            <el-upload
+              action="http://localhost:8080/yellowPage/img/save"
+              list-type="picture-card"
+              :show-file-list="false"
+              :on-success="handleLoginLogo"
+            >
+              <img v-if="companyInfo.loginLogo" :src="companyInfo.loginLogo" style="width: 145px;height: 145px">
+              <i v-else class="el-icon-plus" />
+            </el-upload>
+          </el-form-item>
           <el-button type="primary" style="margin-top: 30px;margin-left: 50px" @click="saveCompanyInfo()">确定</el-button>
         </el-form>
       </el-card>
@@ -39,9 +50,19 @@ export default {
   name: 'Index',
   data() {
     return {
-      companyInfo: {},
-      dialogImageUrl: '',
-      dialogVisible: false
+      companyInfo: {
+        id: null,
+        name: '',
+        address: '',
+        scopeOfBusiness: '',
+        type: null,
+        url: '',
+        createTime: null,
+        registTime: null,
+        loginLogo: null,
+        pageLogo: null,
+        webLogo: null
+      }
     }
   },
   created() {
@@ -70,12 +91,9 @@ export default {
         }
       })
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+    handleLoginLogo(response, file, fileList) {
+      console.log(response)
+      this.companyInfo.loginLogo = response.data
     }
   }
 }
@@ -95,5 +113,29 @@ export default {
     align-items: center;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px
+  }
+
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>

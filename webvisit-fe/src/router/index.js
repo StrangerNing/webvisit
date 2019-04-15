@@ -178,6 +178,28 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/security',
+    component: Layout,
+    redirect: '/security/log',
+    alwaysShow: true,
+    meta: {
+      title: 'security',
+      icon: 'lock',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'log',
+        component: () => import('@/views/security/log'),
+        name: 'log',
+        meta: {
+          title: 'log',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

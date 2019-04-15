@@ -1,6 +1,6 @@
 package com.webvisit.dao;
 
-import com.webvisit.model.po.Log;
+import com.webvisit.model.vo.LogVO;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface LogExtMapper {
      * @param companyId 公司id
      * @return 操作日志
      */
-    List<Log> queryLog(Long companyId);
+    List<LogVO> queryLog(Long companyId);
 }

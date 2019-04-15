@@ -3,6 +3,7 @@ package com.webvisit.service.impl;
 import com.webvisit.dao.LogExtMapper;
 import com.webvisit.dao.common.LogMapper;
 import com.webvisit.model.po.Log;
+import com.webvisit.model.vo.LogVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.SysLogService;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
-    public List<Log> queryLog(UserInfoVO userInfoVO) {
+    public List<LogVO> queryLog(UserInfoVO userInfoVO) {
         return logExtMapper.queryLog(userInfoVO.getCompanyId());
     }
 }

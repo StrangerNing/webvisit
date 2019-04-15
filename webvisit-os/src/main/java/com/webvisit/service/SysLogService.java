@@ -1,7 +1,7 @@
 package com.webvisit.service;
 
-import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.model.po.Log;
+import com.webvisit.model.vo.LogVO;
 import com.webvisit.model.vo.UserInfoVO;
 
 import java.util.List;
@@ -26,5 +26,5 @@ public interface SysLogService {
      * @param userInfoVO 当前用户信息
      * @return 操作日志
      */
-    List<Log> queryLog(UserInfoVO userInfoVO);
+    List<LogVO> queryLog(UserInfoVO userInfoVO);
 }
