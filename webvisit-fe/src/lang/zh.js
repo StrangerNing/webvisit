@@ -13,8 +13,10 @@ export default {
     holidayDetail: '假期明细',
     yellowPages: '企业黄页',
     yellowPageEdit: '黄页设置',
+    companyProduct: '产品设置',
     security: '安全设置',
     log: '操作日志'
+
   },
   navbar: {
     logOut: '退出登录',

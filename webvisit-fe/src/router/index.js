@@ -175,6 +175,15 @@ export const asyncRoutes = [
           title: 'yellowPageEdit',
           roles: ['admin'] // or you can only set roles in sub nav
         }
+      },
+      {
+        path: 'product',
+        component: () => import('@/views/yellow-page/productSetting'),
+        name: 'CompanyProduct',
+        meta: {
+          title: 'companyProduct',
+          roles: ['admin']
+        }
       }
     ]
   },
