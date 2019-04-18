@@ -4,6 +4,9 @@ import com.webvisit.model.po.AttenceHolidayDetail;
 
 import java.util.List;
 
+/**
+ * @author Tsening Chu
+ */
 public interface AttenceHolidayDetailExtMapper {
     /**
      * 根据员工id获取假期详情

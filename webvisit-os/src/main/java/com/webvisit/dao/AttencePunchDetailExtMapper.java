@@ -4,6 +4,9 @@ import com.webvisit.model.vo.PunchDetailVO;
 
 import java.util.List;
 
+/**
+ * @author Tsening Chu
+ */
 public interface AttencePunchDetailExtMapper {
 
     /**

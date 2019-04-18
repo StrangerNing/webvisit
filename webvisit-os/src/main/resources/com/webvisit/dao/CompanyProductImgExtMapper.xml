@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.CompanyProductImgExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.CompanyProductImg" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="img_detail" property="imgDetail" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, img_url, img_detail, create_time
+  </sql>
+
+  <sql id="where_condition">
+    <if test="id != null" >
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="productId != null" >
+      and product_id = #{productId,jdbcType=BIGINT}
+    </if>
+    <if test="imgUrl != null" >
+      and img_url = #{imgUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="imgDetail != null" >
+      and img_detail = #{imgDetail,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null" >
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.webvisit.model.po.CompanyProductImg" >
+    select
+    <include refid="Base_Column_List" />
+    from t_company_product_img
+    where 1=1 <include refid="where_condition"/>
+  </select>
+  <delete id="deleteByCondition" parameterType="com.webvisit.model.po.CompanyProductImg" >
+    delete from t_company_product_img
+    where 1=1 <include refid="where_condition"/>
+  </delete>
+</mapper>

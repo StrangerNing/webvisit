@@ -36,9 +36,15 @@ public class CompanyInfoVO {
 
     private String loginLogo;
 
+    private Boolean loginLogoChanged;
+
     private String pageLogo;
 
+    private Boolean pageLogoChanged;
+
     private String webLogo;
+
+    private Boolean webLogoChanged;
 
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date registTime;

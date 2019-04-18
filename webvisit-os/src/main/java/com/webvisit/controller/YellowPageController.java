@@ -3,7 +3,9 @@ package com.webvisit.controller;
 import com.webvisit.common.annotation.GetLog;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.re.Result;
+import com.webvisit.model.po.CompanyProduct;
 import com.webvisit.model.vo.CompanyInfoVO;
+import com.webvisit.model.vo.ProductImgVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.YellowPageService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -44,4 +46,46 @@ public class YellowPageController {
     Result saveCompanyImg(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         return Result.success(yellowPageService.saveCompanyImg(multipartFile));
     }
+
+    @RequestMapping("/product/query")
+    Result queryCompanyProduct(@LoginUser UserInfoVO userInfoVO) {
+        return Result.success(yellowPageService.queryCompanyProduct(userInfoVO));
+    }
+
+    @RequestMapping("/product/add")
+    @GetLog(value = "增加公司产品")
+    Result addCompanyProduct(@LoginUser UserInfoVO userInfoVO, @RequestBody CompanyProduct companyProduct) {
+        return Result.success(yellowPageService.addCompanyProduct(userInfoVO, companyProduct));
+    }
+
+    @RequestMapping("/product/update")
+    @GetLog(value = "编辑公司产品")
+    Result editCompanyProduct(@LoginUser UserInfoVO userInfoVO, @RequestBody CompanyProduct companyProduct) {
+        return Result.success(yellowPageService.editCompanyProduct(userInfoVO, companyProduct));
+    }
+
+    @RequestMapping("/product/delete")
+    @GetLog(value = "删除公司产品")
+    Result deleteCompanyProduct(@LoginUser UserInfoVO userInfoVO, Long productId) {
+        return Result.success(yellowPageService.deleteCompanyProduct(userInfoVO, productId));
+    }
+
+    @RequestMapping("/product/img/add")
+    @GetLog(value = "增加公司产品图片")
+    Result addCompanyProductImg(@LoginUser UserInfoVO userInfoVO, @RequestBody ProductImgVO productImgVO) {
+        return Result.success(yellowPageService.addProductImg(userInfoVO, productImgVO));
+    }
+
+    @RequestMapping("/product/img/update")
+    @GetLog(value = "修改公司产品图片")
+    Result editCompanyProductImg(@LoginUser UserInfoVO userInfoVO, @RequestBody ProductImgVO productImgVO) {
+        return Result.success(yellowPageService.editProductImg(userInfoVO, productImgVO));
+    }
+
+    @RequestMapping("/product/img/delete")
+    @GetLog(value = "删除公司产品图片")
+    Result deleteCompanyProductImg(@LoginUser UserInfoVO userInfoVO, Long id) {
+        return Result.success(yellowPageService.deleteProductImg(userInfoVO, id));
+    }
+
 }
