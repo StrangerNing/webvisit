@@ -24,18 +24,55 @@
           <el-form-item label="注册时间">
             <el-input v-model="companyInfo.registTime" style="width: 300px;" />
           </el-form-item>
-          <el-form-item label="企业登录页log">
-            <el-upload
-              action="http://localhost:8080/yellowPage/img/save"
-              list-type="picture-card"
-              :show-file-list="false"
-              :on-success="handleLoginLogo"
-            >
-              <img v-if="companyInfo.loginLogo" :src="companyInfo.loginLogo" style="width: 145px;height: 145px">
-              <i v-else class="el-icon-plus" />
-            </el-upload>
-          </el-form-item>
-          <el-button type="primary" style="margin-top: 30px;margin-left: 50px" @click="saveCompanyInfo()">确定</el-button>
+          <el-row :gutter="10">
+            <el-col :span="6">
+              <el-form-item label="企业登录页logo">
+                <el-upload
+                  :action="saveImg"
+                  list-type="picture-card"
+                  :show-file-list="false"
+                  :on-success="handleLoginLogo"
+                >
+                  <img v-if="companyInfo.loginLogo" :src="companyInfo.loginLogo" style="width: 145px;height: 145px">
+                  <i v-else class="el-icon-plus" />
+                </el-upload>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+
+              <el-form-item label="主页右上角logo">
+                <el-upload
+                  :action="saveImg"
+                  list-type="picture-card"
+                  :show-file-list="false"
+                  :on-success="handlePageLogo"
+                >
+                  <img v-if="companyInfo.pageLogo" :src="companyInfo.pageLogo" style="width: 145px;height: 145px">
+                  <i v-else class="el-icon-plus" />
+                </el-upload>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="浏览器右上角logo">
+                <el-upload
+                  :action="saveImg"
+                  list-type="picture-card"
+                  :show-file-list="false"
+                  :on-success="handleWebLogo"
+                >
+                  <img v-if="companyInfo.webLogo" :src="companyInfo.webLogo" style="width: 145px;height: 145px">
+                  <i v-else class="el-icon-plus" />
+                </el-upload>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <div style="text-align: center">
+                <el-button type="primary" style="margin-top: 30px;" icon="el-icon-upload" size="medium" @click="saveCompanyInfo()">确定</el-button>
+              </div>
+            </el-col>
+          </el-row>
         </el-form>
       </el-card>
     </div>
@@ -43,13 +80,14 @@
 </template>
 
 <script>
-import { editCompanyInfo, getCompanyInfo } from '../../api/yellowPage'
+import { editCompanyInfo, getCompanyInfo, uploadApi as yellowPage } from '../../api/yellowPage'
 import { Message } from 'element-ui'
 
 export default {
   name: 'Index',
   data() {
     return {
+      saveImg: yellowPage.saveImg,
       companyInfo: {
         id: null,
         name: '',
@@ -60,8 +98,11 @@ export default {
         createTime: null,
         registTime: null,
         loginLogo: null,
+        loginLogoChanged: false,
         pageLogo: null,
-        webLogo: null
+        pageLogoChanged: false,
+        webLogo: null,
+        webLogoChanged: false
       }
     }
   },
@@ -72,6 +113,9 @@ export default {
     getCompanyInfo() {
       getCompanyInfo().then(res => {
         this.companyInfo = res.data
+        this.companyInfo.loginLogoChanged = false
+        this.companyInfo.pageLogoChanged = false
+        this.companyInfo.webLogoChanged = false
       })
     },
     saveCompanyInfo() {
@@ -94,6 +138,17 @@ export default {
     handleLoginLogo(response, file, fileList) {
       console.log(response)
       this.companyInfo.loginLogo = response.data
+      this.companyInfo.loginLogoChanged = true
+    },
+    handlePageLogo(response, file, fileList) {
+      console.log(response)
+      this.companyInfo.pageLogo = response.data
+      this.companyInfo.pageLogoChanged = true
+    },
+    handleWebLogo(response, file, fileList) {
+      console.log(response)
+      this.companyInfo.webLogo = response.data
+      this.companyInfo.webLogoChanged = true
     }
   }
 }
@@ -122,9 +177,11 @@ export default {
     position: relative;
     overflow: hidden;
   }
+
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
+
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -133,6 +190,7 @@ export default {
     line-height: 178px;
     text-align: center;
   }
+
   .avatar {
     width: 178px;
     height: 178px;
