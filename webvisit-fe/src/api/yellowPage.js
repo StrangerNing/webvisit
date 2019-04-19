@@ -19,6 +19,14 @@ export const uploadApi = {
   saveImg: process.env.VUE_APP_BASE_API + '/yellowPage/img/save'
 }
 
+export function uploadImg(data) {
+  return request({
+    url: process.env.VUE_APP_BASE_API + '/yellowPage/img/save',
+    method: 'post',
+    data: data
+  })
+}
+
 export function getCompanyProduct() {
   return request({
     url: '/yellowPage/product/query',

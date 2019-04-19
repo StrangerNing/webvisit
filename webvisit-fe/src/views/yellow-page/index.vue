@@ -45,6 +45,7 @@
                   :action="saveImg"
                   list-type="picture-card"
                   :show-file-list="false"
+                  :before-upload="beforeUpload"
                   :on-success="handlePageLogo"
                 >
                   <img v-if="companyInfo.pageLogo" :src="companyInfo.pageLogo" style="width: 145px;height: 145px">
@@ -144,6 +145,9 @@ export default {
       console.log(response)
       this.companyInfo.pageLogo = response.data
       this.companyInfo.pageLogoChanged = true
+    },
+    beforeUpload(file) {
+      console.log(file)
     },
     handleWebLogo(response, file, fileList) {
       console.log(response)

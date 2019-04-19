@@ -95,7 +95,7 @@
           <el-button type="primary" size="small" icon="el-icon-plus" @click="addStep()">添加</el-button>
         </div>
         <div v-else>
-          <el-button type="primary" size="small" icon="el-icon-plus" @click="startEditAnnualStep()">编辑</el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="startEditAnnualStep()">编辑</el-button>
         </div>
         <el-table :data="annualStepList" border stripe fit style="margin-top: 20px">
           <el-table-column

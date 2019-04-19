@@ -173,7 +173,7 @@ public class YellowPageServiceImpl implements YellowPageService {
 
     private void checkProductImg(UserInfoVO userInfoVO, ProductImgVO productImgVO) {
         ValidatorUtil.validate(productImgVO);
-        CompanyProduct queryProduct = companyProductMapper.selectByPrimaryKey(productImgVO.getId());
+        CompanyProduct queryProduct = companyProductMapper.selectByPrimaryKey(productImgVO.getProductId());
         Long companyId = queryProduct.getCompanyId();
         if (companyId == null) {
             throw new BusinessException("产品信息出现错误");
