@@ -1,5 +1,6 @@
 package com.webvisit.controller;
 
+import com.github.tobato.fastdfs.domain.conn.ConnectionManager;
 import com.webvisit.common.annotation.GetLog;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.re.Result;

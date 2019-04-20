@@ -21,8 +21,11 @@
             />
             <el-table-column
               prop="productUrl"
-              label="产品链接"
-            />
+              label="产品链接">
+              <span slot-scope="scope">
+                <span @click="see(scope.row.productUrl)" style="cursor: pointer">{{scope.row.productUrl}}</span>
+              </span>
+            </el-table-column>
             <el-table-column
               prop="detail"
               label="产品详情"
@@ -30,25 +33,36 @@
             <el-table-column
               label="产品图片"
             >
-              <span v-for="(value,key,index) in productList.productImgList">
-                <span v-if="index < 6">
-                  <img :src="value.imgUrl">
-                </span>
+              <span slot-scope="scope">
+                <span v-for="(value,index) in scope.row.productImgList">
+                  <span v-if="index<6">
+                    <img :src="value.imgUrl" style="width: 50px;height: 50px;cursor: pointer" @click="showImage(value.imgUrl)">
+                  </span>
+              </span>
               </span>
             </el-table-column>
             <el-table-column
               label="操作"
             >
               <span slot-scope="scope">
-                <el-row>
-                  <el-col :span="12">
+                <el-row :gutter="8">
+                  <el-col :span="6">
                     <el-button
                       type="primary"
+                      size="small"
                       icon="el-icon-edit"
                       @click="editProduct(scope.$index, scope.row)"
                     >编辑</el-button>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="6">
+                    <el-button
+                      type="success"
+                      size="small"
+                      icon="el-icon-search"
+                      @click="showProduct(scope.$index, scope.row)"
+                    >查看</el-button>
+                  </el-col>
+                  <el-col :span="6">
                     <el-button
                       type="danger"
                       size="small"
@@ -86,14 +100,14 @@
           </el-row>
         </el-dialog>
         <el-dialog
-          title="编辑产品图片"
+          :title="showProductImgTitle"
           :visible.sync="editProductImgVisible"
         >
           <div v-if="editProductImg">
             <el-button type="primary" @click="addProductImg()">添加</el-button>
           </div>
           <div v-else>
-            <el-button type="primary" @click="editProductImage()">编辑</el-button>
+            <el-button type="primary" @click="editProductImage()" v-if="isShow">编辑</el-button>
           </div>
           <el-table :data="productImgList" border stripe fit style="margin-top: 20px">
             <el-table-column
@@ -104,12 +118,12 @@
             >
               <span slot-scope="scope">
                 <span v-if="editProductImg">
-                  <div class="el-upload el-upload--picture-card" @click="showImage(scope.row.imgUrl)">
-                    <span v-if="scope.row.imgUrl">
+                  <div class="el-upload el-upload--picture-card">
+                    <span v-if="scope.row.imgUrl" @click="showImage(scope.row.imgUrl)">
                       <img :src="scope.row.imgUrl" style="width: 145px;height: 145px;">
                     </span>
                     <span v-else>
-                      <i class="el-icon-plus"/>
+                      <i class="el-icon-plus" @click="chooseProductImg(scope.$index, scope.row)"/>
                     </span>
                   </div>
                 </span>
@@ -134,6 +148,7 @@
             </el-table-column>
             <el-table-column
               label="操作"
+              v-if="isShow"
             >
               <span slot-scope="scope">
                 <el-row>
@@ -166,7 +181,7 @@
           </el-table>
         </el-dialog>
         <el-dialog :visible.sync="dialogImgVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
+          <img width="100%" :src="dialogImageUrl" alt="" style="max-height: fit-content;max-width: fit-content">
         </el-dialog>
       </el-card>
     </div>
@@ -176,7 +191,7 @@
 <script>
   import {
     addCompanyProduct, addProductImg,
-    deleteCompanyProduct,
+    deleteCompanyProduct, deleteProductImg,
     editCompanyProduct,
     getCompanyProduct, updateProductImg,
     uploadApi as yellowPage, uploadImg
@@ -191,9 +206,11 @@
         productList: [],
         editProductVisible: false,
         editProductTitle: '编辑产品信息',
+        showProductImgTitle: '编辑产品图片',
         editProductImgVisible: false,
         editProductImg: false,
         dialogImgVisible: false,
+        isShow: true,
         dialogImageUrl: '',
         upload_file: 'upload_file',
         product: {
@@ -211,10 +228,8 @@
           imgUrl: '',
           imgDetail: ''
         },
-        temp: {
-          index: null,
-          row: null
-        }
+        index: null,
+        row: null
       }
     },
     created() {
@@ -295,16 +310,26 @@
         for (const key in row) {
           this.product[key] = row[key]
         }
-        this.productImgList.splice(0,this.productImgList.length)
-        console.log(this.productImgList)
-        for (const item in this.productList[index].productImgList) {
-          console.log('重置')
-          this.productImgList.push(this.productList[index].productImgList[item])
-        }
-        console.log(this.productImgList)
+        console.log(this.productImgList,this.productList[index].productImgList)
+        this.productImgList = []
+        this.productImgList = JSON.parse(JSON.stringify(this.productList[index].productImgList))
+        // for (const item in this.productList[index].productImgList) {
+        //   this.productImgList.push(this.productList[index].productImgList[item])
+        // }
         this.editProductVisible = true
       },
+      showProduct(index, row) {
+        this.isShow = false
+        this.productImgList = []
+        this.productImgList = JSON.parse(JSON.stringify(this.productList[index].productImgList))
+        this.showProductImgTitle = '查看产品图片'
+        this.editProductVisible = false
+        this.editProductImgVisible = true
+        this.editProductImg = false
+      },
       editCompanyImg() {
+        this.isShow = true
+        this.showProductImgTitle = '编辑产品图片'
         this.editProductVisible = false
         this.editProductImgVisible = true
         this.editProductImg = false
@@ -358,7 +383,7 @@
         const formData = new FormData()
         formData.append('file', file)
         uploadImg(formData).then(res => {
-          this.temp.row.imgUrl = res.data
+          this.row.imgUrl = res.data
           Message({
             message: '上传成功',
             type: 'success'
@@ -366,11 +391,44 @@
         })
       },
       chooseProductImg(index, row) {
-        this.temp.index = index
-        this.temp.row = row
+        this.index = index
+        this.row = row
         let id = this.upload_file+index
         console.log(index, row)
         document.getElementById(id).click()
+      },
+      deleteProductImg(index, row) {
+        let that = this
+        deleteProductImg({id :row.id}).then(res => {
+          if (res.data) {
+            Message({
+              message: '删除成功',
+              type: 'success',
+              duration: 10 * 1000
+            })
+            this.getProductList()
+            this.editProductImgVisible = false
+          } else {
+            Message({
+              message: '删除失败',
+              type: 'error',
+              duration: 10 * 1000
+            })
+          }
+        })
+      },
+      see(e) {
+        if (e.startsWith('http://')) {
+          e = e.substring(7,e.length)
+        } else if (e.startsWith('https://')) {
+          e = e.substring(8,e.length)
+        }
+        let p = window.location.protocol;
+        let a = document.createElement("a");
+        a.setAttribute("href", `${p}//${e}`);
+        a.setAttribute("target", "_blank");
+        a.click();
+        document.getElementsByTagName("body")[0].appendChild(a);
       }
     }
   }
