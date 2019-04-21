@@ -1,8 +1,6 @@
 package com.webvisit.service;
 
-import com.webvisit.model.po.CompanyInfo;
 import com.webvisit.model.po.CompanyProduct;
-import com.webvisit.model.po.CompanyProductImg;
 import com.webvisit.model.vo.CompanyInfoVO;
 import com.webvisit.model.vo.ProductImgVO;
 import com.webvisit.model.vo.ProductVO;

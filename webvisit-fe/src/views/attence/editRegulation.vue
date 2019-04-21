@@ -50,7 +50,11 @@
         />
         <el-table-column
           label="签到地点"
-        />
+        >
+          <span slot-scope="scope">
+            {{ scope.row.checkLocationLon }} {{ scope.row.checkLocationLon }}
+          </span>
+        </el-table-column>
         <el-table-column
           prop="allowLocationOffset"
           label="允许偏移范围（米）"
@@ -201,6 +205,22 @@
           </el-row>
           <el-row>
             <el-col :span="12">
+              <el-form-item label="签到地点">
+                <el-row>
+                  <div>
+                    <DragMap :lat="regulation.checkLocationLat" :lng="regulation.checkLocationLon" @drag="dragMap" />
+                  </div>
+                </el-row>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-form-item label-width="15%">
+              <span>{{ regulation.checkLocation }}</span>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
               <el-form-item label="允许偏差范围">
                 <el-input v-model="regulation.allowLocationOffset" style="width: 90%;" />
               </el-form-item>
@@ -228,11 +248,16 @@ import {
   setWorkday
 } from '../../api/attence'
 import { Message } from 'element-ui'
+import DragMap from '../../components/Map/dragMap'
 
 export default {
   name: 'EditRegulation',
+  components: {
+    DragMap
+  },
   data() {
     return {
+      MapKey: '2b40482c47ff9025dbfa60aa6b2fa1ff',
       editTitle: '编辑考勤规则',
       deleteConfirmVisible: false,
       editRegulationVisible: false,
@@ -246,6 +271,7 @@ export default {
         punchOutStart: '',
         punchOutEnd: '',
         allowLeaveEarly: '',
+        checkLocation: '',
         checkLocationLat: 0.00,
         checkLocationLon: 0.00,
         allowLocationOffset: 0.00,
@@ -265,12 +291,26 @@ export default {
       return function(param) {
         return enums.attenceEnum.getLabelByValue(param)
       }
+    },
+    getLocation() {
+      return [this.regulation.checkLocation, this.regulation.checkLocationLat, this.regulation.checkLocationLon]
+    }
+  },
+  watch: {
+    getLocation(val) {
+      console.log(val)
     }
   },
   created() {
     this.getRegulationList()
   },
   methods: {
+    dragMap(res) {
+      console.log(res)
+      this.regulation.checkLocationLon = res.position.lng
+      this.regulation.checkLocationLat = res.position.lat
+      this.regulation.checkLocation = res.address
+    },
     getRegulationList() {
       getRegulationList().then(res => {
         this.regulationList = res.data
@@ -394,5 +434,10 @@ export default {
     align-items: center;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px
+  }
+
+  .amap-wrapper {
+    width: 500px;
+    height: 300px;
   }
 </style>

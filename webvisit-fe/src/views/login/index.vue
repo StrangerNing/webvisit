@@ -55,11 +55,10 @@
 
 <script>
 import LangSelect from '@/components/LangSelect'
-import SocialSign from './socialSignin'
 
 export default {
   name: 'Login',
-  components: { LangSelect, SocialSign },
+  components: { LangSelect },
   data() {
     return {
       loginForm: {
