@@ -26,7 +26,7 @@ spring:
   profiles: dev
 
   datasource:
-    url: jdbc:log4jdbc:mysql://www.znzn.me:3306/webvisit?useUnicode=true&characterEncoding=utf8
+    url: jdbc:log4jdbc:mysql://www.znzn.me:3306/webvisit?useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
     username: root
     password: d2a19315fc5680683589955fb24388c3925e72416c502b63
     #不输出日志
@@ -56,3 +56,6 @@ spring:
         min-idle: 0
     # 连接超时时间（毫秒）
     timeout: 10000
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai

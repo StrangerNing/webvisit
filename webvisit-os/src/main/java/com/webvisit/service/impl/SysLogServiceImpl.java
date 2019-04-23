@@ -27,11 +27,11 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Override
     public Boolean saveLog(Log log) {
-        return logMapper.insert(log) == 1;
+        return logMapper.insertSelective(log) == 1;
     }
 
     @Override
-    public List<LogVO> queryLog(UserInfoVO userInfoVO) {
-        return logExtMapper.queryLog(userInfoVO.getCompanyId());
+    public List<LogVO> queryLog(UserInfoVO userInfoVO, LogVO logVO) {
+        return logExtMapper.queryLog(userInfoVO,logVO);
     }
 }

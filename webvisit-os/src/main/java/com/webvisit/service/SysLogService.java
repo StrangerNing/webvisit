@@ -26,5 +26,5 @@ public interface SysLogService {
      * @param userInfoVO 当前用户信息
      * @return 操作日志
      */
-    List<LogVO> queryLog(UserInfoVO userInfoVO);
+    List<LogVO> queryLog(UserInfoVO userInfoVO, LogVO logVO);
 }

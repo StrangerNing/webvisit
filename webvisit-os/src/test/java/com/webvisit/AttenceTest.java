@@ -125,8 +125,8 @@ public class AttenceTest {
                 AttencePunchDetail punchDetail = new AttencePunchDetail();
                 punchDetail.setEmpId(1L);
                 punchDetail.setPunchType(0);
-//                punchDetail.setPunchInTime(TimeUtil.createTime(2019,month,date,8,32,8));
-//                punchDetail.setPunchOutTime(TimeUtil.createTime(2019,month,date,18,44,9));
+                punchDetail.setPunchInTime(TimeUtil.createTime(2019,month,date,8,32,8));
+                punchDetail.setPunchOutTime(TimeUtil.createTime(2019,month,date,18,44,9));
                 punchDetail.setPunchInStatus(0);
                 punchDetail.setPunchOutStatus(0);
                 String getDate = "2019-" + month + "-" + date;

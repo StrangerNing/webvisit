@@ -1,6 +1,8 @@
 package com.webvisit.dao;
 
 import com.webvisit.model.vo.LogVO;
+import com.webvisit.model.vo.UserInfoVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,8 +15,9 @@ public interface LogExtMapper {
 
     /**
      * 根据公司id查询操作日志
-     * @param companyId 公司id
+     * @param userInfoVO 查询条件
+     * @param logVO 查询条件
      * @return 操作日志
      */
-    List<LogVO> queryLog(Long companyId);
+    List<LogVO> queryLog(@Param("user") UserInfoVO userInfoVO, @Param("query") LogVO logVO);
 }

@@ -1,5 +1,6 @@
 package com.webvisit.model.vo;
 
+import com.webvisit.common.re.CommonQueryParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoVO implements Serializable {
+public class UserInfoVO extends CommonQueryParam {
 
     private Long id;
 

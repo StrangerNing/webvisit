@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.TimeZone;
+
 @EnableCaching
 @SpringBootApplication
 @Import(FdfsClientConfig.class)
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class WebvisitApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SpringApplication.run(WebvisitApplication.class, args);
     }
 

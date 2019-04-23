@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
-export function getLogList() {
+export function getLogList(param) {
   return request({
     url: '/log/query',
-    method: 'get'
+    method: 'get',
+    params: param
   })
 }

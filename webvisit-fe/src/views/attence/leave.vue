@@ -166,5 +166,12 @@ export default {
 </script>
 
 <style scoped>
-
+  .row-title {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px
+  }
 </style>

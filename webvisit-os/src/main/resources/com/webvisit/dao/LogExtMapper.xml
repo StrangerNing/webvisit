@@ -14,10 +14,38 @@
   <sql id="Base_Column_List" >
     id, username, operation, method, params, ip, create_time, company_id
   </sql>
-  <select id="queryLog" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+
+  <sql id="query_condition">
+    <if test="query.username != null" >
+      and username = #{query.username,jdbcType=VARCHAR}
+    </if>
+    <if test="query.operation != null" >
+      and operation = #{query.operation,jdbcType=VARCHAR}
+    </if>
+    <if test="query.method != null" >
+      and method = #{query.method,jdbcType=VARCHAR}
+    </if>
+    <if test="query.params != null" >
+      and params = #{query.params,jdbcType=VARCHAR}
+    </if>
+    <if test="query.ip != null" >
+      and ip = #{query.ip,jdbcType=VARCHAR}
+    </if>
+    <if test="user.companyId != null" >
+      and company_id = #{user.companyId,jdbcType=BIGINT}
+    </if>
+    <if test="query.beginTime != null">
+      <![CDATA[  and DATE_FORMAT(create_time, '%Y-%m-%d') >=  DATE_FORMAT(#{query.beginTime}, '%Y-%m-%d')   ]]>
+    </if>
+    <if test="query.endTime != null">
+      <![CDATA[  and DATE_FORMAT(create_time, '%Y-%m-%d') <=  DATE_FORMAT(#{query.endTime}, '%Y-%m-%d')   ]]>
+    </if>
+  </sql>
+
+  <select id="queryLog" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
     from t_webvisit_log
-    where company_id = #{company_id,jdbcType=BIGINT}
+    where 1=1 <include refid="query_condition"/>
   </select>
 </mapper>

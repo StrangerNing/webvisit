@@ -1,10 +1,8 @@
 package com.webvisit.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.webvisit.common.re.CommonQueryParam;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,11 +11,12 @@ import java.util.Date;
  * @version v1.0
  * @date 2019/4/15
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogVO {
+public class LogVO extends CommonQueryParam {
     private Long id;
 
     private String username;
@@ -30,7 +29,7 @@ public class LogVO {
 
     private String ip;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     private Long companyId;

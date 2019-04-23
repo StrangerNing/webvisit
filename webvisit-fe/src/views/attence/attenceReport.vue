@@ -2,7 +2,11 @@
   <div style="margin-bottom: 100px">
     <div class="module">
       <el-card>
-        <h2>考勤报告</h2>
+        <el-row class="row-title">
+          <el-col :span="12">
+            <h2>考勤报告</h2>
+          </el-col>
+        </el-row>
         <el-table :data="allPunchReport" stripe fit border>
           <el-table-column
             type="index"
@@ -178,5 +182,13 @@ export default {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 20px;
+  }
+  .row-title {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px
   }
 </style>
