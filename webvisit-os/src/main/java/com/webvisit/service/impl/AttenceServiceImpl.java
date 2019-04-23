@@ -13,9 +13,7 @@ import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

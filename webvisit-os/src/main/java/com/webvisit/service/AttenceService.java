@@ -2,8 +2,10 @@ package com.webvisit.service;
 
 import com.github.pagehelper.PageInfo;
 import com.webvisit.model.dto.RegulationDTO;
-import com.webvisit.model.dto.UserSimpleDTO;
-import com.webvisit.model.po.*;
+import com.webvisit.model.po.AttenceAnnualStep;
+import com.webvisit.model.po.AttenceLeave;
+import com.webvisit.model.po.AttenceWorkday;
+import com.webvisit.model.po.CompanyDept;
 import com.webvisit.model.vo.*;
 
 import java.util.Date;
@@ -233,6 +235,12 @@ public interface AttenceService {
      */
     PageInfo<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO);
 
+    /**
+     * 查询公司所有部门列表
+     * @param userInfoVO 当前用户信息
+     * @param companyDept 查询条件
+     * @return 部门列表
+     */
     List<CompanyDept> queryDeptList(UserInfoVO userInfoVO,CompanyDept companyDept);
 //
 //    /**
