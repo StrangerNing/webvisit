@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.CompanyDeptExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.CompanyDept" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="attence_regulation_id" property="attenceRegulationId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, name, attence_regulation_id
+  </sql>
+
+  <sql id="query_condition">
+    <if test="companyId != null" >
+      and company_id = #{companyId,jdbcType=BIGINT}
+    </if>
+    <if test="name != null" >
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="attenceRegulationId != null" >
+      and attence_regulation_id = #{attenceRegulationId,jdbcType=BIGINT}
+    </if>
+  </sql>
+
+  <select id="queryDeptByCondition" resultMap="BaseResultMap" parameterType="com.webvisit.model.po.CompanyDept" >
+    select
+    <include refid="Base_Column_List" />
+    from t_company_dept
+    where 1=1 <include refid="query_condition"/>
+  </select>
+
+</mapper>

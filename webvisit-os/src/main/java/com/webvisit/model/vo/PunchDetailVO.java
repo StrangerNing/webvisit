@@ -1,7 +1,7 @@
 package com.webvisit.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.webvisit.model.po.AttencePunchDetail;
+import com.webvisit.common.re.CommonQueryParam;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -13,11 +13,12 @@ import java.util.Date;
  * @date 2019/4/8
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PunchDetailVO {
+public class PunchDetailVO extends CommonQueryParam {
 
     private String nickname;
 

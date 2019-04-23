@@ -1,10 +1,13 @@
 package com.webvisit.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.webvisit.common.annotation.GetLog;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.common.re.Result;
 import com.webvisit.model.dto.RegulationDTO;
+import com.webvisit.model.po.CompanyDept;
 import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.utils.TimeUtil;
@@ -205,14 +208,20 @@ public class AttenceController {
 
     @RequestMapping("/report/all/query")
     @ResponseBody
-    Result queryReportAll(@LoginUser UserInfoVO userInfoVO) {
-        return Result.success(attenceService.queryAttenceReport(userInfoVO));
+    Result queryReportAll(@LoginUser UserInfoVO userInfoVO, AttenceReportVO attenceReportVO) {
+        return Result.success(attenceService.queryAttenceReport(userInfoVO, attenceReportVO));
     }
 
     @RequestMapping("/report/detail/query")
     @ResponseBody
     Result queryReportDetail(@LoginUser UserInfoVO userInfoVO, @RequestBody PunchDetailVO punchDetailVO) {
         return Result.success(attenceService.queryAttencePunchDetail(userInfoVO, punchDetailVO));
+    }
+
+    @RequestMapping("/dept/query")
+    @ResponseBody
+    Result queryCompanyDeptList(@LoginUser UserInfoVO userInfoVO, CompanyDept companyDept) {
+        return Result.success(attenceService.queryDeptList(userInfoVO, companyDept));
     }
 
     @InitBinder

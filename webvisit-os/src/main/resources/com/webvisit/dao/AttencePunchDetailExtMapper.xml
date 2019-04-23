@@ -49,11 +49,11 @@
         <if test="companyId != null">
             and  i.id = #{companyId,jdbcType=BIGINT}
         </if>
-        <if test="beginDate!=null">
-            <![CDATA[  and DATE_FORMAT(d.punchTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        <if test="beginTime!=null">
+            <![CDATA[  and DATE_FORMAT(d.punch_time, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
         </if>
-        <if test="endDate!=null">
-            <![CDATA[  and DATE_FORMAT(d.punchTime, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+        <if test="endTime!=null">
+            <![CDATA[  and DATE_FORMAT(d.punch_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d')    ]]>
         </if>
         <if test="punchInStatus != null">
             and d.punch_in_status = #{punchInStatus,jdbcType=TINYINT}

@@ -17,10 +17,12 @@
 
   <sql id="query_condition">
     <if test="query.username != null" >
-      and username = #{query.username,jdbcType=VARCHAR}
+      <bind name="likeUsername" value="'%'+query.username+'%'"/>
+      and username like #{likeUsername,jdbcType=VARCHAR}
     </if>
     <if test="query.operation != null" >
-      and operation = #{query.operation,jdbcType=VARCHAR}
+      <bind name="likeOperation" value="'%'+query.operation+'%'"/>
+      and operation like #{likeOperation,jdbcType=VARCHAR}
     </if>
     <if test="query.method != null" >
       and method = #{query.method,jdbcType=VARCHAR}

@@ -18,10 +18,28 @@
     punch_out_early_count, punch_out_miss_count, ask_leave_count, work_outside_count
   </sql>
 
-  <select id="selectByCompanyId" parameterType="java.lang.Long" resultType="com.webvisit.model.vo.AttenceReportVO">
+  <sql id="query_condition">
+    <if test="empName != null">
+      <bind name="likeEmpName" value="'%'+_parameter.empName+'%'"/>
+      and u.nickname like #{likeEmpName}
+    </if>
+    <if test="companyId != null">
+      and u.company_id = #{companyId}
+    </if>
+    <if test="deptName != null">
+      <bind name="likeDeptName" value="'%'+_parameter.deptName+'%'"/>
+      and d.name like #{likeDeptName}
+    </if>
+    <if test="deptId != null">
+      and u.dept_id = #{deptId}
+    </if>
+  </sql>
+
+  <select id="selectByCondition" parameterType="com.webvisit.model.vo.AttenceReportVO" resultType="com.webvisit.model.vo.AttenceReportVO">
     select r.id as id,
     r.emp_id as empId,
     u.nickname as empName,
+    u.dept_id as deptId,
     d.name as deptName,
     r.punch_in_count as punchInCount,
     r.punch_in_late_count as punchInLateCount,
@@ -32,7 +50,7 @@
     r.ask_leave_count as askLeaveCount,
     r.work_outside_count as workOutsideCount
     from t_attence_report r,t_webvisit_user u,t_company_dept d
-    where r.emp_id = u.id and u.company_id = #{companyId} and u.dept_id = d.id
+    where r.emp_id = u.id and u.dept_id = d.id <include refid="query_condition"/>
   </select>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.AttenceReport" >

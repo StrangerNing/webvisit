@@ -180,10 +180,11 @@ export function updateAnnualReport(data) {
   })
 }
 
-export function getAllPunchReport() {
+export function getAllPunchReport(param) {
   return request({
     url: '/attence/report/all/query',
-    method: 'get'
+    method: 'get',
+    params: param
   })
 }
 
@@ -192,5 +193,13 @@ export function getPunchDetailReport(data) {
     url: '/attence/report/detail/query',
     method: 'post',
     data: data
+  })
+}
+
+export function getDeptList(param) {
+  return request({
+    url: '/attence/dept/query',
+    method: 'get',
+    params: param
   })
 }

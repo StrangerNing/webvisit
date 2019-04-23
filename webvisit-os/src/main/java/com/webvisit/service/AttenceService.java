@@ -1,5 +1,6 @@
 package com.webvisit.service;
 
+import com.github.pagehelper.PageInfo;
 import com.webvisit.model.dto.RegulationDTO;
 import com.webvisit.model.dto.UserSimpleDTO;
 import com.webvisit.model.po.*;
@@ -219,9 +220,10 @@ public interface AttenceService {
     /**
      * 查询考勤统计总报
      * @param userInfoVO 当前用户信息
+     * @param attenceReportVO 查询条件
      * @return 考勤统计
      */
-    List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO);
+    List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO, AttenceReportVO attenceReportVO);
 
     /**
      * 根据员工id获取考勤详情
@@ -229,7 +231,9 @@ public interface AttenceService {
      * @param punchDetailVO 查询条件
      * @return 考勤详情
      */
-    List<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO,PunchDetailVO punchDetailVO);
+    PageInfo<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO);
+
+    List<CompanyDept> queryDeptList(UserInfoVO userInfoVO,CompanyDept companyDept);
 //
 //    /**
 //     * 获取公司职员列表

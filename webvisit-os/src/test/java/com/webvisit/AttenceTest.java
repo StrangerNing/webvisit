@@ -1,5 +1,6 @@
 package com.webvisit;
 
+import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
@@ -125,8 +126,8 @@ public class AttenceTest {
                 AttencePunchDetail punchDetail = new AttencePunchDetail();
                 punchDetail.setEmpId(1L);
                 punchDetail.setPunchType(0);
-                punchDetail.setPunchInTime(TimeUtil.createTime(2019,month,date,8,32,8));
-                punchDetail.setPunchOutTime(TimeUtil.createTime(2019,month,date,18,44,9));
+                punchDetail.setPunchInTime(TimeUtil.createTime(2019, month, date, 8, 32, 8));
+                punchDetail.setPunchOutTime(TimeUtil.createTime(2019, month, date, 18, 44, 9));
                 punchDetail.setPunchInStatus(0);
                 punchDetail.setPunchOutStatus(0);
                 String getDate = "2019-" + month + "-" + date;
@@ -146,30 +147,30 @@ public class AttenceTest {
 
     @Test
     public void testAddDefaultHoliday() {
-        for (Long i = 1L;i<69L;i++) {
+        for (Long i = 1L; i < 69L; i++) {
             attenceHolidayDefaultMapper.deleteByPrimaryKey(i);
         }
         List<AttenceHolidayDefault> holidayDefaultList = new ArrayList<>();
-        String[] defaultHolidays = {"20190101","20190204","20190205","20190206","20190207","20190208","20190209","20190210",
-        "20190405","20190406","20190407","20190501","20190502","20190503","20190504","20190607","20190608","20190609",
-        "20190913","20190914","20190915","20191001","20191002","20191003","20191004","20191005","20191006","20191007"};
+        String[] defaultHolidays = {"20190101", "20190204", "20190205", "20190206", "20190207", "20190208", "20190209", "20190210",
+                "20190405", "20190406", "20190407", "20190501", "20190502", "20190503", "20190504", "20190607", "20190608", "20190609",
+                "20190913", "20190914", "20190915", "20191001", "20191002", "20191003", "20191004", "20191005", "20191006", "20191007"};
         for (String defaultHoliday : defaultHolidays) {
             AttenceHolidayDefault attenceHolidayDefault = new AttenceHolidayDefault();
-            int year = Integer.valueOf(defaultHoliday.substring(0,4));
-            int month = Integer.valueOf(defaultHoliday.substring(4,6))-1;
-            int date = Integer.valueOf(defaultHoliday.substring(6,8));
-            attenceHolidayDefault.setHolidayDate(TimeUtil.createTime(year,month,date));
+            int year = Integer.valueOf(defaultHoliday.substring(0, 4));
+            int month = Integer.valueOf(defaultHoliday.substring(4, 6)) - 1;
+            int date = Integer.valueOf(defaultHoliday.substring(6, 8));
+            attenceHolidayDefault.setHolidayDate(TimeUtil.createTime(year, month, date));
             attenceHolidayDefault.setType(DefaultHolidayTypeEnum.LEGAL_HOLIDAY.getCode());
             attenceHolidayDefaultMapper.insert(attenceHolidayDefault);
         }
-        String[] defaultWorks = {"20190202","20190203","20190428","20190505","20190929","20191012"};
+        String[] defaultWorks = {"20190202", "20190203", "20190428", "20190505", "20190929", "20191012"};
         for (String defaultWork : defaultWorks) {
-            int year = Integer.valueOf(defaultWork.substring(0,4));
-            int month = Integer.valueOf(defaultWork.substring(4,6))-1;
-            int date = Integer.valueOf(defaultWork.substring(6,8));
+            int year = Integer.valueOf(defaultWork.substring(0, 4));
+            int month = Integer.valueOf(defaultWork.substring(4, 6)) - 1;
+            int date = Integer.valueOf(defaultWork.substring(6, 8));
             AttenceHolidayDefault attenceHolidayDefault = new AttenceHolidayDefault();
             attenceHolidayDefault.setType(DefaultHolidayTypeEnum.DUTY_DAY.getCode());
-            attenceHolidayDefault.setHolidayDate(TimeUtil.createTime(year,month,date));
+            attenceHolidayDefault.setHolidayDate(TimeUtil.createTime(year, month, date));
             attenceHolidayDefaultMapper.insert(attenceHolidayDefault);
         }
     }
@@ -231,7 +232,8 @@ public class AttenceTest {
     @Test
     public void testQueryAttenceReport() {
         UserInfoVO userInfoVO = UserInfoVO.builder().companyId(2L).build();
-        List<AttenceReportVO> attenceReportVOList = attenceService.queryAttenceReport(userInfoVO);
+        AttenceReportVO queryReportVO = new AttenceReportVO();
+        List<AttenceReportVO> attenceReportVOList = attenceService.queryAttenceReport(userInfoVO, queryReportVO);
         for (AttenceReportVO attenceReportVO : attenceReportVOList) {
             System.out.println(attenceReportVO);
         }
@@ -241,16 +243,14 @@ public class AttenceTest {
     public void testQueryPunchDetail() {
         PunchDetailVO punchDetailVO = new PunchDetailVO();
         UserInfoVO userInfoVO = UserInfoVO.builder().companyId(1L).build();
-        List<PunchDetailVO> punchDetailVOList = attenceService.queryAttencePunchDetail(userInfoVO, punchDetailVO);
-        for (PunchDetailVO punchDetail : punchDetailVOList) {
-            System.out.println(punchDetail);
-        }
+        PageInfo punchDetailVOList = attenceService.queryAttencePunchDetail(userInfoVO, punchDetailVO);
+        System.out.println(punchDetailVOList);
     }
 
     @Test
     public void testGetExtName() {
         String filename = "abc.a.jpg";
-        String prefix = filename.substring(filename.lastIndexOf(".")+1);
+        String prefix = filename.substring(filename.lastIndexOf(".") + 1);
         System.out.println(prefix);
     }
 }

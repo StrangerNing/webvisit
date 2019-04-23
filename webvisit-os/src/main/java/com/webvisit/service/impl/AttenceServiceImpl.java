@@ -1,5 +1,7 @@
 package com.webvisit.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.webvisit.common.enums.*;
 import com.webvisit.common.exception.BusinessException;
 import com.webvisit.dao.*;
@@ -65,6 +67,8 @@ public class AttenceServiceImpl implements AttenceService {
     private AttenceReportExtMapper attenceReportExtMapper;
     @Resource
     private AttencePunchDetailExtMapper attencePunchDetailExtMapper;
+    @Resource
+    private CompanyDeptExtMapper companyDeptExtMapper;
 
     @Override
     public Boolean addRegulation(RegulationDTO regulationDTO) {
@@ -505,13 +509,13 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO) {
-        Long companyId = userInfoVO.getCompanyId();
-        return attenceReportExtMapper.selectByCompanyId(companyId);
+    public List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO, AttenceReportVO attenceReportVO) {
+        attenceReportVO.setCompanyId(userInfoVO.getCompanyId());
+        return attenceReportExtMapper.selectByCondition(attenceReportVO);
     }
 
     @Override
-    public List<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO) {
+    public PageInfo<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO) {
         Long empId = punchDetailVO.getEmpId();
         if (null != empId) {
             User user = userMapper.selectByPrimaryKey(empId);
@@ -527,7 +531,16 @@ public class AttenceServiceImpl implements AttenceService {
             }
         }
         punchDetailVO.setCompanyId(userInfoVO.getCompanyId());
-        return attencePunchDetailExtMapper.selectByCondition(punchDetailVO);
+        PageHelper.startPage(punchDetailVO.getPageNum(),punchDetailVO.getPageSize());
+        List<PunchDetailVO> punchDetailList = attencePunchDetailExtMapper.selectByCondition(punchDetailVO);
+        PageInfo<PunchDetailVO> punchDetailPageInfo = new PageInfo<>(punchDetailList);
+        return punchDetailPageInfo;
+    }
+
+    @Override
+    public List<CompanyDept> queryDeptList(UserInfoVO userInfoVO, CompanyDept companyDept) {
+        companyDept.setCompanyId(userInfoVO.getCompanyId());
+        return companyDeptExtMapper.queryDeptByCondition(companyDept);
     }
 
 }

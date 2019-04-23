@@ -7,6 +7,30 @@
             <h2>考勤报告</h2>
           </el-col>
         </el-row>
+        <el-row>
+          <el-form>
+            <el-col :span="8">
+              <el-form-item label="职工姓名：">
+                <el-input v-model="queryParam.empName" style="max-width: 80%" placeholder="支持模糊搜索"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="部门：">
+                <el-select v-model="queryParam.deptId" placeholder="选择部门" clearable>
+                  <el-option
+                    v-for="item in deptList"
+                    :key="item.id"
+                    :label = "item.name"
+                    :value = "item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-button type="primary" @click="getPunchReport">搜索</el-button>
+            </el-col>
+          </el-form>
+        </el-row>
         <el-table :data="allPunchReport" stripe fit border>
           <el-table-column
             type="index"
@@ -68,9 +92,31 @@
           title="考勤详情查看"
           :visible.sync="showPunchDetail"
         >
-          <el-table :data="punchDetail" stripe fit border max-height="800">
+          <el-row>
+            <el-form>
+              <el-col :span="16">
+                <el-form-item
+                  label="选择考勤时间段">
+                  <el-date-picker style="width: 80%"
+                                  v-model.trim="queryTime"
+                                  value-format="yyyy-MM-dd"
+                                  format="yyyy-MM-dd"
+                                  type="daterange"
+                                  range-separator="至"
+                                  start-placeholder="开始日期"
+                                  end-placeholder="结束日期"
+                                  @change="setQueryPunchTime" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-button type="primary" @click="getPunchDetail(queryDetailParam.empId)">搜索</el-button>
+              </el-col>
+            </el-form>
+          </el-row>
+          <el-table :data="punchDetail" stripe fit border max-height="500">
             <el-table-column
               type="index"
+              :index="handelIndex"
             />
             <el-table-column
               prop="nickname"
@@ -119,6 +165,16 @@
               label="签退地点"
             />
           </el-table>
+          <el-pagination
+            style="margin-top: 20px;text-align: center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="queryDetailParam.pageNum"
+            :page-sizes="[10,20,50,100]"
+            :page-size="queryDetailParam.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+          </el-pagination>
           <el-row style="text-align: center;margin-top: 50px">
             <el-button icon="el-icon-close" style="margin-right: 10px" @click="showPunchDetail=false">关闭</el-button>
           </el-row>
@@ -129,7 +185,7 @@
 </template>
 
 <script>
-import { getAllPunchReport, getPunchDetailReport } from '../../api/attence'
+  import { getAllPunchReport, getDeptList, getPunchDetailReport } from '../../api/attence'
 import enums from './enums'
 
 export default {
@@ -138,7 +194,27 @@ export default {
     return {
       allPunchReport: [],
       punchDetail: [],
-      showPunchDetail: false
+      deptList: [],
+      showPunchDetail: false,
+      queryTime: null,
+      queryParam: {
+        companyId: null,
+        deptId: null,
+        deptName: null,
+        empName: null,
+        pageNum: 1,
+        pageSize: 10,
+        beginTime: null,
+        endTime: null
+      },
+      total: null,
+      queryDetailParam: {
+        empId: null,
+        pageNum: 1,
+        pageSize: 10,
+        beginTime: null,
+        endTime: null
+      }
     }
   },
   computed: {
@@ -160,18 +236,52 @@ export default {
   },
   created() {
     this.getPunchReport()
+    this.getDeptList()
   },
   methods: {
     getPunchReport() {
-      getAllPunchReport().then(res => {
+      for (let item in this.queryParam) {
+        if (this.queryParam[item] == '') {
+          this.queryParam[item] = null
+        }
+      }
+      getAllPunchReport(this.queryParam).then(res => {
         this.allPunchReport = res.data
       })
     },
+    getDeptList() {
+      getDeptList().then(res => {
+        this.deptList = res.data
+      })
+    },
     getPunchDetail(empId) {
-      getPunchDetailReport({ empId: empId }).then(res => {
-        this.punchDetail = res.data
+      this.queryDetailParam.empId = empId
+      getPunchDetailReport(this.queryDetailParam).then(res => {
+        this.punchDetail = res.data.list
+        this.queryDetailParam.pageSize = res.data.pageSize
+        this.total = res.data.total
       })
       this.showPunchDetail = true
+    },
+    setQueryPunchTime() {
+      this.queryDetailParam.beginTime = null
+      this.queryDetailParam.endTime = null
+      if (this.queryTime) {
+        this.queryDetailParam.beginTime = this.queryTime[0]
+        this.queryDetailParam.endTime = this.queryTime[1]
+      }
+    },
+    handleSizeChange(val) {
+      this.queryDetailParam.pageSize = val
+      this.queryDetailParam.pageNum = 1
+      this.getPunchDetail(this.queryDetailParam.empId)
+    },
+    handleCurrentChange(val) {
+      this.queryDetailParam.pageNum = val
+      this.getPunchDetail(this.queryDetailParam.empId)
+    },
+    handelIndex(index) {
+      return index + 1 + (this.queryDetailParam.pageNum - 1) * this.queryDetailParam.pageSize;
     }
   }
 }

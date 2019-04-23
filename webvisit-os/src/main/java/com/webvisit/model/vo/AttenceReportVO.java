@@ -20,5 +20,8 @@ public class AttenceReportVO extends AttenceReport {
 
     private String deptName;
 
+    private Long companyId;
+
+    private Long deptId;
 
 }

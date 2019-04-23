@@ -14,8 +14,8 @@ public interface AttenceReportExtMapper {
 
     /**
      * 根据公司id获取考勤报告
-     * @param companyId 公司id
+     * @param attenceReportVO 查询条件
      * @return AttenceReportVO
      */
-    List<AttenceReportVO> selectByCompanyId(Long companyId);
+    List<AttenceReportVO> selectByCondition(AttenceReportVO attenceReportVO);
 }
