@@ -233,10 +233,8 @@ public class AttenceTest {
     public void testQueryAttenceReport() {
         UserInfoVO userInfoVO = UserInfoVO.builder().companyId(2L).build();
         AttenceReportVO queryReportVO = new AttenceReportVO();
-        List<AttenceReportVO> attenceReportVOList = attenceService.queryAttenceReport(userInfoVO, queryReportVO);
-        for (AttenceReportVO attenceReportVO : attenceReportVOList) {
-            System.out.println(attenceReportVO);
-        }
+        PageInfo attenceReportVOList = attenceService.queryAttenceReport(userInfoVO, queryReportVO);
+        System.out.println(attenceReportVOList);
     }
 
     @Test

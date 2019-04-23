@@ -34,6 +34,7 @@
         <el-table :data="allPunchReport" stripe fit border>
           <el-table-column
             type="index"
+            :index="handelAllIndex"
           />
           <el-table-column
             prop="empName"
@@ -88,6 +89,16 @@
             </span>
           </el-table-column>
         </el-table>
+        <el-pagination
+          style="margin-top: 20px;text-align: center"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryParam.pageNum"
+          :page-sizes="[10,20,50,100]"
+          :page-size="queryParam.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
         <el-dialog
           title="考勤详情查看"
           :visible.sync="showPunchDetail"
@@ -167,13 +178,13 @@
           </el-table>
           <el-pagination
             style="margin-top: 20px;text-align: center"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @size-change="handleDetailSizeChange"
+            @current-change="handleDetailCurrentChange"
             :current-page="queryDetailParam.pageNum"
             :page-sizes="[10,20,50,100]"
             :page-size="queryDetailParam.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
+            :total="detailTotal">
           </el-pagination>
           <el-row style="text-align: center;margin-top: 50px">
             <el-button icon="el-icon-close" style="margin-right: 10px" @click="showPunchDetail=false">关闭</el-button>
@@ -203,11 +214,10 @@ export default {
         deptName: null,
         empName: null,
         pageNum: 1,
-        pageSize: 10,
-        beginTime: null,
-        endTime: null
+        pageSize: 10
       },
       total: null,
+      detailTotal: null,
       queryDetailParam: {
         empId: null,
         pageNum: 1,
@@ -246,7 +256,9 @@ export default {
         }
       }
       getAllPunchReport(this.queryParam).then(res => {
-        this.allPunchReport = res.data
+        this.allPunchReport = res.data.list
+        this.queryParam.pageSize = res.data.pageSize
+        this.total = res.data.total
       })
     },
     getDeptList() {
@@ -259,7 +271,7 @@ export default {
       getPunchDetailReport(this.queryDetailParam).then(res => {
         this.punchDetail = res.data.list
         this.queryDetailParam.pageSize = res.data.pageSize
-        this.total = res.data.total
+        this.detailTotal = res.data.total
       })
       this.showPunchDetail = true
     },
@@ -272,16 +284,28 @@ export default {
       }
     },
     handleSizeChange(val) {
+      this.queryParam.pageSize = val
+      this.queryParam.pageNum = 1
+      this.getPunchReport()
+    },
+    handleCurrentChange(val) {
+      this.queryParam.pageNum = val
+      this.getPunchReport()
+    },
+    handleDetailSizeChange(val) {
       this.queryDetailParam.pageSize = val
       this.queryDetailParam.pageNum = 1
       this.getPunchDetail(this.queryDetailParam.empId)
     },
-    handleCurrentChange(val) {
+    handleDetailCurrentChange(val) {
       this.queryDetailParam.pageNum = val
       this.getPunchDetail(this.queryDetailParam.empId)
     },
     handelIndex(index) {
-      return index + 1 + (this.queryDetailParam.pageNum - 1) * this.queryDetailParam.pageSize;
+      return index + 1 + (this.queryDetailParam.pageNum - 1) * this.queryDetailParam.pageSize
+    },
+    handelAllIndex(index) {
+      return index + 1 + (this.queryParam.pageNum -1) * this.queryDetailParam.pageSize
     }
   }
 }

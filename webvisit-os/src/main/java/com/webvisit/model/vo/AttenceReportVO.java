@@ -1,5 +1,6 @@
 package com.webvisit.model.vo;
 
+import com.webvisit.common.re.CommonQueryParam;
 import com.webvisit.model.po.AttenceReport;
 import lombok.*;
 
@@ -14,7 +15,27 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttenceReportVO extends AttenceReport {
+public class AttenceReportVO extends CommonQueryParam {
+
+    private Long id;
+
+    private Long empId;
+
+    private Integer punchInCount;
+
+    private Integer punchInLateCount;
+
+    private Integer punchInMissCount;
+
+    private Integer punchOutCount;
+
+    private Integer punchOutEarlyCount;
+
+    private Integer punchOutMissCount;
+
+    private Integer askLeaveCount;
+
+    private Integer workOutsideCount;
 
     private String empName;
 

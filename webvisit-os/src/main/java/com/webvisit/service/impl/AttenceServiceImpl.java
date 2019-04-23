@@ -509,9 +509,11 @@ public class AttenceServiceImpl implements AttenceService {
     }
 
     @Override
-    public List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO, AttenceReportVO attenceReportVO) {
+    public PageInfo<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO, AttenceReportVO attenceReportVO) {
         attenceReportVO.setCompanyId(userInfoVO.getCompanyId());
-        return attenceReportExtMapper.selectByCondition(attenceReportVO);
+        PageHelper.startPage(attenceReportVO.getPageNum(),attenceReportVO.getPageSize());
+        List<AttenceReportVO> reportList = attenceReportExtMapper.selectByCondition(attenceReportVO);
+        return new PageInfo<AttenceReportVO>(reportList);
     }
 
     @Override
@@ -533,8 +535,7 @@ public class AttenceServiceImpl implements AttenceService {
         punchDetailVO.setCompanyId(userInfoVO.getCompanyId());
         PageHelper.startPage(punchDetailVO.getPageNum(),punchDetailVO.getPageSize());
         List<PunchDetailVO> punchDetailList = attencePunchDetailExtMapper.selectByCondition(punchDetailVO);
-        PageInfo<PunchDetailVO> punchDetailPageInfo = new PageInfo<>(punchDetailList);
-        return punchDetailPageInfo;
+        return new PageInfo<>(punchDetailList);
     }
 
     @Override

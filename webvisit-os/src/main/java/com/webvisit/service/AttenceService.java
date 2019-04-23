@@ -223,7 +223,7 @@ public interface AttenceService {
      * @param attenceReportVO 查询条件
      * @return 考勤统计
      */
-    List<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO, AttenceReportVO attenceReportVO);
+    PageInfo<AttenceReportVO> queryAttenceReport(UserInfoVO userInfoVO, AttenceReportVO attenceReportVO);
 
     /**
      * 根据员工id获取考勤详情
