@@ -7,7 +7,6 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
 import java.util.List;
