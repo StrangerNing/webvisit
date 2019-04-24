@@ -12,7 +12,11 @@ public class LocalConstant {
 
     public static final String LOGIN_UUID_KEY = "login_";
 
+    public static final int LOGIN_USER_EXPOSE_TIME = 12;
+
     public static final String EXPORT_UUID_KEY = "export_";
+
+    public static final int EXPORT_FILE_EXPOSE_TIME = 2;
 
     public static final Long DEFAULT_REGULATION_COMPANY_ID = 0L;
 

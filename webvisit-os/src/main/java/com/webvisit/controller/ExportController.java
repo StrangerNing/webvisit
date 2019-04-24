@@ -46,7 +46,7 @@ public class ExportController {
     Result getDownloadUrl(String uuid) {
         String url = exportService.getDownloadUrl(uuid);
         if (url == null) {
-            return Result.failure("没有处理完成或链接已过期，请重试","1");
+            return Result.failure("文件正在处理或链接已过期，请稍后重试","1");
         }
         return Result.success(exportService.getDownloadUrl(uuid));
     }

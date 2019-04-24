@@ -78,7 +78,7 @@ public class AttenceTest {
 
     @Test
     public void testDeleteRedisKey() {
-        String uuid = "export_4507fd3d-ce58-4954-940a-88461ec282a0";
+        String uuid = "export_2c80c076-ddec-4343-84e3-43bae64d18a3";
         redisTemplate.delete(uuid);
     }
 

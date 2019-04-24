@@ -56,7 +56,7 @@ public class ExportServiceImpl implements ExportService {
         HSSFWorkbook punchDetailWorkBook = ExcelUtil.generateExcel(columns, punchDetailExportList, sheetName);
         StorePath path = uploadWorkbook(punchDetailWorkBook);
         String fileUrl = LocalConstant.IMG_SERVER_ADDRESS + path.getFullPath() + "?filename=考勤详情表.xls";
-        redisTemplate.opsForValue().set(uuid,fileUrl,2, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(uuid,fileUrl,LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ExportServiceImpl implements ExportService {
         SimpleDateFormat dateFormatWithYMDHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat dateFormatWithYMD = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < punchDetailList.size(); i++) {
-            PunchDetailVO punchDetail = punchDetailList.get(i);
+            PunchDetailVO punchDetail = punchDetailList.get(i + 1);
             PunchDetailExportVO punchDetailExport = new PunchDetailExportVO();
             //序号
             punchDetailExport.setIndex(String.valueOf(i));

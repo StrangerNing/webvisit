@@ -192,7 +192,7 @@
           </el-row>
         </el-dialog>
         <el-dialog
-          title="文件下载"
+          :title="downloadTitle"
           :visible.sync="showDownload">
           <div style="min-height: 200px">
             <el-row>
@@ -262,6 +262,7 @@ export default {
       showDownload: false,
       exportPercentage: 0,
       exportOnProgress: true,
+      downloadTitle: '生成下载文件',
       retry: false
     }
   },
@@ -324,6 +325,7 @@ export default {
     setTimeInterval() {
       this.exportPercentage = 0
       this.exportOnProgress = true
+      this.downloadTitle = '生成下载文件'
       this.showDownload = true
       this.retry = false
       let clock = window.setInterval(() => {
@@ -331,6 +333,7 @@ export default {
         if (this.exportPercentage === 100) {
           window.clearInterval(clock)
           this.exportOnProgress = false
+          this.downloadTitle = '文件下载'
         }
       },50)
     },

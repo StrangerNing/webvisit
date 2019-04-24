@@ -41,7 +41,7 @@ public class LoginController {
         UserInfoVO userInfoVO = loginService.login(loginVO);
         if (null != userInfoVO) {
             String uuid = LocalConstant.LOGIN_UUID_KEY + UUID.randomUUID().toString();
-            redisTemplate.opsForValue().set(uuid, userInfoVO, 12, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set(uuid, userInfoVO, LocalConstant.LOGIN_USER_EXPOSE_TIME, TimeUnit.HOURS);
             return Result.success(uuid);
         }else {
             return Result.failure();
