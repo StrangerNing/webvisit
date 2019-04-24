@@ -77,6 +77,12 @@ public class AttenceTest {
     }
 
     @Test
+    public void testDeleteRedisKey() {
+        String uuid = "export_4507fd3d-ce58-4954-940a-88461ec282a0";
+        redisTemplate.delete(uuid);
+    }
+
+    @Test
     public void testGenerateMd5() {
         String password = "zhuzening8";
         String encryptPassword = MD5Util.generate(password);

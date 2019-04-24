@@ -1,7 +1,7 @@
 package com.webvisit.controller;
 
 import com.webvisit.common.constant.LocalConstant;
-import com.webvisit.common.re.Result;
+import com.webvisit.common.component.Result;
 import com.webvisit.model.vo.LoginVO;
 import com.webvisit.model.vo.RegisterVO;
 import com.webvisit.model.vo.UserInfoVO;

@@ -2,7 +2,7 @@ package com.webvisit.common.handler;
 
 import com.webvisit.common.enums.ResultEnum;
 import com.webvisit.common.exception.BusinessException;
-import com.webvisit.common.re.Result;
+import com.webvisit.common.component.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

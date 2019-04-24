@@ -196,6 +196,22 @@ export function getPunchDetailReport(data) {
   })
 }
 
+export function exportPunchDetail(param) {
+  return request({
+    url: '/export/punch/detail',
+    method: 'get',
+    params: param
+  })
+}
+
+export function getDownloadUrl(param) {
+  return request({
+    url: '/export/download',
+    method: 'get',
+    params: param
+  })
+}
+
 export function getDeptList(param) {
   return request({
     url: '/attence/dept/query',

@@ -233,6 +233,8 @@ public interface AttenceService {
      */
     PageInfo<PunchDetailVO> queryAttencePunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO);
 
+    List<PunchDetailVO> queryAttencePunchDetailNoPaged(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO);
+
     List<CompanyDept> queryDeptList(UserInfoVO userInfoVO,CompanyDept companyDept);
 //
 //    /**

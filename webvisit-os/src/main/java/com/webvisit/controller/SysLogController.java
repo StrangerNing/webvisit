@@ -3,7 +3,7 @@ package com.webvisit.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.webvisit.common.annotation.LoginUser;
-import com.webvisit.common.re.Result;
+import com.webvisit.common.component.Result;
 import com.webvisit.model.vo.LogVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.SysLogService;

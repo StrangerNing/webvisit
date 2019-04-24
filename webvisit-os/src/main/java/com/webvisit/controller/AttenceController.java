@@ -1,11 +1,9 @@
 package com.webvisit.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.webvisit.common.annotation.GetLog;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.exception.BusinessException;
-import com.webvisit.common.re.Result;
+import com.webvisit.common.component.Result;
 import com.webvisit.model.dto.RegulationDTO;
 import com.webvisit.model.po.CompanyDept;
 import com.webvisit.model.vo.*;

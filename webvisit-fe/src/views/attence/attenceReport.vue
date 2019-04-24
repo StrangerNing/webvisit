@@ -121,6 +121,7 @@
               </el-col>
               <el-col :span="8">
                 <el-button type="primary" @click="getPunchDetail(queryDetailParam.empId)">搜索</el-button>
+                <el-button type="success" @click="exportPunchDetail(queryDetailParam.empId)">导出</el-button>
               </el-col>
             </el-form>
           </el-row>
@@ -190,14 +191,46 @@
             <el-button icon="el-icon-close" style="margin-right: 10px" @click="showPunchDetail=false">关闭</el-button>
           </el-row>
         </el-dialog>
+        <el-dialog
+          title="文件下载"
+          :visible.sync="showDownload">
+          <div style="min-height: 200px">
+            <el-row>
+              <el-col>
+                <div style="text-align: center;">
+                  <el-progress type="circle" :percentage="exportPercentage" v-if="exportOnProgress"></el-progress>
+                  <el-progress type="circle" :percentage="exportPercentage" v-else status="success"></el-progress>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col>
+                <div style="text-align: center;margin-top: 20px">
+                  <el-button type="primary" v-if="!exportOnProgress" @click="downloadFile">下载</el-button>
+                </div>
+                <div style="text-align: center;margin-top: 20px">
+                  <el-button type="primary" v-if="retry" @click="setTimeInterval">重试</el-button>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </el-dialog>
       </el-card>
     </div>
   </div>
 </template>
 
 <script>
-  import { getAllPunchReport, getDeptList, getPunchDetailReport } from '../../api/attence'
+  import {
+    exportPunchDetail,
+    getAllPunchReport,
+    getDeptList,
+    getDownloadUrl,
+    getPunchDetailReport
+  } from '../../api/attence'
 import enums from './enums'
+  import { Message } from 'element-ui'
+  import { openUrl } from '../../utils/openUrl'
 
 export default {
   name: 'AttenceReport',
@@ -224,7 +257,12 @@ export default {
         pageSize: 10,
         beginTime: null,
         endTime: null
-      }
+      },
+      exportUUID: null,
+      showDownload: false,
+      exportPercentage: 0,
+      exportOnProgress: true,
+      retry: false
     }
   },
   computed: {
@@ -274,6 +312,44 @@ export default {
         this.detailTotal = res.data.total
       })
       this.showPunchDetail = true
+    },
+    exportPunchDetail(empId) {
+      this.showPunchDetail =false
+      this.queryDetailParam.empId = empId
+      exportPunchDetail(this.queryDetailParam).then(res => {
+        this.exportUUID = res.data
+        this.setTimeInterval()
+      })
+    },
+    setTimeInterval() {
+      this.exportPercentage = 0
+      this.exportOnProgress = true
+      this.showDownload = true
+      this.retry = false
+      let clock = window.setInterval(() => {
+        this.exportPercentage ++
+        if (this.exportPercentage === 100) {
+          window.clearInterval(clock)
+          this.exportOnProgress = false
+        }
+      },50)
+    },
+    downloadFile() {
+      getDownloadUrl({uuid : this.exportUUID}).then(res => {
+        if (res.success) {
+          openUrl(res.data)
+        } else {
+          Message({
+            message: res.message,
+            type: 'error',
+            duration: 5 * 1000
+          })
+          this.retry = true
+          this.exportPercentage = 0
+          this.exportOnProgress = true
+          this.showDownload = true
+        }
+      })
     },
     setQueryPunchTime() {
       this.queryDetailParam.beginTime = null

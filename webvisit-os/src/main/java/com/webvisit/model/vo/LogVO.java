@@ -1,7 +1,7 @@
 package com.webvisit.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.webvisit.common.re.CommonQueryParam;
+import com.webvisit.common.component.CommonQueryParam;
 import lombok.*;
 
 import java.util.Date;

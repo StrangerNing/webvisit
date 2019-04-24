@@ -1,9 +1,8 @@
 package com.webvisit.controller;
 
-import com.github.tobato.fastdfs.domain.conn.ConnectionManager;
 import com.webvisit.common.annotation.GetLog;
 import com.webvisit.common.annotation.LoginUser;
-import com.webvisit.common.re.Result;
+import com.webvisit.common.component.Result;
 import com.webvisit.model.po.CompanyProduct;
 import com.webvisit.model.vo.CompanyInfoVO;
 import com.webvisit.model.vo.ProductImgVO;

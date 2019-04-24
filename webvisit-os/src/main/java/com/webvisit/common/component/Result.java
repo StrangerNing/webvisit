@@ -1,4 +1,4 @@
-package com.webvisit.common.re;
+package com.webvisit.common.component;
 
 import java.io.Serializable;
 

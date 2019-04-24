@@ -1,7 +1,6 @@
 package com.webvisit.model.vo;
 
-import com.webvisit.common.re.CommonQueryParam;
-import com.webvisit.model.po.AttenceReport;
+import com.webvisit.common.component.CommonQueryParam;
 import lombok.*;
 
 /**

@@ -1,12 +1,11 @@
 package com.webvisit.model.vo;
 
-import com.webvisit.common.re.CommonQueryParam;
+import com.webvisit.common.component.CommonQueryParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**

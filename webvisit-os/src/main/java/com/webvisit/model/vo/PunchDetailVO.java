@@ -1,7 +1,7 @@
 package com.webvisit.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.webvisit.common.re.CommonQueryParam;
+import com.webvisit.common.component.CommonQueryParam;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,12 +27,6 @@ public class PunchDetailVO extends CommonQueryParam {
     private Long deptId;
 
     private Long companyId;
-
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
-    private Date beginDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
-    private Date endDate;
 
     private Long id;
 
