@@ -307,8 +307,8 @@ export default {
     },
     showAndGetPunchDetail(empId) {
       this.queryTime = null
-      this.queryParam.beginTime = null
-      this.queryParam.endTime = null
+      this.queryDetailParam.beginTime = null
+      this.queryDetailParam.endTime = null
       this.getPunchDetail(empId)
     },
     getPunchDetail(empId) {
