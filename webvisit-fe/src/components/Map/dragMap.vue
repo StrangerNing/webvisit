@@ -25,23 +25,26 @@ export default {
       AMap: null
     }
   },
+  computed: {
+    locationChanged() {
+      const { lat, lng } = this
+      return { lat, lng }
+    }
+  },
   watch: {
     searchKey() {
       if (this.searchKey === '') {
         this.placeSearch.clear()
       }
+    },
+    locationChanged(val) {
+      if (val.lat != null || val.lng != null) {
+        this.whileCreated()
+      }
     }
   },
   async created() {
-    // 已载入高德地图API，则直接初始化地图
-    if (window.AMap && window.AMapUI) {
-      this.initMap()
-      // 未载入高德地图API，则先载入API再初始化
-    } else {
-      await remoteLoad(`http://webapi.amap.com/maps?v=1.3&key=${MapKey}`)
-      await remoteLoad('http://webapi.amap.com/ui/1.0/main.js')
-      this.initMap()
-    }
+    this.whileCreated()
   },
   methods: {
     // 搜索
@@ -50,8 +53,22 @@ export default {
         this.placeSearch.search(this.searchKey)
       }
     },
+    async whileCreated() {
+      // 已载入高德地图API，则直接初始化地图
+      if (window.AMap && window.AMapUI) {
+        this.initMap()
+        console.log('已载入高德地图API，直接初始化地图')
+        // 未载入高德地图API，则先载入API再初始化
+      } else {
+        console.log('未载入高德地图API，先载入API')
+        await remoteLoad(`http://webapi.amap.com/maps?v=1.3&key=${MapKey}`)
+        await remoteLoad('http://webapi.amap.com/ui/1.0/main.js')
+        this.initMap()
+      }
+    },
     // 实例化地图
     initMap() {
+      console.log('实例化地图')
       // 加载PositionPicker，loadUI的路径参数为模块名中 'ui/' 之后的部分
       const AMapUI = this.AMapUI = window.AMapUI
       const AMap = this.AMap = window.AMap
@@ -86,11 +103,12 @@ export default {
         // 拖拽完成发送自定义 drag 事件
         positionPicker.on('success', positionResult => {
           // 过滤掉初始化地图后的第一次默认拖放
-          if (!this.dragStatus) {
-            this.dragStatus = true
-          } else {
-            this.$emit('drag', positionResult)
-          }
+          // if (!this.dragStatus) {
+          //   this.dragStatus = true
+          // } else {
+          //   this.$emit('drag', positionResult)
+          // }
+          this.$emit('drag', positionResult)
         })
         // 启动拖放
         positionPicker.start()

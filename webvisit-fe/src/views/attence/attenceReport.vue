@@ -9,9 +9,9 @@
         </el-row>
         <el-row>
           <el-form>
-            <el-col :span="8">
+            <el-col :span="5">
               <el-form-item label="职工姓名：">
-                <el-input v-model="queryParam.empName" style="max-width: 80%" placeholder="支持模糊搜索"></el-input>
+                <el-input v-model="queryParam.empName" style="max-width: 60%" placeholder="支持模糊搜索"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -84,7 +84,7 @@
                 type="success"
                 size="small"
                 icon="el-icon-search"
-                @click="getPunchDetail(scope.row.empId)"
+                @click="showAndGetPunchDetail(scope.row.empId)"
               >查看</el-button>
             </span>
           </el-table-column>
@@ -304,6 +304,12 @@ export default {
       getDeptList().then(res => {
         this.deptList = res.data
       })
+    },
+    showAndGetPunchDetail(empId) {
+      this.queryTime = null
+      this.queryParam.beginTime = null
+      this.queryParam.endTime = null
+      this.getPunchDetail(empId)
     },
     getPunchDetail(empId) {
       this.queryDetailParam.empId = empId

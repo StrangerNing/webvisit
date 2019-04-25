@@ -87,10 +87,10 @@ public class ExportServiceImpl implements ExportService {
         SimpleDateFormat dateFormatWithYMDHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat dateFormatWithYMD = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < punchDetailList.size(); i++) {
-            PunchDetailVO punchDetail = punchDetailList.get(i + 1);
+            PunchDetailVO punchDetail = punchDetailList.get(i);
             PunchDetailExportVO punchDetailExport = new PunchDetailExportVO();
             //序号
-            punchDetailExport.setIndex(String.valueOf(i));
+            punchDetailExport.setIndex(String.valueOf(i+1));
             //职工姓名
             punchDetailExport.setNickname(punchDetail.getNickname());
             //部门
