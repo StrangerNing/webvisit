@@ -1,5 +1,6 @@
 package com.webvisit.service;
 
+import com.webvisit.model.vo.LogVO;
 import com.webvisit.model.vo.PunchDetailVO;
 import com.webvisit.model.vo.UserInfoVO;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -20,6 +21,14 @@ public interface ExportService {
      * @param uuid          key
      */
     void exportPunchDetail(UserInfoVO userInfoVO, PunchDetailVO punchDetailVO, String uuid);
+
+    /**
+     * 导出日志
+     * @param userInfoVO 当前登录用户
+     * @param logVO 查询条件
+     * @param uuid key
+     */
+    void exportLog(UserInfoVO userInfoVO, LogVO logVO, String uuid);
 
     /**
      * 获取下载链接

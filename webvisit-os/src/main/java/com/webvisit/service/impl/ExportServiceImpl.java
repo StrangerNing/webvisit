@@ -8,11 +8,10 @@ import com.webvisit.common.enums.AttenceTypeEnum;
 import com.webvisit.common.enums.PunchInEnum;
 import com.webvisit.common.enums.PunchOutEnum;
 import com.webvisit.common.exception.BusinessException;
-import com.webvisit.model.vo.PunchDetailExportVO;
-import com.webvisit.model.vo.PunchDetailVO;
-import com.webvisit.model.vo.UserInfoVO;
+import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.service.ExportService;
+import com.webvisit.service.SysLogService;
 import com.webvisit.utils.ExcelUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -42,7 +41,9 @@ public class ExportServiceImpl implements ExportService {
     @Resource
     private AttenceService attenceService;
     @Resource
-    private RedisTemplate<String,String> redisTemplate;
+    private SysLogService sysLogService;
+    @Resource
+    private RedisTemplate<String, String> redisTemplate;
     @Resource
     private FastFileStorageClient fastFileStorageClient;
 
@@ -56,7 +57,21 @@ public class ExportServiceImpl implements ExportService {
         HSSFWorkbook punchDetailWorkBook = ExcelUtil.generateExcel(columns, punchDetailExportList, sheetName);
         StorePath path = uploadWorkbook(punchDetailWorkBook);
         String fileUrl = LocalConstant.IMG_SERVER_ADDRESS + path.getFullPath() + "?filename=考勤详情表.xls";
-        redisTemplate.opsForValue().set(uuid,fileUrl,LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(uuid, fileUrl, LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
+    }
+
+    @Override
+    @Async
+    public void exportLog(UserInfoVO userInfoVO, LogVO logVO, String uuid) {
+        List<LogVO> logList = sysLogService.queryLog(userInfoVO, logVO);
+        List<LogExportVO> logExportList = convertLogVO2ExportFormat(logList);
+        ArrayList<Column> columns = setLogColumns();
+        String sheetName = "日志记录表";
+        HSSFWorkbook logWorkBook = ExcelUtil.generateExcel(columns, logExportList, sheetName);
+        StorePath path = uploadWorkbook(logWorkBook);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String fileUrl = String.format("%s%s?filename=%s-操作日志表", LocalConstant.IMG_SERVER_ADDRESS, path.getFullPath(), dateFormat.format(new Date()));
+        redisTemplate.opsForValue().set(uuid, fileUrl, LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
     }
 
     @Override
@@ -90,7 +105,7 @@ public class ExportServiceImpl implements ExportService {
             PunchDetailVO punchDetail = punchDetailList.get(i);
             PunchDetailExportVO punchDetailExport = new PunchDetailExportVO();
             //序号
-            punchDetailExport.setIndex(String.valueOf(i+1));
+            punchDetailExport.setIndex(String.valueOf(i + 1));
             //职工姓名
             punchDetailExport.setNickname(punchDetail.getNickname());
             //部门
@@ -116,6 +131,33 @@ public class ExportServiceImpl implements ExportService {
         return punchDetailExportList;
     }
 
+    private List<LogExportVO> convertLogVO2ExportFormat(List<LogVO> logVOList) {
+        List<LogExportVO> logExportList = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < logVOList.size(); i++) {
+            LogVO logVO = logVOList.get(i);
+            LogExportVO logExportVO = new LogExportVO();
+            //序号
+            logExportVO.setIndex(String.valueOf(i + 1));
+            //用户名
+            logExportVO.setUsername(logVO.getUsername());
+            //操作信息
+            logExportVO.setOperation(logVO.getOperation());
+            //调用方法
+            logExportVO.setMethod(logVO.getMethod());
+            //入参
+            logExportVO.setParams(logVO.getParams());
+            //操作人IP
+            logExportVO.setIp(logVO.getIp());
+            //操作时间
+            Date createTime = logVO.getCreateTime();
+            logExportVO.setCreateTime(createTime == null ? null : dateFormat.format(createTime));
+
+            logExportList.add(logExportVO);
+        }
+        return logExportList;
+    }
+
     private ArrayList<Column> setPunchDetailColumns() {
         return new ArrayList<Column>() {
             {
@@ -128,6 +170,20 @@ public class ExportServiceImpl implements ExportService {
                 add(new Column("punchOutTime").title("签退时间"));
                 add(new Column("punchOutStatus").title("签退状态"));
                 add(new Column("punchType").title("考勤类型"));
+            }
+        };
+    }
+
+    private ArrayList<Column> setLogColumns() {
+        return new ArrayList<Column>() {
+            {
+                add(new Column("index").title("序号"));
+                add(new Column("username").title("用户名"));
+                add(new Column("operation").title("操作信息"));
+                add(new Column("method").title("调用方法"));
+                add(new Column("params").title("入参"));
+                add(new Column("ip").title("操作人IP"));
+                add(new Column("createTime").title("操作时间"));
             }
         };
     }

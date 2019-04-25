@@ -191,30 +191,7 @@
             <el-button icon="el-icon-close" style="margin-right: 10px" @click="showPunchDetail=false">关闭</el-button>
           </el-row>
         </el-dialog>
-        <el-dialog
-          :title="downloadTitle"
-          :visible.sync="showDownload">
-          <div style="min-height: 200px">
-            <el-row>
-              <el-col>
-                <div style="text-align: center;">
-                  <el-progress type="circle" :percentage="exportPercentage" v-if="exportOnProgress"></el-progress>
-                  <el-progress type="circle" :percentage="exportPercentage" v-else status="success"></el-progress>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col>
-                <div style="text-align: center;margin-top: 20px">
-                  <el-button type="primary" v-if="!exportOnProgress" @click="downloadFile">下载</el-button>
-                </div>
-                <div style="text-align: center;margin-top: 20px">
-                  <el-button type="primary" v-if="retry" @click="setTimeInterval">重试</el-button>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </el-dialog>
+        <export :exportUUID="exportUUID" :show-download="showDownload"></export>
       </el-card>
     </div>
   </div>
@@ -225,15 +202,14 @@
     exportPunchDetail,
     getAllPunchReport,
     getDeptList,
-    getDownloadUrl,
     getPunchDetailReport
   } from '../../api/attence'
 import enums from './enums'
-  import { Message } from 'element-ui'
-  import { openUrl } from '../../utils/openUrl'
+  import Export from '../../components/Export/export'
 
 export default {
   name: 'AttenceReport',
+  components: { Export },
   data() {
     return {
       allPunchReport: [],
@@ -259,11 +235,7 @@ export default {
         endTime: null
       },
       exportUUID: null,
-      showDownload: false,
-      exportPercentage: 0,
-      exportOnProgress: true,
-      downloadTitle: '生成下载文件',
-      retry: false
+      showDownload: false
     }
   },
   computed: {
@@ -325,39 +297,7 @@ export default {
       this.queryDetailParam.empId = empId
       exportPunchDetail(this.queryDetailParam).then(res => {
         this.exportUUID = res.data
-        this.setTimeInterval()
-      })
-    },
-    setTimeInterval() {
-      this.exportPercentage = 0
-      this.exportOnProgress = true
-      this.downloadTitle = '生成下载文件'
-      this.showDownload = true
-      this.retry = false
-      let clock = window.setInterval(() => {
-        this.exportPercentage ++
-        if (this.exportPercentage === 100) {
-          window.clearInterval(clock)
-          this.exportOnProgress = false
-          this.downloadTitle = '文件下载'
-        }
-      },50)
-    },
-    downloadFile() {
-      getDownloadUrl({uuid : this.exportUUID}).then(res => {
-        if (res.success) {
-          openUrl(res.data)
-        } else {
-          Message({
-            message: res.message,
-            type: 'error',
-            duration: 5 * 1000
-          })
-          this.retry = true
-          this.exportPercentage = 0
-          this.exportOnProgress = true
-          this.showDownload = true
-        }
+        this.showDownload =true
       })
     },
     setQueryPunchTime() {

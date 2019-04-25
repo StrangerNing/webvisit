@@ -3,6 +3,7 @@ package com.webvisit.controller;
 import com.webvisit.common.annotation.LoginUser;
 import com.webvisit.common.component.Result;
 import com.webvisit.common.constant.LocalConstant;
+import com.webvisit.model.vo.LogVO;
 import com.webvisit.model.vo.PunchDetailVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.ExportService;
@@ -37,8 +38,15 @@ public class ExportController {
 
     @RequestMapping("/punch/detail")
     Result exportPunchDetail(@LoginUser UserInfoVO userInfoVO, PunchDetailVO punchDetailVO, HttpServletResponse response) {
-        String uuid = LocalConstant.EXPORT_UUID_KEY +UUID.randomUUID().toString();
-        exportService.exportPunchDetail(userInfoVO, punchDetailVO,uuid);
+        String uuid = LocalConstant.EXPORT_UUID_KEY + UUID.randomUUID().toString();
+        exportService.exportPunchDetail(userInfoVO, punchDetailVO, uuid);
+        return Result.success(uuid);
+    }
+
+    @RequestMapping("/security/log")
+    Result exportLog(@LoginUser UserInfoVO userInfoVO, LogVO logVO) {
+        String uuid = LocalConstant.EXPORT_UUID_KEY + UUID.randomUUID().toString();
+        exportService.exportLog(userInfoVO, logVO, uuid);
         return Result.success(uuid);
     }
 
@@ -46,7 +54,7 @@ public class ExportController {
     Result getDownloadUrl(String uuid) {
         String url = exportService.getDownloadUrl(uuid);
         if (url == null) {
-            return Result.failure("文件正在处理或链接已过期，请稍后重试","1");
+            return Result.failure("文件正在处理或链接已过期，请稍后重试", "1");
         }
         return Result.success(exportService.getDownloadUrl(uuid));
     }

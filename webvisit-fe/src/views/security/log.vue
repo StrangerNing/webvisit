@@ -31,6 +31,7 @@
             </el-col>
             <el-col :span="4">
               <el-button type="primary" @click="search">搜索</el-button>
+              <el-button type="success">导出</el-button>
             </el-col>
           </el-form>
         </el-row>
