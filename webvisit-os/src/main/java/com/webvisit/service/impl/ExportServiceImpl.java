@@ -55,9 +55,7 @@ public class ExportServiceImpl implements ExportService {
         ArrayList<Column> columns = setPunchDetailColumns();
         String sheetName = "考勤明细表";
         HSSFWorkbook punchDetailWorkBook = ExcelUtil.generateExcel(columns, punchDetailExportList, sheetName);
-        StorePath path = uploadWorkbook(punchDetailWorkBook);
-        String fileUrl = LocalConstant.IMG_SERVER_ADDRESS + path.getFullPath() + "?filename=考勤详情表.xls";
-        redisTemplate.opsForValue().set(uuid, fileUrl, LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
+        uploadWorkbook(punchDetailWorkBook,"考勤详情表",uuid);
     }
 
     @Override
@@ -68,10 +66,7 @@ public class ExportServiceImpl implements ExportService {
         ArrayList<Column> columns = setLogColumns();
         String sheetName = "日志记录表";
         HSSFWorkbook logWorkBook = ExcelUtil.generateExcel(columns, logExportList, sheetName);
-        StorePath path = uploadWorkbook(logWorkBook);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String fileUrl = String.format("%s%s?filename=%s-操作日志表", LocalConstant.IMG_SERVER_ADDRESS, path.getFullPath(), dateFormat.format(new Date()));
-        redisTemplate.opsForValue().set(uuid, fileUrl, LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
+        uploadWorkbook(logWorkBook,"操作日志表",uuid);
     }
 
     @Override
@@ -83,18 +78,23 @@ public class ExportServiceImpl implements ExportService {
         return url;
     }
 
-    private StorePath uploadWorkbook(HSSFWorkbook workbook) {
+    private void uploadWorkbook(HSSFWorkbook workbook,String workbookName,String uuid) {
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             workbook.write(os);
             byte[] workbook2Byte = os.toByteArray();
             InputStream inputStream = new ByteArrayInputStream(workbook2Byte);
             os.close();
-            return fastFileStorageClient.uploadFile(inputStream, workbook2Byte.length, "xls", null);
+            StorePath path = fastFileStorageClient.uploadFile(inputStream, workbook2Byte.length, "xls", null);
+            if (null == path) {
+                throw new BusinessException("上传文件失败");
+            }
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            String fileUrl = String.format("%s%s?filename=%s-%s.xls", LocalConstant.IMG_SERVER_ADDRESS, path.getFullPath(), dateFormat.format(new Date()),workbookName);
+            redisTemplate.opsForValue().set(uuid, fileUrl, LocalConstant.EXPORT_FILE_EXPOSE_TIME, TimeUnit.HOURS);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        throw new BusinessException("上传文件失败");
     }
 
     private List<PunchDetailExportVO> convertPunchDetailVO2ExportFormat(List<PunchDetailVO> punchDetailList) {

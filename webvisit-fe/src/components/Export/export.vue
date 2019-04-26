@@ -55,15 +55,20 @@ export default {
       retry: false
     }
   },
-  created() {
-    this.setTimeInterval()
+  watch: {
+    showDownload(val) {
+      if (val) {
+        this.setTimeInterval()
+      } else {
+        this.$emit('showDownload', this.showDownload)
+      }
+    }
   },
   methods: {
     setTimeInterval() {
       this.exportPercentage = 0
       this.exportOnProgress = true
       this.downloadTitle = '生成下载文件'
-      this.showDownload = true
       this.retry = false
       const clock = window.setInterval(() => {
         this.exportPercentage++

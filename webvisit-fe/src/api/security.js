@@ -7,3 +7,11 @@ export function getLogList(param) {
     params: param
   })
 }
+
+export function exportLog(param) {
+  return request({
+    url: '/export/security/log',
+    method: 'get',
+    params: param
+  })
+}

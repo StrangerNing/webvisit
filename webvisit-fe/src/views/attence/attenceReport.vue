@@ -261,6 +261,7 @@ export default {
   },
   methods: {
     getPunchReport() {
+      this.showDownload = false
       for (let item in this.queryParam) {
         if (this.queryParam[item] == '') {
           this.queryParam[item] = null
@@ -290,6 +291,7 @@ export default {
         this.queryDetailParam.pageSize = res.data.pageSize
         this.detailTotal = res.data.total
       })
+      this.showDownload = false
       this.showPunchDetail = true
     },
     exportPunchDetail(empId) {
