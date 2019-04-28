@@ -1,9 +1,12 @@
 package com.webvisit.quartz;
 
+import com.webvisit.model.po.ScheduleJob;
 import com.webvisit.utils.SpringUtil;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import java.lang.reflect.Method;
 
 /**
  * @author zening.zhu
@@ -15,6 +18,15 @@ public class QuartzFactory implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//test
+        ScheduleJob scheduleJob = (ScheduleJob) jobExecutionContext.getMergedJobDataMap().get("scheduleJob");
+
+        Object object = SpringUtil.getBean(scheduleJob.getBeanName());
+
+        try {
+            Method method = object.getClass().getMethod(scheduleJob.getMethodName());
+            method.invoke(object);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

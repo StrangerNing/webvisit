@@ -7,6 +7,7 @@ import com.webvisit.model.vo.LogVO;
 import com.webvisit.model.vo.UserInfoVO;
 import com.webvisit.service.SysLogService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysLogServiceImpl implements SysLogService {
 
     @Resource

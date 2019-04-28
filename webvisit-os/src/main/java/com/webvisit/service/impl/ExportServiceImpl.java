@@ -17,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
@@ -36,6 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ExportServiceImpl implements ExportService {
 
     @Resource

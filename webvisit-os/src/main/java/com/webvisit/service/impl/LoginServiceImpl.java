@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class LoginServiceImpl implements LoginService {
 
     @Resource

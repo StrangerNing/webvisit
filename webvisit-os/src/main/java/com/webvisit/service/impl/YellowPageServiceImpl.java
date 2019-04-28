@@ -23,6 +23,7 @@ import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -36,6 +37,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class YellowPageServiceImpl implements YellowPageService {
 
     @Resource

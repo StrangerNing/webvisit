@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.ScheduleJobExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.ScheduleJob" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="job_name" property="jobName" jdbcType="VARCHAR" />
+    <result column="cron_expression" property="cronExpression" jdbcType="VARCHAR" />
+    <result column="bean_name" property="beanName" jdbcType="VARCHAR" />
+    <result column="method_name" property="methodName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_id" property="createId" jdbcType="BIGINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_id" property="modifyId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, job_name, cron_expression, bean_name, method_name, status, delete_flag, create_time,
+    create_id, modify_time, modify_id
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_schedule_job
+  </select>
+
+</mapper>

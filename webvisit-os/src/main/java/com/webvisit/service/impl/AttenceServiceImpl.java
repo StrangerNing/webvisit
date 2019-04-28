@@ -16,6 +16,7 @@ import com.webvisit.utils.TimeUtil;
 import com.webvisit.utils.ValidatorUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class AttenceServiceImpl implements AttenceService {
     @Resource
     private UserMapper userMapper;
