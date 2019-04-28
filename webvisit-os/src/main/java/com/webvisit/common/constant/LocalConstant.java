@@ -23,4 +23,6 @@ public class LocalConstant {
     public static final int MIN_WORKDAY_COUNT = 1;
 
     public static final String IMG_SERVER_ADDRESS = "http://img.znzn.me/";
+
+    public static final String PUNCH_UUID_KEY = "punch_";
 }

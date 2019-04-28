@@ -22,13 +22,13 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.util.resources.cldr.sv.TimeZoneNames_sv;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -142,6 +142,22 @@ public class AttenceTest {
                 punchDetailMapper.insert(punchDetail);
             }
         }
+    }
+
+    @Test
+    public void testPunch() {
+//        AttencePunchDetail attencePunchDetail = new AttencePunchDetail();
+//        attencePunchDetail.setPunchTime(TimeUtil.createNowTime());
+//        attencePunchDetail.setPunchInTime(TimeUtil.createNowTime());
+//        punchDetailMapper.insert(attencePunchDetail);
+        List<RegulationVO> regulationVOS = attenceService.queryRegulations(1L);
+        RegulationVO regulationVO = regulationVOS.get(0);
+        long now = TimeUtil.createNowTime().getTime();
+        System.out.println(now);
+        Date late = regulationVO.getAllowLate();
+        System.out.println(late);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(simpleDateFormat.format(now+TimeUtil.getMSOfTime(late)));
     }
 
     @Test

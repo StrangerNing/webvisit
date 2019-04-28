@@ -34,7 +34,7 @@ public enum JobOperateEnum {
         this.desc = desc;
     }
 
-    public Serializable getValue() {
+    public Integer getValue() {
         return this.value;
     }
 

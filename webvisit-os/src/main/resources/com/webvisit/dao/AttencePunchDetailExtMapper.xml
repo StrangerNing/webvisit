@@ -69,4 +69,90 @@
         </if>
         order by punchTime desc
     </select>
+
+    <insert id="insertPunchDetailSelectiveReturnId" useGeneratedKeys="true" keyProperty="id" parameterType="com.webvisit.model.po.AttencePunchDetail" >
+        insert into t_attence_punch_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="empId != null" >
+                emp_id,
+            </if>
+            <if test="punchTime != null" >
+                punch_time,
+            </if>
+            <if test="punchInTime != null" >
+                punch_in_time,
+            </if>
+            <if test="punchOutTime != null" >
+                punch_out_time,
+            </if>
+            <if test="punchInStatus != null" >
+                punch_in_status,
+            </if>
+            <if test="punchOutStatus != null" >
+                punch_out_status,
+            </if>
+            <if test="punchInLocationLon != null" >
+                punch_in_location_lon,
+            </if>
+            <if test="punchInLocationLat != null" >
+                punch_in_location_lat,
+            </if>
+            <if test="punchOutLocationLon != null" >
+                punch_out_location_lon,
+            </if>
+            <if test="punchOutLocationLat != null" >
+                punch_out_location_lat,
+            </if>
+            <if test="punchType != null" >
+                punch_type,
+            </if>
+            <if test="leaveId != null" >
+                leave_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="empId != null" >
+                #{empId,jdbcType=BIGINT},
+            </if>
+            <if test="punchTime != null" >
+                #{punchTime,jdbcType=DATE},
+            </if>
+            <if test="punchInTime != null" >
+                #{punchInTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="punchOutTime != null" >
+                #{punchOutTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="punchInStatus != null" >
+                #{punchInStatus,jdbcType=TINYINT},
+            </if>
+            <if test="punchOutStatus != null" >
+                #{punchOutStatus,jdbcType=TINYINT},
+            </if>
+            <if test="punchInLocationLon != null" >
+                #{punchInLocationLon,jdbcType=DECIMAL},
+            </if>
+            <if test="punchInLocationLat != null" >
+                #{punchInLocationLat,jdbcType=DECIMAL},
+            </if>
+            <if test="punchOutLocationLon != null" >
+                #{punchOutLocationLon,jdbcType=DECIMAL},
+            </if>
+            <if test="punchOutLocationLat != null" >
+                #{punchOutLocationLat,jdbcType=DECIMAL},
+            </if>
+            <if test="punchType != null" >
+                #{punchType,jdbcType=TINYINT},
+            </if>
+            <if test="leaveId != null" >
+                #{leaveId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
 </mapper>

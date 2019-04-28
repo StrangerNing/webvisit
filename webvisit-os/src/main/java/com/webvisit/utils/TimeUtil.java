@@ -1,6 +1,7 @@
 package com.webvisit.utils;
 
 
+import com.webvisit.common.constant.LocalConstant;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -391,6 +392,29 @@ public final class TimeUtil {
         Double dayCeil = Math.ceil(time / (1000 * 3600 * 24.0));
 
         return dayCeil.intValue();
+    }
+
+    public static int compareHHMMSSTime(String timeA, String timeB) {
+        String[] timeASplit = timeA.split(":");
+        String[] timeBSplit = timeB.split(":");
+        int round = 3;
+        for (int i = 0; i < round; i++) {
+            Integer a = Integer.valueOf(timeASplit[i]);
+            Integer b = Integer.valueOf(timeBSplit[i]);
+            if (a > b) {
+                return 1;
+            } else if (a < b) {
+                return -1;
+            }
+        }
+        return 0;
+    }
+
+    public static long getMSOfTime(Date time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String formatTime = simpleDateFormat.format(time);
+        String[] split = formatTime.split(":");
+        return TimeUnit.HOURS.toMillis(Long.parseLong(split[0])) + TimeUnit.MINUTES.toMillis(Long.parseLong(split[1])) + TimeUnit.SECONDS.toMillis(Long.parseLong(split[2]));
     }
 
     private TimeUtil() {
