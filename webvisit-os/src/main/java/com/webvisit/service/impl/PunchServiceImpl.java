@@ -16,6 +16,7 @@ import com.webvisit.model.po.User;
 import com.webvisit.model.vo.PunchDetailVO;
 import com.webvisit.model.vo.PunchVO;
 import com.webvisit.service.PunchService;
+import com.webvisit.utils.LocationUtils;
 import com.webvisit.utils.TimeUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -23,12 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.Null;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,6 +59,13 @@ public class PunchServiceImpl implements PunchService {
         User user = userMapper.selectByPrimaryKey(punchVO.getEmpId());
         CompanyDept dept = companyDeptMapper.selectByPrimaryKey(user.getDeptId());
         AttenceRegulation attenceRegulation = attenceRegulationMapper.selectByPrimaryKey(dept.getAttenceRegulationId());
+        //检查打卡地点
+        if (attenceRegulation.getAllowLocationOffset() != null) {
+            double locationOffset = LocationUtils.getDistenceMeter(punchVO.getPunchLocationLat(),punchVO.getPunchLocationLng(),attenceRegulation.getCheckLocationLat(),attenceRegulation.getCheckLocationLon());
+            if (locationOffset > attenceRegulation.getAllowLocationOffset()) {
+                throw new BusinessException("没有在允许的范围内打卡");
+            }
+        }
         //转化为对应的时间格式
         Date punchTime = TimeUtil.createNowTime();
         SimpleDateFormat dateFormatWithMMDD = new SimpleDateFormat("MM-dd");
@@ -70,7 +75,7 @@ public class PunchServiceImpl implements PunchService {
         String punchInKey = LocalConstant.PUNCH_IN_KEY + formatPunchDate + dept.getId();
         String punchOutKey = LocalConstant.PUNCH_OUT_KEY + formatPunchDate + dept.getId();
         punchIn(punchVO, attenceRegulation, punchInKey, lateKey);
-        punchOut(punchVO,attenceRegulation,punchOutKey,lateKey);
+        punchOut(punchVO, attenceRegulation, punchOutKey, lateKey);
     }
 
     @Override
@@ -106,7 +111,6 @@ public class PunchServiceImpl implements PunchService {
     @Override
     @Async
     public void punchOut(PunchVO punchVO, AttenceRegulation attenceRegulation, String punchOutKey, String lateKey) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         Date punchTime = TimeUtil.createNowTime();
         Long late = (Long) redisTemplate.opsForValue().get(lateKey);
         Long early = attenceRegulation.getAllowLeaveEarly() == null ? 0 : TimeUtil.getMilliSecondOfTime(attenceRegulation.getAllowLeaveEarly());
@@ -127,7 +131,7 @@ public class PunchServiceImpl implements PunchService {
             } else {
                 attencePunchDetailMapper.insertSelective(attencePunchDetail);
             }
-            redisTemplate.opsForSet().add(punchOutKey,punchVO.getEmpId());
+            redisTemplate.opsForSet().add(punchOutKey, punchVO.getEmpId());
         }
     }
 
