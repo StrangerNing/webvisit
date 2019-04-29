@@ -24,5 +24,9 @@ public class LocalConstant {
 
     public static final String IMG_SERVER_ADDRESS = "http://img.znzn.me/";
 
-    public static final String PUNCH_UUID_KEY = "punch_";
+    public static final String PUNCH_LATE_KEY = "punch_late_";
+
+    public static final String PUNCH_IN_KEY = "punch_in_";
+
+    public static final String PUNCH_OUT_KEY = "punch_out_";
 }

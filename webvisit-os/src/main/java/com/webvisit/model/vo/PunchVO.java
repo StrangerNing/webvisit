@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -19,10 +20,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class PunchVO {
 
+    @NotNull(message = "职工ID不能为空")
     private Long empId;
 
+    @NotNull(message = "打卡地点不能为空")
     private BigDecimal punchLocationLat;
 
+    @NotNull(message = "打卡地点不能为空")
     private BigDecimal punchLocationLng;
 
 }

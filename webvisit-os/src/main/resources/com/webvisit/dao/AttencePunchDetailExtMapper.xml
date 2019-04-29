@@ -49,6 +49,9 @@
         <if test="companyId != null">
             and  i.id = #{companyId,jdbcType=BIGINT}
         </if>
+        <if test="punchTime != null">
+            <![CDATA[  and DATE_FORMAT(d.punch_time, '%Y-%m-%d') =  DATE_FORMAT(#{punchTime}, '%Y-%m-%d')   ]]>
+        </if>
         <if test="beginTime!=null">
             <![CDATA[  and DATE_FORMAT(d.punch_time, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
         </if>

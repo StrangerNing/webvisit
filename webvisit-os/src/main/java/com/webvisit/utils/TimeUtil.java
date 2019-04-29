@@ -4,6 +4,7 @@ package com.webvisit.utils;
 import com.webvisit.common.constant.LocalConstant;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -394,7 +395,7 @@ public final class TimeUtil {
         return dayCeil.intValue();
     }
 
-    public static int compareHHMMSSTime(String timeA, String timeB) {
+    public static int compareStringTime(String timeA, String timeB) {
         String[] timeASplit = timeA.split(":");
         String[] timeBSplit = timeB.split(":");
         int round = 3;
@@ -410,11 +411,35 @@ public final class TimeUtil {
         return 0;
     }
 
-    public static long getMSOfTime(Date time) {
+    public static int compareTime(Date timeA, Date timeB) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String formatTimeA = simpleDateFormat.format(timeA);
+        String formatTimeB = simpleDateFormat.format(timeB);
+        return TimeUtil.compareStringTime(formatTimeA,formatTimeB);
+    }
+
+    public static long getMilliSecondOfTime(Date time) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         String formatTime = simpleDateFormat.format(time);
-        String[] split = formatTime.split(":");
+        return TimeUtil.getMilliSecondOfStringTime(formatTime);
+    }
+
+    public static long getMilliSecondOfStringTime(String time) {
+        String[] split = time.split(":");
         return TimeUnit.HOURS.toMillis(Long.parseLong(split[0])) + TimeUnit.MINUTES.toMillis(Long.parseLong(split[1])) + TimeUnit.SECONDS.toMillis(Long.parseLong(split[2]));
+    }
+
+    public static long getDiffMilliSecondOfTwoTime(Date timeA, Date timeB) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String formatTimeA = simpleDateFormat.format(timeA);
+        String formatTimeB = simpleDateFormat.format(timeB);
+        return TimeUtil.getDiffMilliSecondOfTwoStringTime(formatTimeA,formatTimeB);
+    }
+
+    public static long getDiffMilliSecondOfTwoStringTime(String timeA, String timeB) {
+        long timeA2Long = TimeUtil.getMilliSecondOfStringTime(timeA);
+        long timeB2Long = TimeUtil.getMilliSecondOfStringTime(timeB);
+        return timeB2Long-timeA2Long >= 0 ? timeB2Long-timeA2Long : timeA2Long-timeB2Long;
     }
 
     private TimeUtil() {

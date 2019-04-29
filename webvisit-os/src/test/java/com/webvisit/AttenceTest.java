@@ -157,7 +157,14 @@ public class AttenceTest {
         Date late = regulationVO.getAllowLate();
         System.out.println(late);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(simpleDateFormat.format(now+TimeUtil.getMSOfTime(late)));
+        System.out.println(simpleDateFormat.format(now+TimeUtil.getMilliSecondOfTime(late)));
+    }
+
+    @Test
+    public void testaa() {
+        Long a = null;
+        a = a == null ? 0 : a;
+        System.out.println(a);
     }
 
     @Test
