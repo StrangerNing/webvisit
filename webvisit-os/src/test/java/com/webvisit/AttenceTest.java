@@ -5,13 +5,11 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
 import com.webvisit.dao.AttenceLeaveExtMapper;
+import com.webvisit.dao.CompanyDeptExtMapper;
 import com.webvisit.dao.common.AttenceHolidayDefaultMapper;
 import com.webvisit.dao.common.AttenceHolidayDetailMapper;
 import com.webvisit.dao.common.AttencePunchDetailMapper;
-import com.webvisit.model.po.AttenceHolidayDefault;
-import com.webvisit.model.po.AttenceHolidayDetail;
-import com.webvisit.model.po.AttenceLeave;
-import com.webvisit.model.po.AttencePunchDetail;
+import com.webvisit.model.po.*;
 import com.webvisit.model.vo.*;
 import com.webvisit.service.AttenceService;
 import com.webvisit.service.LoginService;
@@ -56,6 +54,8 @@ public class AttenceTest {
     private FastFileStorageClient storageClient;
     @Resource
     private AttenceHolidayDefaultMapper attenceHolidayDefaultMapper;
+    @Resource
+    private CompanyDeptExtMapper companyDeptExtMapper;
 
     @Test
     public void contextLoads() {
@@ -161,10 +161,11 @@ public class AttenceTest {
     }
 
     @Test
-    public void testaa() {
-        Long a = null;
-        a = a == null ? 0 : a;
-        System.out.println(a);
+    public void testQueryDept() {
+        List<CompanyDept> companyDeptList = companyDeptExtMapper.queryDeptByCondition(new CompanyDept());
+        for (CompanyDept dept : companyDeptList) {
+            System.out.println(dept);
+        }
     }
 
     @Test

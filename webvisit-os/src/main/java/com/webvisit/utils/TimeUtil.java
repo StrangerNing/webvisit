@@ -442,6 +442,19 @@ public final class TimeUtil {
         return timeB2Long-timeA2Long >= 0 ? timeB2Long-timeA2Long : timeA2Long-timeB2Long;
     }
 
+    public static Date getLastDay() {
+        long current = System.currentTimeMillis();
+        long oneDay = TimeUnit.DAYS.toMillis(1);
+        long lastDay = current - oneDay;
+        return new Date(lastDay);
+    }
+
+    public static String getStringLastDay(String format) {
+        Date lastDay = TimeUtil.getLastDay();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        return dateFormat.format(lastDay);
+    }
+
     private TimeUtil() {
     }
 
