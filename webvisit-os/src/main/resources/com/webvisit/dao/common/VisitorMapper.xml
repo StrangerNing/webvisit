@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.common.VisitorMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.Visitor" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="emp_id" property="empId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="face_info" property="faceInfo" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="business_card" property="businessCard" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, emp_id, name, face_info, id_card, business_card
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_webvisit_visitor
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_webvisit_visitor
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.webvisit.model.po.Visitor" >
+    insert into t_webvisit_visitor (id, company_id, emp_id, 
+      name, face_info, id_card, 
+      business_card)
+    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, 
+      #{name,jdbcType=VARCHAR}, #{faceInfo,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{businessCard,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.webvisit.model.po.Visitor" >
+    insert into t_webvisit_visitor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="faceInfo != null" >
+        face_info,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="businessCard != null" >
+        business_card,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="empId != null" >
+        #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="faceInfo != null" >
+        #{faceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCard != null" >
+        #{businessCard,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.webvisit.model.po.Visitor" >
+    update t_webvisit_visitor
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="empId != null" >
+        emp_id = #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="faceInfo != null" >
+        face_info = #{faceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCard != null" >
+        business_card = #{businessCard,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.Visitor" >
+    update t_webvisit_visitor
+    set company_id = #{companyId,jdbcType=BIGINT},
+      emp_id = #{empId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      face_info = #{faceInfo,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      business_card = #{businessCard,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

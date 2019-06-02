@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.webvisit.model.po.AttencePunchDetail" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="emp_id" property="empId" jdbcType="BIGINT" />
+    <result column="punch_type" property="punchType" jdbcType="TINYINT" />
+    <result column="leave_id" property="leaveId" jdbcType="BIGINT" />
     <result column="punch_time" property="punchTime" jdbcType="DATE" />
     <result column="punch_in_time" property="punchInTime" jdbcType="TIMESTAMP" />
     <result column="punch_out_time" property="punchOutTime" jdbcType="TIMESTAMP" />
@@ -13,13 +15,13 @@
     <result column="punch_in_location_lat" property="punchInLocationLat" jdbcType="DECIMAL" />
     <result column="punch_out_location_lon" property="punchOutLocationLon" jdbcType="DECIMAL" />
     <result column="punch_out_location_lat" property="punchOutLocationLat" jdbcType="DECIMAL" />
-    <result column="punch_type" property="punchType" jdbcType="TINYINT" />
-    <result column="leave_id" property="leaveId" jdbcType="BIGINT" />
+    <result column="punch_in_location" property="punchInLocation" jdbcType="VARCHAR" />
+    <result column="punch_out_location" property="punchOutLocation" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, emp_id, punch_time, punch_in_time, punch_out_time, punch_in_status, punch_out_status, 
-    punch_in_location_lon, punch_in_location_lat, punch_out_location_lon, punch_out_location_lat, 
-    punch_type, leave_id
+    id, emp_id, punch_type, leave_id, punch_time, punch_in_time, punch_out_time, punch_in_status, 
+    punch_out_status, punch_in_location_lon, punch_in_location_lat, punch_out_location_lon, 
+    punch_out_location_lat, punch_in_location, punch_out_location
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -32,16 +34,18 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.webvisit.model.po.AttencePunchDetail" >
-    insert into t_attence_punch_detail (id, emp_id, punch_time, 
-      punch_in_time, punch_out_time, punch_in_status, 
-      punch_out_status, punch_in_location_lon, punch_in_location_lat, 
+    insert into t_attence_punch_detail (id, emp_id, punch_type, 
+      leave_id, punch_time, punch_in_time, 
+      punch_out_time, punch_in_status, punch_out_status, 
+      punch_in_location_lon, punch_in_location_lat, 
       punch_out_location_lon, punch_out_location_lat, 
-      punch_type, leave_id)
-    values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{punchTime,jdbcType=DATE}, 
-      #{punchInTime,jdbcType=TIMESTAMP}, #{punchOutTime,jdbcType=TIMESTAMP}, #{punchInStatus,jdbcType=TINYINT}, 
-      #{punchOutStatus,jdbcType=TINYINT}, #{punchInLocationLon,jdbcType=DECIMAL}, #{punchInLocationLat,jdbcType=DECIMAL}, 
+      punch_in_location, punch_out_location)
+    values (#{id,jdbcType=BIGINT}, #{empId,jdbcType=BIGINT}, #{punchType,jdbcType=TINYINT}, 
+      #{leaveId,jdbcType=BIGINT}, #{punchTime,jdbcType=DATE}, #{punchInTime,jdbcType=TIMESTAMP}, 
+      #{punchOutTime,jdbcType=TIMESTAMP}, #{punchInStatus,jdbcType=TINYINT}, #{punchOutStatus,jdbcType=TINYINT}, 
+      #{punchInLocationLon,jdbcType=DECIMAL}, #{punchInLocationLat,jdbcType=DECIMAL}, 
       #{punchOutLocationLon,jdbcType=DECIMAL}, #{punchOutLocationLat,jdbcType=DECIMAL}, 
-      #{punchType,jdbcType=TINYINT}, #{leaveId,jdbcType=BIGINT})
+      #{punchInLocation,jdbcType=VARCHAR}, #{punchOutLocation,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.webvisit.model.po.AttencePunchDetail" >
     insert into t_attence_punch_detail
@@ -51,6 +55,12 @@
       </if>
       <if test="empId != null" >
         emp_id,
+      </if>
+      <if test="punchType != null" >
+        punch_type,
+      </if>
+      <if test="leaveId != null" >
+        leave_id,
       </if>
       <if test="punchTime != null" >
         punch_time,
@@ -79,11 +89,11 @@
       <if test="punchOutLocationLat != null" >
         punch_out_location_lat,
       </if>
-      <if test="punchType != null" >
-        punch_type,
+      <if test="punchInLocation != null" >
+        punch_in_location,
       </if>
-      <if test="leaveId != null" >
-        leave_id,
+      <if test="punchOutLocation != null" >
+        punch_out_location,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -92,6 +102,12 @@
       </if>
       <if test="empId != null" >
         #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="punchType != null" >
+        #{punchType,jdbcType=TINYINT},
+      </if>
+      <if test="leaveId != null" >
+        #{leaveId,jdbcType=BIGINT},
       </if>
       <if test="punchTime != null" >
         #{punchTime,jdbcType=DATE},
@@ -120,11 +136,11 @@
       <if test="punchOutLocationLat != null" >
         #{punchOutLocationLat,jdbcType=DECIMAL},
       </if>
-      <if test="punchType != null" >
-        #{punchType,jdbcType=TINYINT},
+      <if test="punchInLocation != null" >
+        #{punchInLocation,jdbcType=VARCHAR},
       </if>
-      <if test="leaveId != null" >
-        #{leaveId,jdbcType=BIGINT},
+      <if test="punchOutLocation != null" >
+        #{punchOutLocation,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -133,6 +149,12 @@
     <set >
       <if test="empId != null" >
         emp_id = #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="punchType != null" >
+        punch_type = #{punchType,jdbcType=TINYINT},
+      </if>
+      <if test="leaveId != null" >
+        leave_id = #{leaveId,jdbcType=BIGINT},
       </if>
       <if test="punchTime != null" >
         punch_time = #{punchTime,jdbcType=DATE},
@@ -161,11 +183,11 @@
       <if test="punchOutLocationLat != null" >
         punch_out_location_lat = #{punchOutLocationLat,jdbcType=DECIMAL},
       </if>
-      <if test="punchType != null" >
-        punch_type = #{punchType,jdbcType=TINYINT},
+      <if test="punchInLocation != null" >
+        punch_in_location = #{punchInLocation,jdbcType=VARCHAR},
       </if>
-      <if test="leaveId != null" >
-        leave_id = #{leaveId,jdbcType=BIGINT},
+      <if test="punchOutLocation != null" >
+        punch_out_location = #{punchOutLocation,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -173,6 +195,8 @@
   <update id="updateByPrimaryKey" parameterType="com.webvisit.model.po.AttencePunchDetail" >
     update t_attence_punch_detail
     set emp_id = #{empId,jdbcType=BIGINT},
+      punch_type = #{punchType,jdbcType=TINYINT},
+      leave_id = #{leaveId,jdbcType=BIGINT},
       punch_time = #{punchTime,jdbcType=DATE},
       punch_in_time = #{punchInTime,jdbcType=TIMESTAMP},
       punch_out_time = #{punchOutTime,jdbcType=TIMESTAMP},
@@ -182,8 +206,8 @@
       punch_in_location_lat = #{punchInLocationLat,jdbcType=DECIMAL},
       punch_out_location_lon = #{punchOutLocationLon,jdbcType=DECIMAL},
       punch_out_location_lat = #{punchOutLocationLat,jdbcType=DECIMAL},
-      punch_type = #{punchType,jdbcType=TINYINT},
-      leave_id = #{leaveId,jdbcType=BIGINT}
+      punch_in_location = #{punchInLocation,jdbcType=VARCHAR},
+      punch_out_location = #{punchOutLocation,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

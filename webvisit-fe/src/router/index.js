@@ -157,6 +157,28 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/visitor',
+    component: Layout,
+    redirect: '/visitor/index',
+    alwaysShow: true,
+    meta: {
+      title: 'visitor',
+      icon: 'list',
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/visitor/visitor'),
+        name: 'visitor',
+        meta: {
+          title: 'visitor',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  {
     path: '/yellowPages',
     component: Layout,
     redirect: '/yellowPages/index',

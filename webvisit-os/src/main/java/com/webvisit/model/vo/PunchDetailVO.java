@@ -56,4 +56,8 @@ public class PunchDetailVO extends CommonQueryParam {
     private Integer punchType;
 
     private Long leaveId;
+
+    private String punchInLocation;
+
+    private String punchOutLocation;
 }

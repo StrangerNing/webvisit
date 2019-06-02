@@ -8,6 +8,10 @@ public class AttencePunchDetail {
 
     private Long empId;
 
+    private Integer punchType;
+
+    private Long leaveId;
+
     private Date punchTime;
 
     private Date punchInTime;
@@ -26,9 +30,9 @@ public class AttencePunchDetail {
 
     private BigDecimal punchOutLocationLat;
 
-    private Integer punchType;
+    private String punchInLocation;
 
-    private Long leaveId;
+    private String punchOutLocation;
 
     public Long getId() {
         return id;
@@ -44,6 +48,22 @@ public class AttencePunchDetail {
 
     public void setEmpId(Long empId) {
         this.empId = empId;
+    }
+
+    public Integer getPunchType() {
+        return punchType;
+    }
+
+    public void setPunchType(Integer punchType) {
+        this.punchType = punchType;
+    }
+
+    public Long getLeaveId() {
+        return leaveId;
+    }
+
+    public void setLeaveId(Long leaveId) {
+        this.leaveId = leaveId;
     }
 
     public Date getPunchTime() {
@@ -118,19 +138,19 @@ public class AttencePunchDetail {
         this.punchOutLocationLat = punchOutLocationLat;
     }
 
-    public Integer getPunchType() {
-        return punchType;
+    public String getPunchInLocation() {
+        return punchInLocation;
     }
 
-    public void setPunchType(Integer punchType) {
-        this.punchType = punchType;
+    public void setPunchInLocation(String punchInLocation) {
+        this.punchInLocation = punchInLocation == null ? null : punchInLocation.trim();
     }
 
-    public Long getLeaveId() {
-        return leaveId;
+    public String getPunchOutLocation() {
+        return punchOutLocation;
     }
 
-    public void setLeaveId(Long leaveId) {
-        this.leaveId = leaveId;
+    public void setPunchOutLocation(String punchOutLocation) {
+        this.punchOutLocation = punchOutLocation == null ? null : punchOutLocation.trim();
     }
 }

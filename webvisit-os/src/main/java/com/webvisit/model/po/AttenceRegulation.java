@@ -24,6 +24,8 @@ public class AttenceRegulation {
 
     private Integer allowLocationOffset;
 
+    private String checkLocation;
+
     private BigDecimal checkLocationLon;
 
     private BigDecimal checkLocationLat;
@@ -118,6 +120,14 @@ public class AttenceRegulation {
 
     public void setAllowLocationOffset(Integer allowLocationOffset) {
         this.allowLocationOffset = allowLocationOffset;
+    }
+
+    public String getCheckLocation() {
+        return checkLocation;
+    }
+
+    public void setCheckLocation(String checkLocation) {
+        this.checkLocation = checkLocation == null ? null : checkLocation.trim();
     }
 
     public BigDecimal getCheckLocationLon() {

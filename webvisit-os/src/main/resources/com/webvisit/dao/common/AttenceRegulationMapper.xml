@@ -12,6 +12,7 @@
     <result column="allow_late" property="allowLate" jdbcType="TIME" />
     <result column="allow_leave_early" property="allowLeaveEarly" jdbcType="TIME" />
     <result column="allow_location_offset" property="allowLocationOffset" jdbcType="INTEGER" />
+    <result column="check_location" property="checkLocation" jdbcType="VARCHAR" />
     <result column="check_location_lon" property="checkLocationLon" jdbcType="DECIMAL" />
     <result column="check_location_lat" property="checkLocationLat" jdbcType="DECIMAL" />
     <result column="type" property="type" jdbcType="TINYINT" />
@@ -23,8 +24,9 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, company_id, name, punch_in_start, punch_in_end, punch_out_start, punch_out_end, 
-    allow_late, allow_leave_early, allow_location_offset, check_location_lon, check_location_lat, 
-    type, create_time, create_account_id, modify_time, modify_account_id, remark
+    allow_late, allow_leave_early, allow_location_offset, check_location, check_location_lon, 
+    check_location_lat, type, create_time, create_account_id, modify_time, modify_account_id, 
+    remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -40,14 +42,14 @@
     insert into t_attence_regulation (id, company_id, name, 
       punch_in_start, punch_in_end, punch_out_start, 
       punch_out_end, allow_late, allow_leave_early, 
-      allow_location_offset, check_location_lon, 
+      allow_location_offset, check_location, check_location_lon, 
       check_location_lat, type, create_time, 
       create_account_id, modify_time, modify_account_id, 
       remark)
     values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{punchInStart,jdbcType=TIME}, #{punchInEnd,jdbcType=TIME}, #{punchOutStart,jdbcType=TIME}, 
       #{punchOutEnd,jdbcType=TIME}, #{allowLate,jdbcType=TIME}, #{allowLeaveEarly,jdbcType=TIME}, 
-      #{allowLocationOffset,jdbcType=INTEGER}, #{checkLocationLon,jdbcType=DECIMAL}, 
+      #{allowLocationOffset,jdbcType=INTEGER}, #{checkLocation,jdbcType=VARCHAR}, #{checkLocationLon,jdbcType=DECIMAL}, 
       #{checkLocationLat,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createAccountId,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyAccountId,jdbcType=BIGINT}, 
       #{remark,jdbcType=VARCHAR})
@@ -84,6 +86,9 @@
       </if>
       <if test="allowLocationOffset != null" >
         allow_location_offset,
+      </if>
+      <if test="checkLocation != null" >
+        check_location,
       </if>
       <if test="checkLocationLon != null" >
         check_location_lon,
@@ -141,6 +146,9 @@
       <if test="allowLocationOffset != null" >
         #{allowLocationOffset,jdbcType=INTEGER},
       </if>
+      <if test="checkLocation != null" >
+        #{checkLocation,jdbcType=VARCHAR},
+      </if>
       <if test="checkLocationLon != null" >
         #{checkLocationLon,jdbcType=DECIMAL},
       </if>
@@ -197,6 +205,9 @@
       <if test="allowLocationOffset != null" >
         allow_location_offset = #{allowLocationOffset,jdbcType=INTEGER},
       </if>
+      <if test="checkLocation != null" >
+        check_location = #{checkLocation,jdbcType=VARCHAR},
+      </if>
       <if test="checkLocationLon != null" >
         check_location_lon = #{checkLocationLon,jdbcType=DECIMAL},
       </if>
@@ -235,6 +246,7 @@
       allow_late = #{allowLate,jdbcType=TIME},
       allow_leave_early = #{allowLeaveEarly,jdbcType=TIME},
       allow_location_offset = #{allowLocationOffset,jdbcType=INTEGER},
+      check_location = #{checkLocation,jdbcType=VARCHAR},
       check_location_lon = #{checkLocationLon,jdbcType=DECIMAL},
       check_location_lat = #{checkLocationLat,jdbcType=DECIMAL},
       type = #{type,jdbcType=TINYINT},

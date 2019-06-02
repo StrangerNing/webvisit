@@ -61,7 +61,7 @@ public class PunchServiceImpl implements PunchService {
         AttenceRegulation attenceRegulation = attenceRegulationMapper.selectByPrimaryKey(dept.getAttenceRegulationId());
         //检查打卡地点
         if (attenceRegulation.getAllowLocationOffset() != null) {
-            double locationOffset = LocationUtils.getDistenceMeter(punchVO.getPunchLocationLat(),punchVO.getPunchLocationLng(),attenceRegulation.getCheckLocationLat(),attenceRegulation.getCheckLocationLon());
+            double locationOffset = LocationUtils.getDistanceMeter(punchVO.getPunchLocationLat(),punchVO.getPunchLocationLng(),attenceRegulation.getCheckLocationLat(),attenceRegulation.getCheckLocationLon());
             if (locationOffset > attenceRegulation.getAllowLocationOffset()) {
                 throw new BusinessException("没有在允许的范围内打卡");
             }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webvisit.dao.VisitorExtMapper" >
+  <resultMap id="BaseResultMap" type="com.webvisit.model.po.Visitor" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="emp_id" property="empId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="face_info" property="faceInfo" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="business_card" property="businessCard" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, emp_id, name, face_info, id_card, business_card
+  </sql>
+
+  <select id="selectByCondition" resultType="com.webvisit.model.vo.VisitorVO" parameterType="com.webvisit.model.vo.VisitorVO" >
+    select
+    v.id as id,v.company_id as companyId,v.emp_id as empId, u.nickname as nickname,v.name as name,v.face_info as faceInfo, v.id_card as idCard, v.business_card as businessCard
+    from t_webvisit_visitor v,t_webvisit_user u
+    where v.emp_id = u.id
+    <if test="id != null">
+      and v.id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="companyId != null" >
+      and v.company_id = #{companyId,jdbcType=BIGINT}
+    </if>
+    <if test="empId != null" >
+      and v.emp_id = #{empId,jdbcType=BIGINT}
+    </if>
+    <if test="nickname != null" >
+      and u.nickname = #{nickname,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null" >
+      and v.name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+</mapper>

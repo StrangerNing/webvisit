@@ -15,7 +15,8 @@ export default {
     yellowPageEdit: '黄页设置',
     companyProduct: '产品设置',
     security: '安全设置',
-    log: '操作日志'
+    log: '操作日志',
+    visitor: '访客管理'
 
   },
   navbar: {

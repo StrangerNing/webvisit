@@ -37,7 +37,7 @@ public class LoginController {
 
     @RequestMapping(value = "/user/login",method = RequestMethod.POST)
     @ResponseBody
-    public Result login(@RequestBody LoginVO loginVO, HttpServletResponse response) {
+    public Result login(@RequestBody LoginVO loginVO) {
         UserInfoVO userInfoVO = loginService.login(loginVO);
         if (null != userInfoVO) {
             String uuid = LocalConstant.LOGIN_UUID_KEY + UUID.randomUUID().toString();

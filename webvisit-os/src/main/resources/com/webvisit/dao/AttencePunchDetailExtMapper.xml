@@ -15,11 +15,13 @@
         <result column="punch_out_location_lat" property="punchOutLocationLat" jdbcType="DECIMAL"/>
         <result column="punch_type" property="punchType" jdbcType="TINYINT"/>
         <result column="leave_id" property="leaveId" jdbcType="BIGINT"/>
+        <result column="punch_in_location" property="punchInLocation" jdbcType="VARCHAR" />
+        <result column="punch_out_location" property="punchOutLocation" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List">
     id, emp_id, punch_time, punch_in_time, punch_out_time, punch_in_status, punch_out_status,
     punch_in_location_lon, punch_in_location_lat, punch_out_location_lon, punch_out_location_lat,
-    punch_type, leave_id
+    punch_type, leave_id, punch_in_location, punch_out_location
   </sql>
     <select id="selectByCondition" resultType="com.webvisit.model.vo.PunchDetailVO" parameterType="com.webvisit.model.vo.PunchDetailVO">
         select
@@ -36,6 +38,8 @@
         d.punch_in_location_lat as punchInLocationLat,
         d.punch_out_location_lon as punchOutLocationLon,
         d.punch_out_location_lat as punchOutLocationLat,
+        d.punch_in_location as punchInLocation,
+        d.punch_out_location as punchOutLocation,
         d.punch_type as punchType,
         d.leave_id as leaveId
         from t_attence_punch_detail d,t_webvisit_user u,t_company_dept t,t_company_info i
@@ -115,6 +119,12 @@
             <if test="leaveId != null" >
                 leave_id,
             </if>
+            <if test="punchInLocation != null">
+                punch_in_location,
+            </if>
+            <if test="punchOutLocation != null">
+                punch_out_location,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -155,6 +165,12 @@
             </if>
             <if test="leaveId != null" >
                 #{leaveId,jdbcType=BIGINT},
+            </if>
+            <if test="punchInLocation != null">
+                #{punchInLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="punchOutLocation != null">
+                #{punchOutLocation,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

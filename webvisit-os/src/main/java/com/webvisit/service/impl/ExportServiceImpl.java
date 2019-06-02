@@ -118,11 +118,15 @@ public class ExportServiceImpl implements ExportService {
             //签到时间
             Date punchInTime = punchDetail.getPunchInTime();
             punchDetailExport.setPunchInTime(punchInTime == null ? null : dateFormatWithYMDHMS.format(punchInTime));
+            //签到地点
+            punchDetailExport.setPunchInLocation(punchDetail.getPunchInLocation());
             //签到状态
             punchDetailExport.setPunchInStatus(PunchInEnum.getMsg(punchDetail.getPunchInStatus()));
             //签退时间
             Date punchOutTime = punchDetail.getPunchOutTime();
             punchDetailExport.setPunchOutTime(punchOutTime == null ? null : dateFormatWithYMDHMS.format(punchOutTime));
+            //签退地点
+            punchDetailExport.setPunchOutLocation(punchDetail.getPunchOutLocation());
             //签退状态
             punchDetailExport.setPunchOutStatus(PunchOutEnum.getMsg(punchDetail.getPunchOutStatus()));
             //考勤类型
@@ -168,8 +172,10 @@ public class ExportServiceImpl implements ExportService {
                 add(new Column("deptName").title("部门"));
                 add(new Column("punchTime").title("考勤时间"));
                 add(new Column("punchInTime").title("签到时间"));
+                add(new Column("punchInLocation").title("签到地点"));
                 add(new Column("punchInStatus").title("签到状态"));
                 add(new Column("punchOutTime").title("签退时间"));
+                add(new Column("punchOutLocation").title("签退地点"));
                 add(new Column("punchOutStatus").title("签退状态"));
                 add(new Column("punchType").title("考勤类型"));
             }

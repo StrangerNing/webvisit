@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.webvisit.common.enums.AnnualBaseEnum;
 import com.webvisit.common.enums.DefaultHolidayTypeEnum;
+import com.webvisit.common.enums.PunchInEnum;
+import com.webvisit.common.enums.PunchOutEnum;
 import com.webvisit.dao.AttenceLeaveExtMapper;
 import com.webvisit.dao.CompanyDeptExtMapper;
 import com.webvisit.dao.common.AttenceHolidayDefaultMapper;
@@ -130,12 +132,12 @@ public class AttenceTest {
         for (month = 0; month < 4; month++) {
             for (date = 1; date < 31; date++) {
                 AttencePunchDetail punchDetail = new AttencePunchDetail();
-                punchDetail.setEmpId(1L);
-                punchDetail.setPunchType(0);
-                punchDetail.setPunchInTime(TimeUtil.createTime(2019, month, date, 8, 32, 8));
-                punchDetail.setPunchOutTime(TimeUtil.createTime(2019, month, date, 18, 44, 9));
-                punchDetail.setPunchInStatus(0);
-                punchDetail.setPunchOutStatus(0);
+//                punchDetail.setEmpId(1L);
+//                punchDetail.setPunchType(PunchOutEnum.NORMAL.getCode());
+//                punchDetail.setPunchInTime(TimeUtil.createTime(2019, month, date, 8, 32, 8));
+//                punchDetail.setPunchOutTime(TimeUtil.createTime(2019, month, date, 18, 44, 9));
+//                punchDetail.setPunchInStatus(PunchInEnum.NORMAL.getCode());
+//                punchDetail.setPunchOutStatus(PunchOutEnum.NORMAL.getCode());
                 String getDate = "2019-" + month + "-" + date;
 //                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 punchDetail.setPunchTime(TimeUtil.createTime(2019, month, date));

@@ -48,4 +48,8 @@ public class PunchDetailExportVO {
     private String punchType;
 
     private String leaveId;
+
+    private String punchInLocation;
+
+    private String punchOutLocation;
 }
