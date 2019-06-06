@@ -120,7 +120,7 @@ public class LoginServiceImpl implements LoginService {
         UserInfoRe re = new UserInfoRe();
         re.setUsername(userInfoVO.getUsername());
         re.setRoles(new String[]{"admin"});
-        re.setAvatar("http://img3.imgtn.bdimg.com/it/u=3018968254,2801372361&fm=26&gp=0.jpg");
+        re.setAvatar("http://img.znzn.me/group1/M00/00/01/CowAB1z1UQmAXD77AAAjnSt3xRM580.jpg");
         re.setIntroduction("测试");
         return re;
     }

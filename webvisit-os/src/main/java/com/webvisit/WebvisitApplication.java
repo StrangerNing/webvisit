@@ -1,5 +1,6 @@
 package com.webvisit;
 
+import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 import com.github.tobato.fastdfs.FdfsClientConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

@@ -28,7 +28,7 @@ spring:
   datasource:
     url: jdbc:log4jdbc:mysql://www.znzn.me:3306/webvisit?useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
     username: root
-    password: d2a19315fc5680683589955fb24388c3925e72416c502b63
+    password:
     #不输出日志
     #driver-class-name: com.mysql.cj.jdbc.Driver
     #输出日志

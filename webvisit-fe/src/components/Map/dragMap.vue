@@ -21,7 +21,7 @@ export default {
       searchKey: '',
       placeSearch: null,
       dragStatus: false,
-      AMapUI: null,
+      AMapUI: {},
       AMap: null
     }
   },
