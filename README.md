@@ -1,12 +1,12 @@
-#访客管理系统
+# 访客管理系统
 本项目为本科毕业设计，后端采用SpringBoot框架，代码在[webvisit-os](https://github.com/StrangerNing/webvisit/tree/master/webvisit-os)内；
 前端采用Vue.js框架，代码在[webvisit-fe](https://github.com/StrangerNing/webvisit/tree/master/webvisit-fe)内，
-使用Vue-element-admin模板，模板代码前往[原作者仓库](http://panjiachen.github.io/vue-element-admin)。
+使用Vue-element-admin模板，模板代码前往[原作者仓库](https://github.com/PanJiaChen/vue-element-admin)。
 
-##项目预览
+## 项目预览
 请前往[预览地址](http://www.znzn.me)。
 
-##项目依赖
+## 项目依赖
 
 - MySQL数据库，数据库建表请见[SQL建表文件](https://github.com/StrangerNing/webvisit/tree/master/webvisit-os/sql)。
 - Redis服务器。
@@ -19,7 +19,7 @@
 
 后续可能会写好相关页面，但毕设中需求没有这个内容，所以先略过。
 
-##开发
+## 开发
 前端开发过程：
 ```bash
 #进入项目目录
